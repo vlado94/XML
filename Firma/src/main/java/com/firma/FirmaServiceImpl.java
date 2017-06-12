@@ -38,4 +38,22 @@ public class FirmaServiceImpl implements FirmaService {
 	public void delete(Long id) {
 		firmaRepository.delete(id);
 	}
+	
+	@Override
+	public List<Firma> findByPoslovniSaradnici(List<Firma> firma) {
+		// TODO Auto-generated method stub
+		return firmaRepository.findByPoslovniSaradnici(firma);
+	}
+
+	@Override
+	public Firma findByPoslovniSaradnici_PIB(String pib) {
+		// TODO Auto-generated method stub
+		return firmaRepository.findByPoslovniSaradnici_PIB(pib);
+	}
+
+	@Override
+	public Firma findByPIB(String pib) {
+		// TODO Auto-generated method stub
+		return firmaRepository.findByPIB(pib);
+	}
 }
