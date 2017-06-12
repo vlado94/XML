@@ -17,8 +17,9 @@ services.service('adminService', ['$http', function($http){
 		return $http.get("/faktura/findAllUlazneFakture");
 	}
 	
-	this.findAllPoslovniSaradnici = function(firma){
-		return $http.post("/firma/findAllPoslovniSaradnici",firma);
+	
+	this.findAllPoslovniSaradnici = function(idFirme){
+		return $http.get("/firma/findAllPoslovniSaradnici/"+idFirme);
 	}
 	
 	this.createHTML = function(faktura){

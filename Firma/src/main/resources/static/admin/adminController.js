@@ -68,9 +68,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		}
 		
 		$scope.findAllPoslovniSaradnici = function () {
-			alert($scope.admin.firma.naziv)
-			//$scope.allPoslovniSaradnici = $scope.admin.firma.poslovniSaradnici;
-			adminService.findAllPoslovniSaradnici($scope.admin.firma).then(
+			adminService.findAllPoslovniSaradnici($scope.admin.firma.id).then(
 				function(response){
 					$scope.allPoslovniSaradnici = response.data;
 				}, function (response){
@@ -100,7 +98,6 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 	    
 	    $scope.createPDF = function (faktura) {
 	    	adminService.createPDF(faktura).then(function(response){
-				alert("Uspjelo jeee")
 				window.location.href = "/faktura/fakturaPDF";
             },
 			function(response){

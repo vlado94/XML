@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -47,10 +47,10 @@ public class Firma {
 	@NotBlank
 	@Column
 	private String brojRacuna;
-	/*
+	
 	@JsonIgnore
-	@OneToMany
+	@ManyToMany
 	@JoinTable(name = "POSLOVNI_SARADNICI", joinColumns = @JoinColumn(name = "FIRMA1_ID"), inverseJoinColumns = @JoinColumn(name = "FIRMA2_ID"))
     protected List<Firma> poslovniSaradnici = new ArrayList<Firma>();
-*/
+
 }
