@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.config.BankaClient;
 import com.mt102.MT102;
 import com.mt102.MT102Service;
+import com.mt103.MT103;
+import com.mt103.MT103Service;
 
 
 @RestController
@@ -18,10 +20,12 @@ public class BankaController {
 	BankaClient bankaClient;
 	
 	private final MT102Service MT102Service;
+	private final MT103Service MT103Service;
 	
 	@Autowired
-	public BankaController(final MT102Service MT102Service){
+	public BankaController(final MT102Service MT102Service,final MT103Service MT103Service){
 		this.MT102Service = MT102Service;
+		this.MT103Service = MT103Service;
 	}
 	
 	@GetMapping("/obradaMT102")
@@ -30,6 +34,15 @@ public class BankaController {
 		//firmClient.sendNalog(f);
 		MT102  mt102 = MT102Service.findOne((long) 1);
 		
-		bankaClient.sendNalog(mt102);
+		bankaClient.sendMT102(mt102);
+	}
+	
+	@GetMapping("/obradaMT103")
+	public void obradiMT103(/*@RequestBody long id*/){
+		//Faktura f =/* fakturaService.findOne(id);*/ new Faktura();
+		//firmClient.sendNalog(f);
+		///MT103  mt102 = MT102Service.findOne((long) 1);
+		MT103 mt103 = MT103Service.findOne((long)1);
+		bankaClient.sendMT103(mt103);
 	}
 }
