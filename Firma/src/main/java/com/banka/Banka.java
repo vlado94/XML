@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.Data;
@@ -20,37 +19,39 @@ public class Banka {
 	@Column
 	private Long id;
 
-	@Column(unique = true, columnDefinition = "CHAR(3)")
+	@Column(unique = true/*, columnDefinition = "CHAR(3)"*/)
 	@NotBlank
-	private String bankCode;
+	private String kodBanke;
 
-	@Column(unique = true, columnDefinition = "CHAR(10)")
+	@Column(unique = true/*, columnDefinition = "CHAR(10)"*/)
 	@NotBlank
 	private String PIB;
 
-	@Column(length = 120)
+	@Column//(length = 120)
 	@NotBlank
-	private String name;
+	private String ime;
 
-	@Column(length = 120)
+	/*@Column//(length = 120)
 	@NotBlank
-	private String address;
+	private String adresa;
 
-	@Column(length = 128)
+	@Column//(length = 128)
 	@Email
-	private String email;
+	private String mail;
 
-	@Column(length = 128)
+	@Column//(length = 128)
 	private String web;
 	
-	@Column(length = 20)
-	private String phone;
-	
-	@Column(length = 20)
+	@Column//(length = 20)
+	private String telefon;
+
+	@Column//(length = 20)
 	private String fax;
-	/*
-	@JsonIgnore
-	@OneToMany(mappedBy = "bank", cascade = CascadeType.ALL)
-	private List<Firma> firms;
-*/
+	*/
+	@Column
+	private String uri;
+	
+	@Column//(length = 20)
+	private String obracunskiRacun;
+
 }

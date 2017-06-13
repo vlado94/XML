@@ -40,5 +40,4 @@ public class FirmaController {
 		Faktura f = fakturaService.findOne(id);
 		firmClient.sendNalog(f);
 	}*/
-
 }

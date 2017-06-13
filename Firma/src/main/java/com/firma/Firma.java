@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.banka.Banka;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -53,4 +55,8 @@ public class Firma {
 	@JoinTable(name = "POSLOVNI_SARADNICI", joinColumns = @JoinColumn(name = "FIRMA1_ID"), inverseJoinColumns = @JoinColumn(name = "FIRMA2_ID"))
     protected List<Firma> poslovniSaradnici = new ArrayList<Firma>();
 
+	@ManyToOne
+	@JoinColumn(name = "BANKA_ID")
+    protected Banka banka;
+	
 }
