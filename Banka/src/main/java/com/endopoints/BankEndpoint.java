@@ -24,7 +24,7 @@ public class BankEndpoint {
 	@ResponsePayload
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
 		GetNalogResponse response = new GetNalogResponse();
-		bankaClient.sendNalog();		
+		//bankaClient.sendNalog();		
 		return response;
 	}
 }

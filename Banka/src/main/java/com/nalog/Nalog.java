@@ -80,6 +80,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "oznakaValute",
     "hitno"
 })
+
+
 public class Nalog {
 
 	@XmlTransient

@@ -65,7 +65,7 @@ public class MT102 {
 	
     @XmlElement(required = true)
     @ManyToOne
-	@JoinColumn(name = "HEADER_MT102_ID")
+	@JoinColumn(name = "ZAGLJAVLJE_MT102_ID")
     protected ZaglavljeMT102 zaglavljeMT102;
     
     @OneToMany

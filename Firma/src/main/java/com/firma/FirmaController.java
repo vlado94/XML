@@ -6,9 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.faktura.Faktura;
+import com.firmas.FirmaClient;
 
 
 @RestController
@@ -18,6 +23,9 @@ public class FirmaController {
 	@Autowired
 	private FirmaService firmaService;
 
+	@Autowired
+	FirmaClient firmClient;
+	
 	
 	@Autowired
 	public FirmaController(final FirmaService firmaService){
@@ -32,12 +40,12 @@ public class FirmaController {
 		
 		return saradnici;
 	}
-	/*@Autowired
-	FirmaClient firmClient;
 	
-	@PostMapping("/obrada")
-	public void obradi(@RequestBody long id){
-		Faktura f = fakturaService.findOne(id);
+	
+	
+	@GetMapping("/obrada")
+	public void obradi(/*@RequestBody long id*/){
+		Faktura f =/* fakturaService.findOne(id);*/ new Faktura();
 		firmClient.sendNalog(f);
-	}*/
+	}
 }

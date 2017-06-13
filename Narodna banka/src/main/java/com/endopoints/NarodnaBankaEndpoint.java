@@ -18,6 +18,8 @@ public class NarodnaBankaEndpoint {
 	@ResponsePayload
 	public GetMT102Response getNalogZaPlacanje(@RequestPayload GetMT102Request request) {
 		GetMT102Response response = new GetMT102Response();
+		
+		System.out.println("u narodnoj banci endpoint" + request.getMT102().getPojedinacnoPlacanjeMT102().size());
 		return response;
 	}
 }

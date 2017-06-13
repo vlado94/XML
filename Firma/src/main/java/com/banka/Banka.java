@@ -23,35 +23,18 @@ public class Banka {
 	@NotBlank
 	private String kodBanke;
 
-	@Column(unique = true/*, columnDefinition = "CHAR(10)"*/)
+	@Column(unique = true)
 	@NotBlank
-	private String PIB;
+	private String swiftKod;
 
 	@Column//(length = 120)
 	@NotBlank
 	private String ime;
 
-	/*@Column//(length = 120)
-	@NotBlank
-	private String adresa;
-
-	@Column//(length = 128)
-	@Email
-	private String mail;
-
-	@Column//(length = 128)
-	private String web;
-	
-	@Column//(length = 20)
-	private String telefon;
-
-	@Column//(length = 20)
-	private String fax;
-	*/
 	@Column
 	private String uri;
 	
-	@Column//(length = 20)
+	@Column//(length = 18)
 	private String obracunskiRacun;
 
 }
