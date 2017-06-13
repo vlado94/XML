@@ -9,12 +9,23 @@
 package com.mt102;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.nalog.Adapter1;
 
 
 /**
@@ -44,6 +55,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  * 
  */
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ZaglavljeMT102", propOrder = {
     "idPoruke",
@@ -58,6 +70,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class ZaglavljeMT102 {
 
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ZAGLAVLJE_MT102_ID")
+	private Long id;
+	
     @XmlElement(required = true)
     protected String idPoruke;
     @XmlElement(required = true)
@@ -72,12 +90,17 @@ public class ZaglavljeMT102 {
     protected BigDecimal ukupanIznos;
     @XmlElement(required = true)
     protected String sifraValute;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
+    
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datum;
+    protected Date datum;
 
     /**
      * Gets the value of the idPoruke property.
@@ -255,7 +278,7 @@ public class ZaglavljeMT102 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -267,7 +290,7 @@ public class ZaglavljeMT102 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 
@@ -279,7 +302,7 @@ public class ZaglavljeMT102 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatum() {
+    public Date getDatum() {
         return datum;
     }
 
@@ -291,7 +314,7 @@ public class ZaglavljeMT102 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatum(XMLGregorianCalendar value) {
+    public void setDatum(Date value) {
         this.datum = value;
     }
 

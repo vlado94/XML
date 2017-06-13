@@ -10,12 +10,23 @@ package com.mt103;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.nalog.Adapter1;
 
 
 /**
@@ -54,6 +65,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  * 
  */
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MT103", propOrder = {
     "idPoruke",
@@ -77,6 +89,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class MT103 {
 
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "MT103_ID")
+	private Long id;
+	
+	
     @XmlElement(required = true)
     protected String idPoruke;
     @XmlElement(required = true)
@@ -93,12 +112,16 @@ public class MT103 {
     protected String svrhaPlacanja;
     @XmlElement(required = true)
     protected String primalac;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumNaloga;
+    protected Date datumNaloga;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
     @XmlElement(required = true)
     protected String racunDuznika;
     @XmlElement(required = true)
@@ -316,7 +339,7 @@ public class MT103 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumNaloga() {
+    public Date getDatumNaloga() {
         return datumNaloga;
     }
 
@@ -328,7 +351,7 @@ public class MT103 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumNaloga(XMLGregorianCalendar value) {
+    public void setDatumNaloga(Date value) {
         this.datumNaloga = value;
     }
 
@@ -340,7 +363,7 @@ public class MT103 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -352,7 +375,7 @@ public class MT103 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 

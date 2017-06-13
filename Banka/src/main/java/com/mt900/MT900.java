@@ -9,12 +9,23 @@
 package com.mt900;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.nalog.Adapter1;
 
 
 /**
@@ -42,6 +53,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  * 
  */
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MT900", propOrder = {
     "idPoruke",
@@ -54,6 +66,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class MT900 {
 
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name ="MT900_ID")
+	private Long id;
+	
     @XmlElement(required = true)
     protected String idPoruke;
     @XmlElement(required = true)
@@ -62,9 +80,11 @@ public class MT900 {
     protected String obracunskiRacunBankeDuznika;
     @XmlElement(required = true)
     protected String idPorukeNaloga;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
     @XmlElement(required = true)
     protected BigDecimal iznos;
     @XmlElement(required = true)
@@ -174,7 +194,7 @@ public class MT900 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -186,7 +206,7 @@ public class MT900 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 

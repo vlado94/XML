@@ -10,11 +10,20 @@ package com.nalog;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -51,6 +60,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  * 
  */
+
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "nalog", propOrder = {
     "idPoruke",
@@ -71,20 +82,33 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class Nalog {
 
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "NALOG_ID")
+	private Long id;
+	
     @XmlElement(required = true)
     protected String idPoruke;
+    
     @XmlElement(required = true)
     protected String duznik;
+    
     @XmlElement(required = true)
     protected String svrhaPlacanja;
+    
     @XmlElement(required = true)
     protected String primalac;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumNaloga;
+    protected Date datumNaloga;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
     @XmlElement(required = true)
     protected String racunDuznika;
     @XmlElement(required = true)
@@ -207,7 +231,7 @@ public class Nalog {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumNaloga() {
+    public Date getDatumNaloga() {
         return datumNaloga;
     }
 
@@ -219,7 +243,7 @@ public class Nalog {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumNaloga(XMLGregorianCalendar value) {
+    public void setDatumNaloga(Date value) {
         this.datumNaloga = value;
     }
 
@@ -231,7 +255,7 @@ public class Nalog {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -243,7 +267,7 @@ public class Nalog {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 

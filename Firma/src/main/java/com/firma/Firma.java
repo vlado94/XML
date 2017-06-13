@@ -46,7 +46,7 @@ public class Firma {
 	
 	@NotBlank
 	@Column
-	private String brojRacuna;
+	private String brojRacuna; //18
 	
 	@JsonIgnore
 	@ManyToMany
