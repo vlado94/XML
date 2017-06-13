@@ -3,20 +3,22 @@ package com.faktura;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.InputStream;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 
 import com.firma.Firma;
 import com.firma.FirmaService;
@@ -114,7 +115,7 @@ public class FakturaController {
 	//REST Client Code
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
-	    final String uri = kupac.getUri();
+	    final String uri = kupac.getUri()+"/RestApi/"+kupac.getNaziv();
 	    System.out.println("///sendFaktura");
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);
