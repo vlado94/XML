@@ -7,8 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mt102.MT102Repository;
-
 @Service
 @Transactional
 public class MT103ServiceImpl implements MT103Service {
@@ -29,6 +27,12 @@ public class MT103ServiceImpl implements MT103Service {
 	@Override
 	public MT103 findOne(Long id) {
 		return MT103Repository.findOne(id);
+	}
+
+
+	@Override
+	public MT103 save(MT103 mt103) {
+		return MT103Repository.save(mt103);
 	}
 
 }

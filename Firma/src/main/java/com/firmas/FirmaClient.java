@@ -73,7 +73,7 @@ public class FirmaClient {
 	public void sendNalogProvjeraMT() {
 
 		GetNalogRequest nalogRequest =  new GetNalogRequest();
-		Nalog nalog = nalogService.findOne(3l);
+		Nalog nalog = nalogService.findOne(1l);
 		nalogRequest.setNalog(nalog);
 		
 		String kod = nalog.getRacunDuznika().substring(0, 3);

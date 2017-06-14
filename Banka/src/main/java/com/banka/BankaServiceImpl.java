@@ -19,5 +19,10 @@ private final BankaRepository bankaRepository;
 	public Banka findOne(Long id) {
 		return bankaRepository.findOne(id);
 	}
+
+	@Override
+	public Banka findByKod(String kod) {
+		return bankaRepository.findByKod(kod);
+	}
 	
 }
