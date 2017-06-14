@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.firmas.Firmas;
 import com.firmas.FirmasService;
 
 @RestController
@@ -27,8 +28,8 @@ public class UserController {
 	
 	@PostMapping(path = "/logIn")
 	@ResponseStatus(HttpStatus.OK)
-	public User logIn(@RequestBody User userInput) {
-		User user = null;
+	public Firmas logIn(@RequestBody User userInput) {
+		Firmas user = null;
 		if (firmasService.findOneByMailAndPassword(userInput.getMail(), userInput.getPassword()) != null) {
 			user = firmasService.findOneByMailAndPassword(userInput.getMail(), userInput.getPassword());
 		}

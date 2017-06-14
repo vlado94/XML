@@ -19,7 +19,7 @@ public class Racun {
 	@Column(name = "RACUN_ID")
 	private Long id;
 
-	// @NotBlank
+	//@NotBlank
 	@Column
 	private String brojRacuna; // 18
 

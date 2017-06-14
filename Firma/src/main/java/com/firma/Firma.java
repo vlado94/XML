@@ -1,9 +1,7 @@
 package com.firma;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
+import javax.persistence.OneToOne;
 import org.hibernate.validator.constraints.NotBlank;
-
-import com.banka.Banka;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.racun.Racun;
 import lombok.Data;
 
 @Data
@@ -46,17 +41,12 @@ public class Firma {
 	@Column
 	private String uri;
 	
-	@NotBlank
-	@Column
-	private String brojRacuna; //18
-	
+	@OneToOne
+	@JoinColumn(name = "RACUN_ID")
+	private Racun racun;
+
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "POSLOVNI_SARADNICI", joinColumns = @JoinColumn(name = "FIRMA1_ID"), inverseJoinColumns = @JoinColumn(name = "FIRMA2_ID"))
     protected List<Firma> poslovniSaradnici = new ArrayList<Firma>();
-
-	@ManyToOne
-	@JoinColumn(name = "BANKA_ID")
-    protected Banka banka;
-	
 }

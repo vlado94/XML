@@ -17,6 +17,10 @@ public class FirmasController {
 	private HttpSession httpSession;
 	
 	@Autowired
+	FirmaClient firmClient;
+	
+	
+	@Autowired
 	public FirmasController(final HttpSession httpSession,final FirmasService firmasService) {
 		this.httpSession = httpSession;
 		this.firmasService = firmasService;
@@ -27,6 +31,8 @@ public class FirmasController {
 	public Firmas checkRights() throws AuthenticationException {
 		try {
 			Firmas admin = firmasService.findOneById(((Firmas) httpSession.getAttribute("user")).getId());
+			firmClient.sendNalogTemp();
+			
 			return admin;
 		} catch (Exception e) {
 			throw new AuthenticationException("Forbidden.");

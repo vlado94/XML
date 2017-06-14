@@ -32,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.firma.Firma;
 import com.firma.FirmaService;
+import com.firmas.FirmaClient;
 import com.firmas.Firmas;
 import com.itextpdf.text.DocumentException;
 import com.pdfTransformer.PDFTransformer;
@@ -52,6 +53,9 @@ public class FakturaController {
 	private final HttpSession httpSession;
 	
 	@Autowired
+	FirmaClient firmClient;
+	 
+	@Autowired
 	public FakturaController(final FakturaService fakturaService,final ZaglavljeFaktureService zaglavljeFaktureService,
 			final StavkaFaktureService stavkaFaktureService,final FirmaService firmaService,final HttpSession httpSession){
 		this.fakturaService = fakturaService;
@@ -60,6 +64,9 @@ public class FakturaController {
 		this.firmaService = firmaService;
 		this.httpSession  = httpSession;
 	}
+	
+
+	
 	
 	@PostMapping(path = "/{idZaglavlja}")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -94,8 +101,7 @@ public class FakturaController {
 	@GetMapping(path = "/findAllUlazneFakture")
 	@ResponseStatus(HttpStatus.CREATED)
 	public List<Faktura> findAllUlazneFakture() {
-		Firma firma = ((Firmas) httpSession.getAttribute("user")).getFirma();
-		
+		Firma firma = ((Firmas) httpSession.getAttribute("user")).getFirma();		
 		List<Faktura> ulazneFakture = fakturaService.findByZaglavljeFakture_PibKupca(firma.getPIB());
 		return ulazneFakture;
 	}

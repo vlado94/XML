@@ -1,5 +1,7 @@
 package com.banka;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,11 @@ private final BankaRepository bankaRepository;
 	@Override
 	public Banka findOne(Long id) {
 		return bankaRepository.findOne(id);
+	}
+	
+	@Override
+	public List<Banka> findAll() {
+		return (List<Banka>) bankaRepository.findAll();
 	}
 	
 }
