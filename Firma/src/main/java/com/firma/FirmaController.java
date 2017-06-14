@@ -17,6 +17,8 @@ import com.firmas.FirmaClient;
 import com.firmas.FirmasService;
 import com.user.User;
 
+import ch.qos.logback.core.net.server.Client;
+
 
 @RestController
 @RequestMapping("/firma")
@@ -45,4 +47,7 @@ public class FirmaController {
 		
 		return saradnici;
 	}
+	
+	
+	
 }

@@ -26,5 +26,10 @@ private final BankaRepository bankaRepository;
 	public List<Banka> findAll() {
 		return (List<Banka>) bankaRepository.findAll();
 	}
+
+	@Override
+	public Banka findByKod(String kod) {
+		return bankaRepository.findByKod(kod);
+	}
 	
 }

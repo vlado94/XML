@@ -57,7 +57,7 @@ public class ZaglavljeFakture {
     protected String pibKupca;
     
     @XmlElement(required = true)
-    protected BigInteger brojRacuna;
+    protected String brojRacuna;
     
     @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)

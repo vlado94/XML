@@ -103,6 +103,10 @@ public class FakturaController {
 	public List<Faktura> findAllUlazneFakture() {
 		Firma firma = ((Firmas) httpSession.getAttribute("user")).getFirma();		
 		List<Faktura> ulazneFakture = fakturaService.findByZaglavljeFakture_PibKupca(firma.getPIB());
+		
+		if(ulazneFakture  == null){
+			return new ArrayList<Faktura>();
+		}
 		return ulazneFakture;
 	}
 	
@@ -112,7 +116,7 @@ public class FakturaController {
 	public Faktura save(@RequestBody Faktura faktura) {
 		System.out.println("sendFaktura dobavljac"+faktura.getZaglavljeFakture().getNazivDobavljaca());
 		System.out.println(faktura.getId());
-		Firma kupac = firmaService.findByPoslovniSaradnici_PIB(faktura.getZaglavljeFakture().getPibKupca());
+		Firma kupac = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
 		fakturaService.delete(faktura.getId());
 		Faktura result = sendFaktura(faktura,kupac);
 		return result;
@@ -121,7 +125,7 @@ public class FakturaController {
 	//REST Client Code
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
-	    final String uri = kupac.getUri()+"/RestApi/"+kupac.getNaziv();
+	    final String uri = kupac.getUri()+"/RESTApi/"+kupac.getNaziv();
 	    System.out.println("///sendFaktura");
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);
@@ -236,6 +240,13 @@ public class FakturaController {
 		InputStream inputStream = new FileInputStream(pdf);
 		IOUtils.copy(inputStream, response.getOutputStream());
 	}
+	
+	@GetMapping("/sendNalogProvjeraMT")
+	@ResponseStatus(HttpStatus.OK)
+	public void sendNalogProvjeraMT() throws IOException{
+		firmClient.sendNalogProvjeraMT();
+	}
+	
 }
 
 

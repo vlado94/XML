@@ -17,6 +17,7 @@ import com.racun.Racun;
 
 import lombok.Data;
 
+
 @Entity
 @Data
 public class Banka {

@@ -31,7 +31,7 @@ public class FirmasController {
 	public Firmas checkRights() throws AuthenticationException {
 		try {
 			Firmas admin = firmasService.findOneById(((Firmas) httpSession.getAttribute("user")).getId());
-			firmClient.sendNalogTemp();
+			//firmClient.sendNalogTemp();
 			
 			return admin;
 		} catch (Exception e) {
