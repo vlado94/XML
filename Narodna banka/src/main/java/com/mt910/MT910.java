@@ -9,12 +9,23 @@
 package com.mt910;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.mt102.Adapter1;
 
 
 /**
@@ -28,8 +39,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="idPoruke" type="{http://mt910.com}Str50"/>
- *         &lt;element name="swiftKodBankeDuznika" type="{http://mt910.com}Str8"/>
- *         &lt;element name="obracunskiRacunBankeDuznika" type="{http://mt910.com}Str20"/>
+ *         &lt;element name="swiftKodBankePoverioca" type="{http://mt910.com}Str8"/>
+ *         &lt;element name="obracunskiRacunBankePoverioca" type="{http://mt910.com}Str20"/>
  *         &lt;element name="idPorukeNaloga" type="{http://mt910.com}Str50"/>
  *         &lt;element name="datumValute" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="iznos" type="{http://mt910.com}Decimal15-2"/>
@@ -42,11 +53,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  * 
  */
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MT910", propOrder = {
     "idPoruke",
-    "swiftKodBankeDuznika",
-    "obracunskiRacunBankeDuznika",
+    "swiftKodBankePoverioca",
+    "obracunskiRacunBankePoverioca",
     "idPorukeNaloga",
     "datumValute",
     "iznos",
@@ -54,17 +66,24 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class MT910 {
 
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "MT910_ID")
+	private Long id;
     @XmlElement(required = true)
     protected String idPoruke;
     @XmlElement(required = true)
-    protected String swiftKodBankeDuznika;
+    protected String swiftKodBankePoverioca;
     @XmlElement(required = true)
-    protected String obracunskiRacunBankeDuznika;
+    protected String obracunskiRacunBankePoverioca;
     @XmlElement(required = true)
     protected String idPorukeNaloga;
+    
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
     @XmlElement(required = true)
     protected BigDecimal iznos;
     @XmlElement(required = true)
@@ -102,8 +121,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public String getSwiftKodBankeDuznika() {
-        return swiftKodBankeDuznika;
+    public String getSwiftKodBankePoverioca() {
+        return swiftKodBankePoverioca;
     }
 
     /**
@@ -114,8 +133,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public void setSwiftKodBankeDuznika(String value) {
-        this.swiftKodBankeDuznika = value;
+    public void setSwiftKodBankePoverioca(String value) {
+        this.swiftKodBankePoverioca = value;
     }
 
     /**
@@ -126,8 +145,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public String getObracunskiRacunBankeDuznika() {
-        return obracunskiRacunBankeDuznika;
+    public String getObracunskiRacunBankePoverioca() {
+        return obracunskiRacunBankePoverioca;
     }
 
     /**
@@ -138,8 +157,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public void setObracunskiRacunBankeDuznika(String value) {
-        this.obracunskiRacunBankeDuznika = value;
+    public void setObracunskiRacunBankePoverioca(String value) {
+        this.obracunskiRacunBankePoverioca = value;
     }
 
     /**
@@ -174,7 +193,7 @@ public class MT910 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -186,7 +205,7 @@ public class MT910 {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 

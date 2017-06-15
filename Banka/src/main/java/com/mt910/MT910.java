@@ -39,8 +39,8 @@ import com.nalog.Adapter1;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="idPoruke" type="{http://mt910.com}Str50"/>
- *         &lt;element name="swiftKodBankeDuznika" type="{http://mt910.com}Str8"/>
- *         &lt;element name="obracunskiRacunBankeDuznika" type="{http://mt910.com}Str20"/>
+ *         &lt;element name="swiftKodBankePoverioca" type="{http://mt910.com}Str8"/>
+ *         &lt;element name="obracunskiRacunBankePoverioca" type="{http://mt910.com}Str20"/>
  *         &lt;element name="idPorukeNaloga" type="{http://mt910.com}Str50"/>
  *         &lt;element name="datumValute" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="iznos" type="{http://mt910.com}Decimal15-2"/>
@@ -57,8 +57,8 @@ import com.nalog.Adapter1;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MT910", propOrder = {
     "idPoruke",
-    "swiftKodBankeDuznika",
-    "obracunskiRacunBankeDuznika",
+    "swiftKodBankePoverioca",
+    "obracunskiRacunBankePoverioca",
     "idPorukeNaloga",
     "datumValute",
     "iznos",
@@ -76,9 +76,9 @@ public class MT910 {
     @XmlElement(required = true)
     protected String idPoruke;
     @XmlElement(required = true)
-    protected String swiftKodBankeDuznika;
+    protected String swiftKodBankePoverioca;
     @XmlElement(required = true)
-    protected String obracunskiRacunBankeDuznika;
+    protected String obracunskiRacunBankePoverioca;
     @XmlElement(required = true)
     protected String idPorukeNaloga;
     
@@ -123,8 +123,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public String getSwiftKodBankeDuznika() {
-        return swiftKodBankeDuznika;
+    public String getSwiftKodBankePoverioca() {
+        return swiftKodBankePoverioca;
     }
 
     /**
@@ -135,8 +135,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public void setSwiftKodBankeDuznika(String value) {
-        this.swiftKodBankeDuznika = value;
+    public void setSwiftKodBankePoverioca(String value) {
+        this.swiftKodBankePoverioca = value;
     }
 
     /**
@@ -147,8 +147,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public String getObracunskiRacunBankeDuznika() {
-        return obracunskiRacunBankeDuznika;
+    public String getObracunskiRacunBankePoverioca() {
+        return obracunskiRacunBankePoverioca;
     }
 
     /**
@@ -159,8 +159,8 @@ public class MT910 {
      *     {@link String }
      *     
      */
-    public void setObracunskiRacunBankeDuznika(String value) {
-        this.obracunskiRacunBankeDuznika = value;
+    public void setObracunskiRacunBankePoverioca(String value) {
+        this.obracunskiRacunBankePoverioca = value;
     }
 
     /**

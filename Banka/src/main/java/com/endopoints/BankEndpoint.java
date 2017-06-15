@@ -17,6 +17,10 @@ import com.banka.BankaService;
 import com.config.BankaClient;
 import com.mt103.MT103;
 import com.mt103.MT103Service;
+import com.mt900.MT900;
+import com.mt910.GetMT910Request;
+import com.mt910.GetMT910Response;
+import com.mt910.MT910;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
@@ -27,6 +31,7 @@ import com.racun.RacunService;
 @Component
 public class BankEndpoint {
 	private static final String NAMESPACE_URI = "http://nalog.com";
+	private static final String NAMESPACE_URI2 = "http://mt910.com";
 	
 	@Autowired
 	BankaClient bankaClient;
@@ -108,8 +113,13 @@ public class BankEndpoint {
 				MT103Service.save(mt103);
 				racunDuznika.setRezervisano(primljenNalog.getIznos().negate());
 				racunService.save(racunDuznika);
-				bankaClient.sendMT103(mt103);
 				
+				MT900  mt900 = bankaClient.sendMT103(mt103);
+				System.out.println("Poslao je mt103 i dobio odgovor");
+				
+				MathContext mc = new MathContext(2);
+				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano(),mc) );
+				racunService.save(racunDuznika);
 			}else{
 				System.out.println("Nije hitno");
 			}
@@ -131,5 +141,30 @@ public class BankEndpoint {
 		return response;
 	}
 	
+	@PayloadRoot(namespace = NAMESPACE_URI2, localPart = "getMT910Request")
+	@ResponsePayload
+	public GetMT910Response getNalog(@RequestPayload GetMT910Request request) {
+		GetMT910Response response = new GetMT910Response();
+		MT910 mt910 = request.getMT910();
+		MT103 mt103 = request.getMT103();
 	
+		
+		System.out.println("banka endopint 910" + mt910.getSwiftKodBankePoverioca()); //od narodne banke
+		
+	
+		String brojRacunaPoverioca  = mt103.getRacunPoverioca();
+		Racun racunPoverioca = racunService.findByBrojRacuna(brojRacunaPoverioca);
+		
+		//treba dodati na racun
+		BigDecimal iznos = mt910.getIznos();
+		racunPoverioca.getTrenutnoStanje().add(iznos);
+		racunService.save(racunPoverioca);
+		
+		
+		MT910 mtResponse = new MT910();
+		mt910.setSifraValute("rsd");
+		response.setMT910(mtResponse);
+		//bankaClient.sendNalog();		
+		return response;
+	}
 }

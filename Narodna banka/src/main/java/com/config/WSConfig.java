@@ -1,11 +1,13 @@
 package com.config;
-
+//narodna
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -39,8 +41,28 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	public CommonsXsdSchemaCollection schemeCollection() {
 		CommonsXsdSchemaCollection collection = new CommonsXsdSchemaCollection(
-				new Resource[] { new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd") });
+				new Resource[] { new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd"),new ClassPathResource("/mt900.xsd"),new ClassPathResource("/mt910.xsd") });
 		collection.setInline(true);
 		return collection;
+	}
+	
+	
+	/*dodato da bi narodna banka bila klijent ? */
+	
+	@Bean
+	Jaxb2Marshaller jaxb2Marshaller() {
+		Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
+		jaxb2Marshaller.setContextPaths("com.mt102","com.mt103", "com.mt900","com.mt910");
+		return jaxb2Marshaller;
+	}
+
+	@Bean
+	public WebServiceTemplate webServiceTemplate() {
+		WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
+		webServiceTemplate.setMarshaller(jaxb2Marshaller());
+		webServiceTemplate.setUnmarshaller(jaxb2Marshaller());
+		webServiceTemplate.setDefaultUri("http://localhost:8080/ws");
+
+		return webServiceTemplate;
 	}
 }

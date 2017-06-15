@@ -1,6 +1,6 @@
 package com.config;
 
-
+//banka
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +41,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	public CommonsXsdSchemaCollection schemeCollection() {
 		CommonsXsdSchemaCollection collection = new CommonsXsdSchemaCollection(
-				new Resource[] { new ClassPathResource("/nalog.xsd"),new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd") });
+				new Resource[] { new ClassPathResource("/nalog.xsd"),new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd"),new ClassPathResource("/mt900.xsd"),new ClassPathResource("/mt910.xsd") });
 		collection.setInline(true);
 		return collection;
 	}
@@ -49,7 +49,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	Jaxb2Marshaller jaxb2Marshaller() {
 		Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
-		jaxb2Marshaller.setContextPaths("com.nalog","com.mt102","com.mt103");
+		jaxb2Marshaller.setContextPaths("com.nalog","com.mt102","com.mt103", "com.mt900","com.mt910");
 		return jaxb2Marshaller;
 	}
 

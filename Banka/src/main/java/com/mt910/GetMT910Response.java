@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="MT900" type="{http://mt910.com}MT910"/>
+ *         &lt;element name="MT910" type="{http://mt910.com}MT910"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,13 +36,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "mt900"
+    "mt910"
 })
 @XmlRootElement(name = "getMT910Response")
 public class GetMT910Response {
 
-    @XmlElement(name = "MT900", required = true)
-    protected MT910 mt900;
+    @XmlElement(name = "MT910", required = true)
+    protected MT910 mt910;
 
     /**
      * Gets the value of the mt900 property.
@@ -52,8 +52,8 @@ public class GetMT910Response {
      *     {@link MT910 }
      *     
      */
-    public MT910 getMT900() {
-        return mt900;
+    public MT910 getMT910() {
+        return mt910;
     }
 
     /**
@@ -64,8 +64,8 @@ public class GetMT910Response {
      *     {@link MT910 }
      *     
      */
-    public void setMT900(MT910 value) {
-        this.mt900 = value;
+    public void setMT910(MT910 value) {
+        this.mt910 = value;
     }
 
 }

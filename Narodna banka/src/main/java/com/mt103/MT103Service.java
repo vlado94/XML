@@ -10,6 +10,4 @@ public interface MT103Service {
 	public MT103 save(MT103 mt103);
 
 	public MT103 findOne(Long id);
-
-	public MT103 findByIdPoruke(String idPorukeNaloga);
 }

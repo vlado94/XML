@@ -35,10 +35,4 @@ public class MT103ServiceImpl implements MT103Service {
 		return MT103Repository.save(mt103);
 	}
 
-
-	@Override
-	public MT103 findByIdPoruke(String idPorukeNaloga) {
-		return MT103Repository.findByIdPoruke(idPorukeNaloga);
-	}
-
 }

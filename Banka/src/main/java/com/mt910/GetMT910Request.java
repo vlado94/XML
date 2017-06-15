@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.mt103.MT103;
+
 
 /**
  * <p>Java class for anonymous complex type.
@@ -36,7 +38,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "mt910"
+    "mt910",
+    "mt103"
 })
 @XmlRootElement(name = "getMT910Request")
 public class GetMT910Request {
@@ -44,6 +47,9 @@ public class GetMT910Request {
     @XmlElement(name = "MT910", required = true)
     protected MT910 mt910;
 
+    
+    @XmlElement(name = "MT103", required = true)
+    protected MT103 mt103;
     /**
      * Gets the value of the mt910 property.
      * 
@@ -54,6 +60,10 @@ public class GetMT910Request {
      */
     public MT910 getMT910() {
         return mt910;
+    }
+    
+    public MT103 getMT103() {
+        return mt103;
     }
 
     /**
@@ -66,6 +76,10 @@ public class GetMT910Request {
      */
     public void setMT910(MT910 value) {
         this.mt910 = value;
+    }
+    
+    public void setMT103(MT103 value) {
+        this.mt103 = value;
     }
 
 }
