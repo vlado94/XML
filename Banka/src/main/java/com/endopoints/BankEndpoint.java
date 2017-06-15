@@ -53,9 +53,6 @@ public class BankEndpoint {
 		GetNalogResponse response = new GetNalogResponse();
 		Nalog primljenNalog = request.getNalog();
 		
-		System.out.println("Duznik u bank endopitn " + primljenNalog.getDuznik());
-		System.out.println("Racun duznika u bank endopitn " + primljenNalog.getRacunDuznika());
-		
 		String kodBankeDuznika =primljenNalog.getRacunDuznika().substring(0, 3);
 		String kodBankePrimaoca = primljenNalog.getRacunPrimaoca().substring(0, 3);
 		
@@ -67,20 +64,18 @@ public class BankEndpoint {
 		Racun racunPrimaoca = racunService.findByBrojRacuna(primljenNalog.getRacunPrimaoca());
 		
 		if(kodBankePrimaoca.equals(kodBankeDuznika)){ //iz iste tj moje
-			System.out.println("Iz iste banke tj moje");
+			System.out.println("Iz iste banke");
 			
 			
 			MathContext mc = new MathContext(2);
 			BigDecimal  bg3 = racunDuznika.getTrenutnoStanje().subtract(primljenNalog.getIznos(), mc);
 			racunDuznika.setTrenutnoStanje(bg3);
 			
-			System.out.println("Racuna za duznika" + racunDuznika.getTrenutnoStanje());
 			racunService.save(racunDuznika);
 			
 			BigDecimal noviPrimaoca  = racunPrimaoca.getTrenutnoStanje().add(primljenNalog.getIznos());
 			racunPrimaoca.setTrenutnoStanje(noviPrimaoca);
 			
-			System.out.println("Racuna za primaoica" + racunPrimaoca.getTrenutnoStanje());
 			racunService.save(racunPrimaoca);
 			
 		}else{
@@ -115,7 +110,6 @@ public class BankEndpoint {
 				racunService.save(racunDuznika);
 				
 				MT900  mt900 = bankaClient.sendMT103(mt103);
-				System.out.println("Poslao je mt103 i dobio odgovor");
 				
 				MathContext mc = new MathContext(2);
 				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano(),mc) );
@@ -135,7 +129,6 @@ public class BankEndpoint {
 												//azuriraju racuni
 		}
 		
-		System.out.println(webServiceTemplate.getDefaultUri()); //od narodne banke
 		
 		//bankaClient.sendNalog();		
 		return response;
@@ -148,14 +141,9 @@ public class BankEndpoint {
 		MT910 mt910 = request.getMT910();
 		MT103 mt103 = request.getMT103();
 	
-		
-		System.out.println("banka endopint 910" + mt910.getSwiftKodBankePoverioca()); //od narodne banke
-		
-	
 		String brojRacunaPoverioca  = mt103.getRacunPoverioca();
 		Racun racunPoverioca = racunService.findByBrojRacuna(brojRacunaPoverioca);
 		
-		//treba dodati na racun
 		BigDecimal iznos = mt910.getIznos();
 		racunPoverioca.getTrenutnoStanje().add(iznos);
 		racunService.save(racunPoverioca);
@@ -163,8 +151,7 @@ public class BankEndpoint {
 		
 		MT910 mtResponse = new MT910();
 		mt910.setSifraValute("rsd");
-		response.setMT910(mtResponse);
-		//bankaClient.sendNalog();		
+		response.setMT910(mtResponse);	
 		return response;
 	}
 }

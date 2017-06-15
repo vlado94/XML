@@ -77,21 +77,8 @@ public class FirmaClient {
 		nalogRequest.setNalog(nalog);
 		
 		String kod = nalog.getRacunDuznika().substring(0, 3);
-		
 		Banka banka = bankService.findByKod(kod);
-		
-/*		Firmas firmas = (Firmas) httpSession.getAttribute("user");
-		List<Banka> banke = bankService.findAll();
-		
-		String uri = "";
-		for(int i =0;i<banke.size();i++) {
-			List<Racun> racuni =  banke.get(i).getRacuni();	
-			for(int j =0;j<racuni.size();j++) {
-				if(racuni.get(j).getBrojRacuna().equals(firmas.getFirma().getRacun().getBrojRacuna()))
-					uri = banke.get(i).getUri() + "/ws";
-			}
-		}*/
-		
+
 		String uri = banka.getUri()+ "/ws";
 		
 		webServiceTemplate.setDefaultUri(uri);

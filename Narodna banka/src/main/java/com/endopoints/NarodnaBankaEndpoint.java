@@ -36,7 +36,6 @@ public class NarodnaBankaEndpoint {
 	public GetMT102Response getNalogZaPlacanje(@RequestPayload GetMT102Request request) {
 		GetMT102Response response = new GetMT102Response();
 		
-		System.out.println("u narodnoj banci endpoint" + request.getMT102().getPojedinacnoPlacanjeMT102().size());
 		return response;
 	}
 	
@@ -45,7 +44,6 @@ public class NarodnaBankaEndpoint {
 	@ResponsePayload
 	public GetMT900Response getMT103(@RequestPayload GetMT103Request request) {
 		GetMT900Response response = new GetMT900Response();
-		System.out.println("U narodnoj MT103" + request.getMT103().getDuznik());
 		
 		
 		MT103Service.save(request.getMT103());
@@ -60,7 +58,7 @@ public class NarodnaBankaEndpoint {
 		mt900.setSifraValute(request.getMT103().getSifraValute());
 		
 		response.setMT900(mt900);
-		//treba da posalje 910 banci primaocu
+		
 		MT910 mt910 = new MT910();
 		mt910.setIdPoruke((UUID.randomUUID().toString()));
 		mt910.setSwiftKodBankePoverioca(request.getMT103().getSwiftKodBankePoverioca());

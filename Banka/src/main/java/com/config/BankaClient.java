@@ -20,17 +20,15 @@ public class BankaClient {
 
 	public void sendMT102(MT102 mt) {
 		GetMT102Request mt102 = new GetMT102Request();
-		//MT102 mt = new MT102();
 		mt102.setMT102(mt);
 		GetMT102Response nalogZaPrenosResponse = (GetMT102Response) webServiceTemplate.marshalSendAndReceive(mt102);	
 	}
 	
 	public MT900 sendMT103(MT103 mt) {
 		GetMT103Request mt103 = new GetMT103Request();
-		//MT102 mt = new MT102();
+		
 		mt103.setMT103(mt);
 		GetMT900Response nalogZaPrenosResponse = (GetMT900Response) webServiceTemplate.marshalSendAndReceive(mt103);	
-		System.out.println("MT900 VRACENA "+ nalogZaPrenosResponse.getMT900().getSifraValute());
 		
 		MT900 mt900 = nalogZaPrenosResponse.getMT900();
 		return mt900;

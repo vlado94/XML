@@ -32,10 +32,9 @@ public class NarodnaBankaClient {
 		
 		String uri = banka.getUri()+ "/ws";
 		
-		
 		webServiceTemplate.setDefaultUri(uri); //treba namjestiti kojoj banci salje
 		GetMT910Response nalogZaPrenosResponse = (GetMT910Response) webServiceTemplate.marshalSendAndReceive(mt910);	
-		//System.out.println("narodna banka 910" +nalogZaPrenosResponse.getMT910().getSifraValute() );
+		
 	}
 	
 	
