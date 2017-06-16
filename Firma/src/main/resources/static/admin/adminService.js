@@ -37,4 +37,9 @@ services.service('adminService', ['$http', function($http){
 	this.sendFaktura = function(faktura){
 		return $http.post("/faktura/sendFaktura",faktura);
 	}
+	
+	
+	this.findPreseke = function(presek){
+		return $http.post("/firma/findPresek",presek);
+	}
 }]);

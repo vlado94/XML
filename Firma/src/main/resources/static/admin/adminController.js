@@ -1,4 +1,5 @@
 var app = angular.module('admin.controllers', []);
+var trenutniPresek = 1;
 
 app.controller('adminController', ['$scope','adminService', '$location','$state',
   	function ($scope, adminService, $location,$state) {
@@ -16,6 +17,21 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			);
 		}
 		checkRights();
+		
+		$scope.findPreseke = function() {
+			presek = {};
+			presek.startDatum = $("#startDatum").val();
+			presek.krajDatum =  $("#krajDatum").val();
+			presek.stranica =  trenutniPresek;
+			adminService.findPreseke(presek).then(
+				function (response) {
+					alert(response.length);
+				}, 
+				function (response){
+					alert("Greska");
+				}
+			);
+		}
 		
 		$scope.saveZaglavljeFakture= function () {
 			adminService.saveZaglavljeFakture($scope.zaglavljeFakture).then(

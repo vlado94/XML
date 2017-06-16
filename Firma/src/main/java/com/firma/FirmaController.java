@@ -8,22 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.faktura.Faktura;
+import com.banka.PresekVreme;
 import com.firmas.FirmaClient;
+import com.firmas.Firmas;
 import com.firmas.FirmasService;
-import com.user.User;
-
-import ch.qos.logback.core.net.server.Client;
 
 
 @RestController
 @RequestMapping("/firma")
 public class FirmaController {
 
+	int pageSize = 4;
 	@Autowired
 	private FirmaService firmaService;
 
@@ -32,6 +33,9 @@ public class FirmaController {
 	
 	@Autowired
 	FirmasService firmasService;
+	
+	@Autowired
+	FirmaClient firmaClient;
 	
 	
 	@Autowired
@@ -47,6 +51,19 @@ public class FirmaController {
 		
 		return saradnici;
 	}
+	
+	@PostMapping("/findPresek")
+	@ResponseStatus(HttpStatus.OK)
+	public int findPreseke(@RequestBody PresekVreme presek) {
+		
+		Firmas firmas = (Firmas) httpSession.getAttribute("user");
+		Firma firma = firmaService.findOne(firmas.getFirma().getId());
+		firmaClient.findPreseke(presek.getStartDatum(),presek.getKrajDatum(),presek.getStranica())
+		
+		return 1;
+	}
+	
+	
 	
 	
 	

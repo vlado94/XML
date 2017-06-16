@@ -1,6 +1,6 @@
 package com.firmas;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -84,5 +84,11 @@ public class FirmaClient {
 		webServiceTemplate.setDefaultUri(uri);
  		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 	
+	}
+	
+	public List<Nalog> findPresek(Date start,Date kraj,int stranica) {
+		
+		
+		return null;
 	}
 }
