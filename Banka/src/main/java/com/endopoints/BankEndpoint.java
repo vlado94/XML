@@ -260,23 +260,15 @@ public class BankEndpoint {
 		Banka banka = getCurrentBank(brRacuna);
 		List<Nalog> nalozi = getNalogeZaBankuDanIRacun(banka,datum,brRacuna);
 		List<Nalog> naloziRezultati = new ArrayList<Nalog>();
-		//proveriti ako su iz iste banke dodati
-		for (Nalog nalog : nalozi) {
-			if(nalog.getRacunDuznika().substring(0,3).equals(banka.getKodBanke()) && 
-					banka.getKodBanke().equals(nalog.getRacunPrimaoca().substring(0,3))) {
-				naloziRezultati.add(nalog);				
-			}
-		}
 		
-		//dodati sve iz mt103
-		List<MT103> sveMT103Poruke = MT103Service.findAll();
 		
-		/*
+		
+		
 		List<Nalog> stranicaNaloga = nalozi.subList(stranica-1, stranica+velicinaStranice-1);
 		for (Nalog nalog : stranicaNaloga) {
 			presek.getStavkaPreseka().add(setStavkaNalogaIzNaloga(nalog));
 		}
-		*/
+		
 		return response;
 	}
 	
@@ -302,9 +294,10 @@ public class BankEndpoint {
 		List<Nalog> nalozi = new ArrayList<Nalog>();
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if(nalogUBazi.getRacunDuznika().equals(brRacuna) ||nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
-				nalozi.add(nalogUBazi);
-			}
+//			if(nalogUBazi.isObradjen())
+				if(nalogUBazi.getRacunDuznika().equals(brRacuna) ||nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
+					nalozi.add(nalogUBazi);
+				}
 			/* if(nalogUBazi.getRacunDuznika().substring(0,3).equals(banka.getKodBanke())) {
 				
 			}*/

@@ -88,7 +88,7 @@ public class Nalog {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "NALOG_ID")
-	private Long id;
+	private Long id;	
 	
     @XmlElement(required = true)
     protected String idPoruke;
@@ -127,6 +127,7 @@ public class Nalog {
     protected BigDecimal iznos;
     @XmlElement(required = true)
     protected String oznakaValute;
+
     protected boolean hitno;
 
     /**
