@@ -58,7 +58,7 @@ public class FirmaController {
 		
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");
 		Firma firma = firmaService.findOne(firmas.getFirma().getId());
-		firmaClient.findPreseke(presek.getStartDatum(),presek.getKrajDatum(),presek.getStranica())
+		firmaClient.findPreseke(presek.getStartDatum(),presek.getKrajDatum(),presek.getStranica());
 		
 		return 1;
 	}
