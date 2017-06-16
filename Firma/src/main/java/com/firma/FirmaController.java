@@ -56,11 +56,9 @@ public class FirmaController {
 	@PostMapping("/findPresek")
 	@ResponseStatus(HttpStatus.OK)
 	public Presek findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
-		
-		
-		
-		
 		GetPresekResponse response = firmaClient.findPreseke(zahtev);
+
+		firmaClient.findPreseke(zahtev);
 		
 		return response.getPresek();
 	}
