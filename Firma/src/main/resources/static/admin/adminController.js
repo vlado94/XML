@@ -19,11 +19,10 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		checkRights();
 		
 		$scope.findPreseke = function() {
-			presek = {};
-			presek.startDatum = $("#startDatum").val();
-			presek.krajDatum =  $("#krajDatum").val();
-			presek.stranica =  trenutniPresek;
-			adminService.findPreseke(presek).then(
+			zahtev = {};
+			zahtev.datum = $("#startDatum").val();
+			zahtev.redniBrojPreseka =  trenutniPresek;
+			adminService.findPreseke(zahtev).then(
 				function (response) {
 					alert(response.length);
 				}, 

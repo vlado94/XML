@@ -18,6 +18,7 @@ import com.banka.PresekVreme;
 import com.firmas.FirmaClient;
 import com.firmas.Firmas;
 import com.firmas.FirmasService;
+import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 
 
 @RestController
@@ -54,11 +55,8 @@ public class FirmaController {
 	
 	@PostMapping("/findPresek")
 	@ResponseStatus(HttpStatus.OK)
-	public int findPreseke(@RequestBody PresekVreme presek) {
-		
-		Firmas firmas = (Firmas) httpSession.getAttribute("user");
-		Firma firma = firmaService.findOne(firmas.getFirma().getId());
-		firmaClient.findPreseke(presek.getStartDatum(),presek.getKrajDatum(),presek.getStranica());
+	public int findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
+		firmaClient.findPreseke(zahtev);
 		
 		return 1;
 	}
