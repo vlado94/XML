@@ -82,7 +82,7 @@ public class FirmaClient {
 		String uri = banka.getUri()+ "/ws";
 		
 		webServiceTemplate.setDefaultUri(uri);
-		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
+ 		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 	
 	}
 }

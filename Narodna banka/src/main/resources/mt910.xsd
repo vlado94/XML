@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 elementFormDefault="qualified" targetNamespace="http://mt910.com"
-	xmlns:nzp="http://mt910.com">
+	xmlns:nzp="http://mt910.com" >
 
 <xs:element name="getMT910Request">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="MT910" type="nzp:MT910" />
+				<xs:element name="MT103" type="nzp:MT103" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -17,6 +18,50 @@ elementFormDefault="qualified" targetNamespace="http://mt910.com"
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:complexType name="MT103">
+     
+            <xs:sequence>
+                <xs:element name="idPoruke" type="nzp:Str50"/>
+                <xs:element name="swiftKodBankeDuznika" type="nzp:Str8"/>
+                <xs:element name="obracunskiRacunBankeDuznika" type="nzp:Str18"/>
+                <xs:element name="swiftKodBankePoverioca" type="nzp:Str8"/>
+                <xs:element name="obracunskiRacunBankePoverioca" type="nzp:Str18"/>
+                <xs:element name="duznik" type="nzp:Str255"/>
+                <xs:element name="svrhaPlacanja" type="nzp:Str255"/>
+                <xs:element name="primalac" type="nzp:Str255"/>
+                <xs:element name="datumNaloga" type="xs:date"/>
+                <xs:element name="datumValute" type="xs:date"/>
+                <xs:element name="racunDuznika" type="nzp:Str18"/>
+                <xs:element name="modelZaduzenja" type="nzp:Number2"/>
+                <xs:element name="pozivNaBrojZaduzenja" type="nzp:Str20"/>
+                <xs:element name="racunPoverioca" type="nzp:Str18"/>
+                <xs:element name="modelOdobrenja" type="nzp:Number2"/>
+                <xs:element name="pozivNaBrojOdobrenja" type="nzp:Str20"/>
+                <xs:element name="iznos" type="nzp:Decimal15-2"/>
+                <xs:element name="sifraValute" type="nzp:Str3"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:simpleType name="Str18">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="18"/>
+            <xs:maxLength value="18"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Str255">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Number2">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType> 
 
     <xs:complexType name="MT910">
        

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -44,9 +43,6 @@ public class BankEndpoint {
 	@Autowired
 	MT103Service MT103Service;
 	
-	@Autowired
-	private WebServiceTemplate webServiceTemplate;
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getNalogRequest")
 	@ResponsePayload
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
@@ -81,7 +77,7 @@ public class BankEndpoint {
 		}else{
 			System.out.println("Pravi neku od poruka");
 			
-			if(primljenNalog.isHitno()){//hitno
+			if(primljenNalog.isHitno() || primljenNalog.getIznos().compareTo(BigDecimal.valueOf(250000)) == 1){//hitno
 				System.out.println("Hitno");
 				
 				MT103 mt103 = new MT103();
@@ -106,13 +102,15 @@ public class BankEndpoint {
 				mt103.setSifraValute(primljenNalog.getOznakaValute());
 				
 				MT103Service.save(mt103);
-				racunDuznika.setRezervisano(primljenNalog.getIznos().negate());
+				racunDuznika.setRezervisano(racunDuznika.getRezervisano().add(primljenNalog.getIznos()));
 				racunService.save(racunDuznika);
 				
 				MT900  mt900 = bankaClient.sendMT103(mt103);
 				
 				MathContext mc = new MathContext(2);
-				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano(),mc) );
+				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano().subtract(mt900.getIznos()),mc) );
+				
+				racunDuznika.setRezervisano(racunDuznika.getRezervisano().subtract(mt900.getIznos()));
 				racunService.save(racunDuznika);
 			}else{
 				System.out.println("Nije hitno");
@@ -136,7 +134,7 @@ public class BankEndpoint {
 	
 	@PayloadRoot(namespace = NAMESPACE_URI2, localPart = "getMT910Request")
 	@ResponsePayload
-	public GetMT910Response getNalog(@RequestPayload GetMT910Request request) {
+	public GetMT910Response getMT910Request(@RequestPayload GetMT910Request request) {
 		GetMT910Response response = new GetMT910Response();
 		MT910 mt910 = request.getMT910();
 		MT103 mt103 = request.getMT103();
