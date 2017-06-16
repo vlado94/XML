@@ -1,5 +1,7 @@
 package com.banka;
 
+import java.math.MathContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.config.BankaClient;
 import com.mt102.MT102;
 import com.mt102.MT102Service;
-import com.mt103.MT103;
+import com.mt102.PojedinacnoPlacanjeMT102;
 import com.mt103.MT103Service;
+import com.mt900.MT900;
+import com.racun.Racun;
+import com.racun.RacunService;
 
 
 @RestController
@@ -19,8 +24,12 @@ public class BankaController {
 	@Autowired
 	BankaClient bankaClient;
 	
+	@Autowired
+	RacunService racunService;
+	
 	private final MT102Service MT102Service;
 	private final MT103Service MT103Service;
+	
 	
 	@Autowired
 	public BankaController(final MT102Service MT102Service,final MT103Service MT103Service){
@@ -28,21 +37,29 @@ public class BankaController {
 		this.MT103Service = MT103Service;
 	}
 	
-	@GetMapping("/obradaMT102")
-	public void obradiMt102(/*@RequestBody long id*/){
-		//Faktura f =/* fakturaService.findOne(id);*/ new Faktura();
-		//firmClient.sendNalog(f);
+	@GetMapping("/posaljiMT102")
+	public void obradiMt102(){
+		
 		MT102  mt102 = MT102Service.findOne((long) 1);
 		
-		bankaClient.sendMT102(mt102);
+		MT900 mt900 = bankaClient.sendMT102(mt102);
+		
+		for(int i = 0; i< mt102.getPojedinacnoPlacanjeMT102().size(); i++){
+			PojedinacnoPlacanjeMT102 placanje = mt102.getPojedinacnoPlacanjeMT102().get(i);
+			
+			String brojRacunaDuznika = placanje.getRacunDuznika();
+			Racun racunDuznika = racunService.findByBrojRacuna(brojRacunaDuznika);
+			
+			MathContext mc = new MathContext(2);
+			racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano().subtract(placanje.getIznos()),mc) );
+			
+			racunDuznika.setRezervisano(racunDuznika.getRezervisano().subtract(placanje.getIznos()));
+			racunService.save(racunDuznika);
+		}
+		System.out.println("Obradjena sva pojedinacna placanja");
+		
+		
 	}
 	
-	@GetMapping("/obradaMT103")
-	public void obradiMT103(/*@RequestBody long id*/){
-		//Faktura f =/* fakturaService.findOne(id);*/ new Faktura();
-		//firmClient.sendNalog(f);
-		///MT103  mt102 = MT102Service.findOne((long) 1);
-		MT103 mt103 = MT103Service.findOne((long)1);
-		bankaClient.sendMT103(mt103);
-	}
+	
 }

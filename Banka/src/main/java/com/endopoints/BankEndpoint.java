@@ -152,6 +152,9 @@ public class BankEndpoint {
 					    placanje.setSifraValute(primljenNalog.getOznakaValute());
 						
 						pronadjenMT102.getPojedinacnoPlacanjeMT102().add(placanje);
+						pronadjenMT102.setStatus(false);
+						MT102Service.save(pronadjenMT102);
+						
 						
 						
 						//odgovor treba da promjeni status u true kad se posalje
@@ -193,6 +196,7 @@ public class BankEndpoint {
 					    mt102.setZaglavljeMT102(zaglavlje);
 					    mt102.getPojedinacnoPlacanjeMT102().add(placanje);
 					    MT102Service.save(mt102);
+					    
 					    break;
 					}
 				}

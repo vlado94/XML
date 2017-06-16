@@ -18,10 +18,14 @@ public class BankaClient {
 	@Autowired
 	private WebServiceTemplate webServiceTemplate;
 
-	public void sendMT102(MT102 mt) {
+	public MT900 sendMT102(MT102 mt) {
+		
 		GetMT102Request mt102 = new GetMT102Request();
 		mt102.setMT102(mt);
-		GetMT102Response nalogZaPrenosResponse = (GetMT102Response) webServiceTemplate.marshalSendAndReceive(mt102);	
+	
+		GetMT900Response nalogZaPrenosResponse = (GetMT900Response) webServiceTemplate.marshalSendAndReceive(mt102);	
+		return nalogZaPrenosResponse.getMT900();
+	
 	}
 	
 	public MT900 sendMT103(MT103 mt) {
