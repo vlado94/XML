@@ -12,11 +12,14 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import com.banka.Banka;
 import com.banka.BankaService;
 import com.faktura.Faktura;
+import com.firma.Firma;
+import com.firma.FirmaService;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
 import com.nalog.NalogService;
 import com.racun.Racun;
+import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 
 @Component
 public class FirmaClient {
@@ -32,6 +35,9 @@ public class FirmaClient {
 
 	@Autowired
 	private BankaService bankService;
+	
+	@Autowired
+	private FirmaService firmaService;
 
 	public void sendNalog(Faktura f) {
 		GetNalogRequest nalogRequest =  new GetNalogRequest();
@@ -86,9 +92,23 @@ public class FirmaClient {
 	
 	}
 	
-	public List<Nalog> findPresek(Date start,Date kraj,int stranica) {
+	public List<Nalog> findPreseke(ZahtevZaDobijanjeIzvoda zahtev) {
+		Firmas firmas = (Firmas) httpSession.getAttribute("user");
+		Firma firma = firmaService.findOne(firmas.getFirma().getId());
+		zahtev.setBrojRacuna(firma.getRacun().getBrojRacuna());
+		String uri = "";
+		for(int i=0;i<bankService.findAll().size();i++) {
+			for(int j=0;j<bankService.findAll().get(i).getRacuni().size();j++) {
+				if(bankService.findAll().get(i).getRacuni().get(j).getBrojRacuna().equals(firma.getRacun().getBrojRacuna())) {
+					uri = bankService.findAll().get(i).getUri()+ "/ws";					
+				}
+				
+			}
+		}	
 		
 		
+		webServiceTemplate.setDefaultUri(uri);
+ 		//GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 		return null;
 	}
 }

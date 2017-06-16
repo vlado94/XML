@@ -40,6 +40,6 @@ services.service('adminService', ['$http', function($http){
 	
 	
 	this.findPreseke = function(presek){
-		return $http.post("/firma/findPresek",presek);
+		return $http.post("/firma/findPresek",zahtev);
 	}
 }]);
