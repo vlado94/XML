@@ -6,14 +6,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
-import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
-import org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection;
+import org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition;
+import org.springframework.ws.wsdl.wsdl11.Wsdl11Definition;
 
 @EnableWs
 @Configuration
@@ -26,7 +25,15 @@ public class WSConfig extends WsConfigurerAdapter {
 		servlet.setTransformWsdlLocations(true);
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
-
+	
+	@Bean(name = "banka")
+    public Wsdl11Definition defaultWsdl11Definition() {
+        SimpleWsdl11Definition wsdl11Definition = new SimpleWsdl11Definition();
+        wsdl11Definition.setWsdl(new ClassPathResource("/banka.wsdl")); //your wsdl location
+        return wsdl11Definition;
+    }
+	
+/*
 	@Bean(name = "banka")
 	public DefaultWsdl11Definition defaultWsdl11Definition(CommonsXsdSchemaCollection schemaCollection)
 			throws Exception {
@@ -37,6 +44,8 @@ public class WSConfig extends WsConfigurerAdapter {
 		wsdl11Definition.setSchemaCollection(schemaCollection);
 		return wsdl11Definition;
 	}
+	
+	
 
 	@Bean
 	public CommonsXsdSchemaCollection schemeCollection() {
@@ -44,7 +53,7 @@ public class WSConfig extends WsConfigurerAdapter {
 				new Resource[] { new ClassPathResource("/nalog.xsd"),new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd"),new ClassPathResource("/mt900.xsd"),new ClassPathResource("/mt910.xsd") });
 		collection.setInline(true);
 		return collection;
-	}
+	}*/
 	
 	@Bean
 	Jaxb2Marshaller jaxb2Marshaller() {
