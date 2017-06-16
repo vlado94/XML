@@ -2,6 +2,7 @@ package com.endopoints;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import com.banka.Banka;
 import com.banka.BankaService;
 import com.config.BankaClient;
+import com.mt102.MT102;
+import com.mt102.MT102Service;
+import com.mt102.PojedinacnoPlacanjeMT102;
+import com.mt102.ZaglavljeMT102;
 import com.mt103.MT103;
 import com.mt103.MT103Service;
 import com.mt900.MT900;
@@ -37,12 +42,17 @@ public class BankEndpoint {
 	BankaClient bankaClient;
 	
 	@Autowired
+	MT102Service MT102Service;
+	
+	@Autowired
 	BankaService bankaService;
 	@Autowired
 	RacunService racunService;
 	
 	@Autowired
 	MT103Service MT103Service;
+	
+	
 	
 	@Autowired
 	private WebServiceTemplate webServiceTemplate;
@@ -116,17 +126,83 @@ public class BankEndpoint {
 				racunService.save(racunDuznika);
 			}else{
 				System.out.println("Nije hitno");
+				racunDuznika.setRezervisano(primljenNalog.getIznos().negate());
+				racunService.save(racunDuznika);
+				
+				
+				List<MT102> sviMT102 = MT102Service.findAll();
+				
+				for(int i = 0; i< sviMT102.size(); i++){
+					if(sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankeDuznika().equals(bankaDuznika.getSwiftKod()) && sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankePoverioca().equals(bankaPrimaoca.getSwiftKod()) && sviMT102.get(i).getStatus() == false){
+						System.out.println("Postoji");
+						MT102 pronadjenMT102 = sviMT102.get(i);
+						
+						PojedinacnoPlacanjeMT102 placanje = new PojedinacnoPlacanjeMT102();
+						placanje.setIdNalogaZaPlacanje((UUID.randomUUID().toString()));
+						placanje.setDuznik(primljenNalog.getDuznik());
+						placanje.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
+						placanje.setPrimalac(primljenNalog.getPrimalac());
+						placanje.setDatumNaloga(primljenNalog.getDatumNaloga());
+						placanje.setRacunDuznika(primljenNalog.getRacunDuznika());
+						placanje.setModelZaduzenja(primljenNalog.getModelZaduzenja());
+						placanje.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
+						placanje.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
+						
+						placanje.setModelOdobrenja(primljenNalog.getModelOdobrenja());
+						placanje.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
+						placanje.setIznos(primljenNalog.getIznos());
+					    placanje.setSifraValute(primljenNalog.getOznakaValute());
+						
+						pronadjenMT102.getPojedinacnoPlacanjeMT102().add(placanje);
+						
+						
+						//odgovor treba da promjeni status u true kad se posalje
+					}else{ //nema mt102
+						MT102 mt102 = new MT102();
+					
+						PojedinacnoPlacanjeMT102 placanje = new PojedinacnoPlacanjeMT102();
+						placanje.setIdNalogaZaPlacanje((UUID.randomUUID().toString()));
+						placanje.setDuznik(primljenNalog.getDuznik());
+						placanje.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
+						placanje.setPrimalac(primljenNalog.getPrimalac());
+						placanje.setDatumNaloga(primljenNalog.getDatumNaloga());
+						placanje.setRacunDuznika(primljenNalog.getRacunDuznika());
+						placanje.setModelZaduzenja(primljenNalog.getModelZaduzenja());
+						placanje.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
+						placanje.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
+						
+						placanje.setModelOdobrenja(primljenNalog.getModelOdobrenja());
+						placanje.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
+						placanje.setIznos(primljenNalog.getIznos());
+					    placanje.setSifraValute(primljenNalog.getOznakaValute());
+					    
+					    
+
+						ZaglavljeMT102 zaglavlje = new ZaglavljeMT102();
+						zaglavlje.setIdPoruke((UUID.randomUUID().toString()));
+						zaglavlje.setSwiftKodBankeDuznika(bankaDuznika.getSwiftKod());
+						zaglavlje.setObracunskiRacunBankeDuznika(bankaDuznika.getObracunskiRacun());
+					    zaglavlje.setSwiftKodBankePoverioca(bankaPrimaoca.getSwiftKod());
+						zaglavlje.setObracunskiRacunBankePoverioca(bankaPrimaoca.getObracunskiRacun());
+						
+						zaglavlje.setUkupanIznos(primljenNalog.getIznos());
+						zaglavlje.setSifraValute(primljenNalog.getOznakaValute());
+						zaglavlje.setDatumValute(primljenNalog.getDatumValute());
+						
+						//zaglavlje.setDatum(primljenNalog.getDatumNaloga());
+						//fali zaglavlje.setDatum();
+						mt102.setStatus(false);
+					    mt102.setZaglavljeMT102(zaglavlje);
+					    mt102.getPojedinacnoPlacanjeMT102().add(placanje);
+					    MT102Service.save(mt102);
+					    break;
+					}
+				}
+				
+				System.out.println("HM");
 			}
 			
-			/*racunDuznika.setRezervisano(primljenNalog.getIznos().negate());
-			racunPrimaoca.setRezervisano(primljenNalog.getIznos());
 			
-			
-			System.out.println("Rezervisano za duznika" + racunDuznika.getRezervisano());
-			
-			racunService.save(racunDuznika);
-			racunService.save(racunPrimaoca);*/ //trebalo bi u response u firmi da se 
-												//azuriraju racuni
 		}
 		
 		

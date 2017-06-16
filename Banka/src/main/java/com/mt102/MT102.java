@@ -71,8 +71,12 @@ public class MT102 {
     @OneToMany
 	@JoinTable(name = "MT102_P_PLACANJE", joinColumns = @JoinColumn(name = "MT102_ID"), inverseJoinColumns = @JoinColumn(name = "P_PLACANJE_ID"))
     @XmlElement(required = true)
-    protected List<PojedinacnoPlacanjeMT102> pojedinacnoPlacanjeMT102;
+    protected List<PojedinacnoPlacanjeMT102> pojedinacnoPlacanjeMT102 = new ArrayList<PojedinacnoPlacanjeMT102>();
 
+    
+    @XmlTransient
+    @Column
+	private Boolean status;
     /**
      * Gets the value of the zaglavljeMT102 property.
      * 
@@ -97,6 +101,13 @@ public class MT102 {
         this.zaglavljeMT102 = value;
     }
 
+    public void setStatus(Boolean value) {
+        this.status = value;
+    }
+    
+    public Boolean getStatus() {
+        return this.status;
+    }
     /**
      * Gets the value of the pojedinacnoPlacanjeMT102 property.
      * 
