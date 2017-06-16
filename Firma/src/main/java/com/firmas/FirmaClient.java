@@ -1,6 +1,5 @@
 package com.firmas;
 
-import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -18,7 +17,9 @@ import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
 import com.nalog.NalogService;
+import com.presek.GetPresekResponse;
 import com.racun.Racun;
+import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
 import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 
 @Component
@@ -92,7 +93,7 @@ public class FirmaClient {
 	
 	}
 	
-	public List<Nalog> findPreseke(ZahtevZaDobijanjeIzvoda zahtev) {
+	public GetPresekResponse findPreseke(ZahtevZaDobijanjeIzvoda zahtev) {
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");
 		Firma firma = firmaService.findOne(firmas.getFirma().getId());
 		zahtev.setBrojRacuna(firma.getRacun().getBrojRacuna());
@@ -106,9 +107,10 @@ public class FirmaClient {
 			}
 		}	
 		
-		
+		GetZahtevZaDobijanjeIzvodaRequest request = new GetZahtevZaDobijanjeIzvodaRequest();
+		request.setZahtevZaDobijanjeIzvoda(zahtev);
 		webServiceTemplate.setDefaultUri(uri);
- 		//GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
-		return null;
+ 		GetPresekResponse response = (GetPresekResponse) webServiceTemplate.marshalSendAndReceive(request);
+		return response;
 	}
 }
