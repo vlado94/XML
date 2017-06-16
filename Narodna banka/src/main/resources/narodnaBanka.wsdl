@@ -260,12 +260,13 @@
 </xs:restriction>
 </xs:simpleType>
 </xs:schema>
-<xs:schema xmlns:nzp="http://mt910.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://mt910.com">
+<xs:schema xmlns:nzp="http://mt910.com" xmlns:temp="http://mt103.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://mt910.com">
+<xs:import namespace="http://mt103.com"/>
 <xs:element name="getMT910Request">
 <xs:complexType>
 <xs:sequence>
 <xs:element name="MT910" type="nzp:MT910"/>
-<xs:element name="MT103" type="nzp:MT103"/>
+<xs:element name="MT103" type="temp:MT103"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -276,28 +277,6 @@
 </xs:sequence>
 </xs:complexType>
 </xs:element>
-<xs:complexType name="MT103">
-<xs:sequence>
-<xs:element name="idPoruke" type="nzp:Str50"/>
-<xs:element name="swiftKodBankeDuznika" type="nzp:Str8"/>
-<xs:element name="obracunskiRacunBankeDuznika" type="nzp:Str18"/>
-<xs:element name="swiftKodBankePoverioca" type="nzp:Str8"/>
-<xs:element name="obracunskiRacunBankePoverioca" type="nzp:Str18"/>
-<xs:element name="duznik" type="nzp:Str255"/>
-<xs:element name="svrhaPlacanja" type="nzp:Str255"/>
-<xs:element name="primalac" type="nzp:Str255"/>
-<xs:element name="datumNaloga" type="xs:date"/>
-<xs:element name="datumValute" type="xs:date"/>
-<xs:element name="racunDuznika" type="nzp:Str18"/>
-<xs:element name="modelZaduzenja" type="nzp:Number2"/>
-<xs:element name="pozivNaBrojZaduzenja" type="nzp:Str20"/>
-<xs:element name="racunPoverioca" type="nzp:Str18"/>
-<xs:element name="modelOdobrenja" type="nzp:Number2"/>
-<xs:element name="pozivNaBrojOdobrenja" type="nzp:Str20"/>
-<xs:element name="iznos" type="nzp:Decimal15-2"/>
-<xs:element name="sifraValute" type="nzp:Str3"/>
-</xs:sequence>
-</xs:complexType>
 <xs:simpleType name="Str18">
 <xs:restriction base="xs:string">
 <xs:minLength value="18"/>
@@ -359,45 +338,45 @@
 </xs:schema>
 </wsdl:types>
 <wsdl:message name="getMT103Response">
-<wsdl:part element="sch1:getMT103Response" name="getMT103Response"/>
+<wsdl:part element="sch1:getMT103Response" name="getMT103Response"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT910Response">
-<wsdl:part element="sch3:getMT910Response" name="getMT910Response"/>
+<wsdl:part element="sch3:getMT910Response" name="getMT910Response"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT102Response">
-<wsdl:part element="sch0:getMT102Response" name="getMT102Response"/>
+<wsdl:part element="sch0:getMT102Response" name="getMT102Response"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT102Request">
-<wsdl:part element="sch0:getMT102Request" name="getMT102Request"/>
+<wsdl:part element="sch0:getMT102Request" name="getMT102Request"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT103Request">
-<wsdl:part element="sch1:getMT103Request" name="getMT103Request"/>
+<wsdl:part element="sch1:getMT103Request" name="getMT103Request"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT900Request">
-<wsdl:part element="sch2:getMT900Request" name="getMT900Request"/>
+<wsdl:part element="sch2:getMT900Request" name="getMT900Request"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT910Request">
-<wsdl:part element="sch3:getMT910Request" name="getMT910Request"/>
+<wsdl:part element="sch3:getMT910Request" name="getMT910Request"></wsdl:part>
 </wsdl:message>
 <wsdl:message name="getMT900Response">
-<wsdl:part element="sch2:getMT900Response" name="getMT900Response"/>
+<wsdl:part element="sch2:getMT900Response" name="getMT900Response"></wsdl:part>
 </wsdl:message>
 <wsdl:portType name="NarodnaBankaPort">
 <wsdl:operation name="getMT103">
-<wsdl:input message="tns:getMT103Request" name="getMT103Request"/>
-<wsdl:output message="tns:getMT103Response" name="getMT103Response"/>
+<wsdl:input message="tns:getMT103Request" name="getMT103Request"></wsdl:input>
+<wsdl:output message="tns:getMT103Response" name="getMT103Response"></wsdl:output>
 </wsdl:operation>
 <wsdl:operation name="getMT910">
-<wsdl:input message="tns:getMT910Request" name="getMT910Request"/>
-<wsdl:output message="tns:getMT910Response" name="getMT910Response"/>
+<wsdl:input message="tns:getMT910Request" name="getMT910Request"></wsdl:input>
+<wsdl:output message="tns:getMT910Response" name="getMT910Response"></wsdl:output>
 </wsdl:operation>
 <wsdl:operation name="getMT102">
-<wsdl:input message="tns:getMT102Request" name="getMT102Request"/>
-<wsdl:output message="tns:getMT102Response" name="getMT102Response"/>
+<wsdl:input message="tns:getMT102Request" name="getMT102Request"></wsdl:input>
+<wsdl:output message="tns:getMT102Response" name="getMT102Response"></wsdl:output>
 </wsdl:operation>
 <wsdl:operation name="getMT900">
-<wsdl:input message="tns:getMT900Request" name="getMT900Request"/>
-<wsdl:output message="tns:getMT900Response" name="getMT900Response"/>
+<wsdl:input message="tns:getMT900Request" name="getMT900Request"></wsdl:input>
+<wsdl:output message="tns:getMT900Response" name="getMT900Response"></wsdl:output>
 </wsdl:operation>
 </wsdl:portType>
 <wsdl:binding name="NarodnaBankaPortSoap11" type="tns:NarodnaBankaPort">
