@@ -28,14 +28,17 @@ import com.mt910.MT910;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
+import com.presek.GetPresekResponse;
 import com.racun.Racun;
 import com.racun.RacunService;
+import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
 
 @Endpoint
 @Component
 public class BankEndpoint {
 	private static final String NAMESPACE_URI = "http://nalog.com";
 	private static final String NAMESPACE_URI2 = "http://mt910.com";
+	private static final String NAMESPACE_URI3 = "http://http://zahtevZaDobijanjeIzvoda.com";
 	
 	@Autowired
 	BankaClient bankaClient;
@@ -230,6 +233,18 @@ public class BankEndpoint {
 		MT910 mtResponse = new MT910();
 		mt910.setSifraValute("rsd");
 		response.setMT910(mtResponse);	
+		return response;
+	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI3, localPart = "getZahtevZaDobijanjeIzvodaRequest")
+	@ResponsePayload
+	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
+		GetPresekResponse response = new GetPresekResponse();
+		
+		
+		
+		
+		
 		return response;
 	}
 }

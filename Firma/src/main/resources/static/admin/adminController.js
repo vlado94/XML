@@ -24,7 +24,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			zahtev.redniBrojPreseka =  trenutniPresek;
 			adminService.findPreseke(zahtev).then(
 				function (response) {
-					alert(response.length);
+					alert(response.stavkaPreseka.length);
 				}, 
 				function (response){
 					alert("Greska");

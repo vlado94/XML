@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.banka.PresekVreme;
 import com.firmas.FirmaClient;
-import com.firmas.Firmas;
 import com.firmas.FirmasService;
+import com.presek.GetPresekResponse;
+import com.presek.Presek;
 import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 
 
@@ -55,10 +55,12 @@ public class FirmaController {
 	
 	@PostMapping("/findPresek")
 	@ResponseStatus(HttpStatus.OK)
-	public int findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
+	public Presek findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
+		GetPresekResponse response = firmaClient.findPreseke(zahtev);
+
 		firmaClient.findPreseke(zahtev);
 		
-		return 1;
+		return response.getPresek();
 	}
 	
 	
