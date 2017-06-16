@@ -1,5 +1,7 @@
 package com.nalog;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,11 @@ public class NalogServiceImpl implements NalogService {
 	@Override
 	public Nalog findOne(Long id) {
 		return nalogRepository.findOne(id);
+	}
+
+	@Override
+	public List<Nalog> findAll() {
+		return (List<Nalog>) nalogRepository.findAll();
 	}
 
 }

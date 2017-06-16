@@ -2,8 +2,11 @@ package com.endopoints;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +31,10 @@ import com.mt910.MT910;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
+import com.nalog.NalogService;
 import com.presek.GetPresekResponse;
+import com.presek.Presek;
+import com.presek.StavkaPreseka;
 import com.racun.Racun;
 import com.racun.RacunService;
 import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
@@ -39,9 +45,12 @@ public class BankEndpoint {
 	private static final String NAMESPACE_URI = "http://nalog.com";
 	private static final String NAMESPACE_URI2 = "http://mt910.com";
 	private static final String NAMESPACE_URI3 = "http://zahtevZaDobijanjeIzvoda.com";
-	
+
 	@Autowired
 	BankaClient bankaClient;
+
+	@Autowired
+	NalogService nalogService;
 	
 	@Autowired
 	MT102Service MT102Service;
@@ -236,15 +245,72 @@ public class BankEndpoint {
 		return response;
 	}
 	
+
+	int velicinaStranice = 4;
+	
 	@PayloadRoot(namespace = NAMESPACE_URI3, localPart = "getZahtevZaDobijanjeIzvodaRequest")
 	@ResponsePayload
 	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
 		GetPresekResponse response = new GetPresekResponse();
+		Presek presek = new Presek();
+
+		XMLGregorianCalendar datum = request.getZahtevZaDobijanjeIzvoda().getDatum();
+		String brRacuna = request.getZahtevZaDobijanjeIzvoda().getBrojRacuna();
+		int stranica = request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka().intValue();
+		Banka banka = getCurrentBank(brRacuna);
+		List<Nalog> nalozi = getNalogeZaBankuDanIRacun(banka,datum,brRacuna);
+		List<Nalog> naloziRezultati = new ArrayList<Nalog>();
+		//proveriti ako su iz iste banke dodati
+		for (Nalog nalog : nalozi) {
+			if(nalog.getRacunDuznika().substring(0,3).equals(banka.getKodBanke()) && 
+					banka.getKodBanke().equals(nalog.getRacunPrimaoca().substring(0,3))) {
+				naloziRezultati.add(nalog);				
+			}
+		}
 		
+		//dodati sve iz mt103
+		List<MT103> sveMT103Poruke = MT103Service.findAll();
 		
-		
-		
-		
+		/*
+		List<Nalog> stranicaNaloga = nalozi.subList(stranica-1, stranica+velicinaStranice-1);
+		for (Nalog nalog : stranicaNaloga) {
+			presek.getStavkaPreseka().add(setStavkaNalogaIzNaloga(nalog));
+		}
+		*/
 		return response;
+	}
+	
+	private StavkaPreseka setStavkaNalogaIzNaloga(Nalog nalog) {
+		StavkaPreseka stavka = new StavkaPreseka();
+		
+		
+		return stavka;
+	}
+	
+	private Banka getCurrentBank(String brRacuna) {
+		List<Banka> banke = bankaService.findAll();
+		for (Banka banka : banke) {
+			for(Racun racun : banka.getRacuni()) {
+				if(racun.getBrojRacuna().equals(brRacuna))
+					return banka;
+			}
+		}
+		return null;
+	}
+	
+	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka,XMLGregorianCalendar datum,String brRacuna) {
+		List<Nalog> nalozi = new ArrayList<Nalog>();
+		List<Nalog> naloziUBazi = nalogService.findAll();
+		for (Nalog nalogUBazi : naloziUBazi) {
+			if(nalogUBazi.getRacunDuznika().equals(brRacuna) ||nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
+				nalozi.add(nalogUBazi);
+			}
+			/* if(nalogUBazi.getRacunDuznika().substring(0,3).equals(banka.getKodBanke())) {
+				
+			}*/
+		}
+		
+		
+		return nalozi;
 	}
 }
