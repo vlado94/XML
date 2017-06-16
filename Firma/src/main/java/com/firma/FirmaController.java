@@ -58,7 +58,7 @@ public class FirmaController {
 	public Presek findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
 		GetPresekResponse response = firmaClient.findPreseke(zahtev);
 
-		firmaClient.findPreseke(zahtev);
+		//firmaClient.findPreseke(zahtev);
 		
 		return response.getPresek();
 	}

@@ -38,7 +38,7 @@ import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
 public class BankEndpoint {
 	private static final String NAMESPACE_URI = "http://nalog.com";
 	private static final String NAMESPACE_URI2 = "http://mt910.com";
-	private static final String NAMESPACE_URI3 = "http://http://zahtevZaDobijanjeIzvoda.com";
+	private static final String NAMESPACE_URI3 = "http://zahtevZaDobijanjeIzvoda.com";
 	
 	@Autowired
 	BankaClient bankaClient;
