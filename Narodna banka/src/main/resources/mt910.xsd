@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified" targetNamespace="http://mt910.com"
-	xmlns:nzp="http://mt910.com" xmlns:temp="http://mt103.com">
-	<xs:import namespace="http://mt103.com" schemaLocation="mt103.xsd" />
+	xmlns:nzp="http://mt910.com">
 
 	<xs:element name="getMT910Request">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="MT910" type="nzp:MT910" />
-				<xs:element name="MT103" type="temp:MT103" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

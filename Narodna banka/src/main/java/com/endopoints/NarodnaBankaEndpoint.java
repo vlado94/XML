@@ -11,7 +11,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import com.config.NarodnaBankaClient;
 import com.mt102.GetMT102Request;
-import com.mt102.GetMT102Response;
+import com.mt102.MT102Service;
 import com.mt103.GetMT103Request;
 import com.mt103.MT103Service;
 import com.mt900.GetMT900Response;
@@ -25,6 +25,10 @@ public class NarodnaBankaEndpoint {
 	@Autowired
 	MT103Service MT103Service;
 	
+
+	@Autowired
+	MT102Service MT102Service;
+	
 	@Autowired
 	NarodnaBankaClient narodnaBankaClient;
 	
@@ -33,8 +37,35 @@ public class NarodnaBankaEndpoint {
 	
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getMT102Request")
 	@ResponsePayload
-	public GetMT102Response getNalogZaPlacanje(@RequestPayload GetMT102Request request) {
-		GetMT102Response response = new GetMT102Response();
+	public GetMT900Response getNalogZaPlacanje(@RequestPayload GetMT102Request request) {
+		GetMT900Response response = new GetMT900Response();
+		MT102Service.save(request.getMT102());
+		
+		MT900 mt900 = new MT900();
+		mt900.setIdPoruke((UUID.randomUUID().toString()));
+		
+		
+		mt900.setSwiftKodBankeDuznika(request.getMT102().getZaglavljeMT102().getSwiftKodBankeDuznika());
+		mt900.setObracunskiRacunBankeDuznika(request.getMT102().getZaglavljeMT102().getObracunskiRacunBankeDuznika());    
+		mt900.setIdPorukeNaloga(request.getMT102().getZaglavljeMT102().getIdPoruke());   
+		mt900.setDatumValute(request.getMT102().getZaglavljeMT102().getDatumValute());
+		mt900.setIznos(request.getMT102().getZaglavljeMT102().getUkupanIznos());
+		mt900.setSifraValute(request.getMT102().getZaglavljeMT102().getSifraValute());
+		
+		response.setMT900(mt900);
+		
+		MT910 mt910 = new MT910();
+		mt910.setIdPoruke((UUID.randomUUID().toString()));
+		mt910.setSwiftKodBankePoverioca(request.getMT102().getZaglavljeMT102().getSwiftKodBankePoverioca());
+		mt910.setObracunskiRacunBankePoverioca(request.getMT102().getZaglavljeMT102().getObracunskiRacunBankePoverioca());    
+		mt910.setIdPorukeNaloga(request.getMT102().getZaglavljeMT102().getIdPoruke());    
+		mt910.setDatumValute(request.getMT102().getZaglavljeMT102().getDatumValute());
+		mt910.setIznos(request.getMT102().getZaglavljeMT102().getUkupanIznos());
+		mt910.setSifraValute(request.getMT102().getZaglavljeMT102().getSifraValute());
+	
+		//narodnaBankaClient.send910(mt910, request.getMT102());
+		
+		
 		
 		return response;
 	}
@@ -44,7 +75,6 @@ public class NarodnaBankaEndpoint {
 	@ResponsePayload
 	public GetMT900Response getMT103(@RequestPayload GetMT103Request request) {
 		GetMT900Response response = new GetMT900Response();
-		
 		
 		MT103Service.save(request.getMT103());
 		

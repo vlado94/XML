@@ -21,4 +21,9 @@ public class NalogServiceImpl implements NalogService {
 		return nalogRepository.findOne(id);
 	}
 
+	@Override
+	public Nalog save(Nalog nalog) {
+		return nalogRepository.save(nalog);
+	}
+
 }

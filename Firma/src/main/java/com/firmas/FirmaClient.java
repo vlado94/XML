@@ -97,6 +97,7 @@ public class FirmaClient {
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");
 		Firma firma = firmaService.findOne(firmas.getFirma().getId());
 		zahtev.setBrojRacuna(firma.getRacun().getBrojRacuna());
+		
 		String uri = "";
 		for(int i=0;i<bankService.findAll().size();i++) {
 			for(int j=0;j<bankService.findAll().get(i).getRacuni().size();j++) {

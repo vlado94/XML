@@ -6,6 +6,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import com.banka.Banka;
 import com.banka.BankaService;
+import com.mt103.GetMT103Request;
 import com.mt103.MT103;
 import com.mt910.GetMT910Request;
 import com.mt910.GetMT910Response;
@@ -24,7 +25,9 @@ public class NarodnaBankaClient {
 		GetMT910Request mt910 = new GetMT910Request();
 
 		mt910.setMT910(mt);
-		mt910.setMT103(mt103);
+		
+		GetMT103Request mt103Request = new GetMT103Request();
+		mt103Request.setMT103(mt103);
 
 		String swiftKod = mt.getSwiftKodBankePoverioca();
 		Banka banka = bankaService.findBySwiftKod(swiftKod);
@@ -33,8 +36,14 @@ public class NarodnaBankaClient {
 
 		webServiceTemplate.setDefaultUri(uri); // treba namjestiti kojoj banci
 												// salje
+		
+	//	System.out.println("Nalog Prostor izmedju poziva dva servisa"+responseOdMT103.getMT910().toString());
+
 		GetMT910Response nalogZaPrenosResponse = (GetMT910Response) webServiceTemplate.marshalSendAndReceive(mt910);
+		GetMT910Response responseOdMT103 = (GetMT910Response) webServiceTemplate.marshalSendAndReceive(mt103Request);
+		
 
 	}
-
+	
+	
 }

@@ -19,15 +19,18 @@ import com.mt102.MT102;
 import com.mt102.MT102Service;
 import com.mt102.PojedinacnoPlacanjeMT102;
 import com.mt102.ZaglavljeMT102;
+import com.mt103.GetMT103Request;
 import com.mt103.MT103;
 import com.mt103.MT103Service;
 import com.mt900.MT900;
 import com.mt910.GetMT910Request;
 import com.mt910.GetMT910Response;
 import com.mt910.MT910;
+import com.mt910.MT910Service;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
+import com.nalog.NalogService;
 import com.presek.GetPresekResponse;
 import com.racun.Racun;
 import com.racun.RacunService;
@@ -39,7 +42,7 @@ public class BankEndpoint {
 	private static final String NAMESPACE_URI = "http://nalog.com";
 	private static final String NAMESPACE_URI2 = "http://mt910.com";
 	private static final String NAMESPACE_URI3 = "http://zahtevZaDobijanjeIzvoda.com";
-	
+	private static final String NAMESPACE_URI4 = "http://mt103.com";
 	@Autowired
 	BankaClient bankaClient;
 	
@@ -51,9 +54,16 @@ public class BankEndpoint {
 	@Autowired
 	RacunService racunService;
 	
+	
+	@Autowired
+	NalogService nalogService;
+	
+	
 	@Autowired
 	MT103Service MT103Service;
 
+	@Autowired
+	MT910Service MT910Service;
 
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getNalogRequest")
@@ -61,6 +71,8 @@ public class BankEndpoint {
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
 		GetNalogResponse response = new GetNalogResponse();
 		Nalog primljenNalog = request.getNalog();
+		
+		
 		
 		String kodBankeDuznika =primljenNalog.getRacunDuznika().substring(0, 3);
 		String kodBankePrimaoca = primljenNalog.getRacunPrimaoca().substring(0, 3);
@@ -75,7 +87,7 @@ public class BankEndpoint {
 		if(kodBankePrimaoca.equals(kodBankeDuznika)){ //iz iste tj moje
 			System.out.println("Iz iste banke");
 			
-			
+			nalogService.save(primljenNalog);
 			MathContext mc = new MathContext(2);
 			BigDecimal  bg3 = racunDuznika.getTrenutnoStanje().subtract(primljenNalog.getIznos(), mc);
 			racunDuznika.setTrenutnoStanje(bg3);
@@ -113,6 +125,7 @@ public class BankEndpoint {
 				mt103.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
 				mt103.setIznos(primljenNalog.getIznos());
 				mt103.setSifraValute(primljenNalog.getOznakaValute());
+				
 				
 				MT103Service.save(mt103);
 				racunDuznika.setRezervisano(racunDuznika.getRezervisano().add(primljenNalog.getIznos()));
@@ -220,18 +233,60 @@ public class BankEndpoint {
 	public GetMT910Response getMT910Request(@RequestPayload GetMT910Request request) {
 		GetMT910Response response = new GetMT910Response();
 		MT910 mt910 = request.getMT910();
-		MT103 mt103 = request.getMT103();
+		//MT103 mt103 = request.getMT103();
 	
-		String brojRacunaPoverioca  = mt103.getRacunPoverioca();
-		Racun racunPoverioca = racunService.findByBrojRacuna(brojRacunaPoverioca);
+		System.out.println("MT910 idPorukeNaloga od MT103" + mt910.getIdPorukeNaloga());
+		MT910Service.save(mt910);
 		
-		BigDecimal iznos = mt910.getIznos();
-		racunPoverioca.getTrenutnoStanje().add(iznos);
-		racunService.save(racunPoverioca);
+		MT910 mtResponse = new MT910();
+		response.setMT910(mtResponse);	
+		return response;
+	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI4, localPart = "getMT103Request")
+	@ResponsePayload
+	public GetMT910Response getMT103Request(@RequestPayload GetMT103Request request) {
+		GetMT910Response response = new GetMT910Response();
+		
+		try{
+			MT910 mt910 = MT910Service.findByidPorukeNaloga(request.getMT103().getIdPoruke());
+
+			System.out.println("Nasao mt910" + mt910.getIdPoruke());
+			MT103 mt103 = request.getMT103();
+		
+			String brojRacunaPoverioca  = mt103.getRacunPoverioca();
+			Racun racunPoverioca = racunService.findByBrojRacuna(brojRacunaPoverioca);
+			
+			BigDecimal iznos = mt910.getIznos();
+			racunPoverioca.setTrenutnoStanje(racunPoverioca.getTrenutnoStanje().add(iznos));
+			racunService.save(racunPoverioca);
+			
+			
+			Nalog nalog = new Nalog();
+			nalog.setIdPoruke((UUID.randomUUID().toString()));
+		    nalog.setDuznik(mt103.getDuznik());
+		    nalog.setSvrhaPlacanja(mt103.getSvrhaPlacanja());
+		    nalog.setPrimalac(mt103.getPrimalac());
+		    nalog.setDatumNaloga(mt103.getDatumNaloga());
+		    nalog.setDatumValute(mt103.getDatumValute());
+		    nalog.setRacunDuznika(mt103.getRacunDuznika());
+		    nalog.setModelZaduzenja(mt103.getModelZaduzenja());
+		    nalog.setPozivNaBrojZaduzenja(mt103.getPozivNaBrojZaduzenja());
+		    nalog.setRacunPrimaoca(mt103.getRacunPoverioca());
+		    nalog.setModelOdobrenja(mt103.getModelOdobrenja());
+		    nalog.setPozivNaBrojOdobrenja(mt103.getPozivNaBrojOdobrenja());
+		    nalog.setIznos(mt103.getIznos());
+		    nalog.setOznakaValute(mt103.getSifraValute());
+		    nalog.setHitno(true);
+		    
+		    nalogService.save(nalog);
+		}catch (Exception e) {
+			System.out.println("Nema MT910");
+		}
+		
 		
 		
 		MT910 mtResponse = new MT910();
-		mt910.setSifraValute("rsd");
 		response.setMT910(mtResponse);	
 		return response;
 	}
@@ -241,10 +296,8 @@ public class BankEndpoint {
 	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
 		GetPresekResponse response = new GetPresekResponse();
 		
-		
-		
-		
-		
 		return response;
 	}
+	
+
 }
