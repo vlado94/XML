@@ -18,6 +18,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import com.banka.Banka;
 import com.banka.BankaService;
 import com.config.BankaClient;
+import com.mt102.GetMT102Request;
 import com.mt102.MT102;
 import com.mt102.MT102Service;
 import com.mt102.PojedinacnoPlacanjeMT102;
@@ -49,262 +50,296 @@ public class BankEndpoint {
 	private static final String NAMESPACE_URI3 = "http://zahtevZaDobijanjeIzvoda.com";
 
 	private static final String NAMESPACE_URI4 = "http://mt103.com";
+	private static final String NAMESPACE_URI5 = "http://mt102.com";
 
 	@Autowired
 	BankaClient bankaClient;
 
-	
 	@Autowired
 	MT102Service MT102Service;
-	
+
 	@Autowired
 	BankaService bankaService;
+
 	@Autowired
 	RacunService racunService;
-	
-	
+
 	@Autowired
 	NalogService nalogService;
-	
-	
+
 	@Autowired
 	MT103Service MT103Service;
 
 	@Autowired
 	MT910Service MT910Service;
 
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getNalogRequest")
 	@ResponsePayload
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
 		GetNalogResponse response = new GetNalogResponse();
 		Nalog primljenNalog = request.getNalog();
-		
-		
-		
-		String kodBankeDuznika =primljenNalog.getRacunDuznika().substring(0, 3);
+		primljenNalog.setObradjen(false);
+
+		String kodBankeDuznika = primljenNalog.getRacunDuznika().substring(0, 3);
 		String kodBankePrimaoca = primljenNalog.getRacunPrimaoca().substring(0, 3);
-		
-		
+
 		Banka bankaDuznika = bankaService.findByKod(kodBankeDuznika);
 		Banka bankaPrimaoca = bankaService.findByKod(kodBankePrimaoca);
-		
+
 		Racun racunDuznika = racunService.findByBrojRacuna(primljenNalog.getRacunDuznika());
 		Racun racunPrimaoca = racunService.findByBrojRacuna(primljenNalog.getRacunPrimaoca());
-		
-		if(kodBankePrimaoca.equals(kodBankeDuznika)){ //iz iste tj moje
+
+		if (kodBankePrimaoca.equals(kodBankeDuznika)) { // iz iste tj moje
 			System.out.println("Iz iste banke");
-			
-			nalogService.save(primljenNalog);
+			primljenNalog.setObradjen(true);
+			primljenNalog = nalogService.save(primljenNalog);
 			MathContext mc = new MathContext(2);
-			BigDecimal  bg3 = racunDuznika.getTrenutnoStanje().subtract(primljenNalog.getIznos(), mc);
-			racunDuznika.setTrenutnoStanje(bg3);
-			
+			racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(primljenNalog.getIznos(), mc));
+
 			racunService.save(racunDuznika);
-			
-			BigDecimal noviPrimaoca  = racunPrimaoca.getTrenutnoStanje().add(primljenNalog.getIznos());
+
+			BigDecimal noviPrimaoca = racunPrimaoca.getTrenutnoStanje().add(primljenNalog.getIznos());
 			racunPrimaoca.setTrenutnoStanje(noviPrimaoca);
-			
+
 			racunService.save(racunPrimaoca);
-			
-		}else{
+
+		} else {
 			System.out.println("Pravi neku od poruka");
-			
-			if(primljenNalog.isHitno() || primljenNalog.getIznos().compareTo(BigDecimal.valueOf(250000)) == 1){//hitno
+
+			if (primljenNalog.isHitno() || primljenNalog.getIznos().compareTo(BigDecimal.valueOf(250000)) == 1) {// hitno
 				System.out.println("Hitno");
-				
-				MT103 mt103 = new MT103();
-				
-				mt103.setIdPoruke((UUID.randomUUID().toString()));
-				mt103.setSwiftKodBankeDuznika(bankaDuznika.getSwiftKod());
-				mt103.setObracunskiRacunBankeDuznika(bankaDuznika.getObracunskiRacun());
-				mt103.setSwiftKodBankePoverioca(bankaPrimaoca.getSwiftKod());
-				mt103.setObracunskiRacunBankePoverioca(bankaPrimaoca.getObracunskiRacun());
-				mt103.setDuznik(primljenNalog.getDuznik());
-				mt103.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
-				mt103.setPrimalac(primljenNalog.getPrimalac());
-				mt103.setDatumNaloga(primljenNalog.getDatumNaloga());
-				mt103.setDatumValute(primljenNalog.getDatumValute());
-				mt103.setRacunDuznika(primljenNalog.getRacunDuznika());
-				mt103.setModelZaduzenja(primljenNalog.getModelZaduzenja());
-				mt103.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
-				mt103.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
-				mt103.setModelOdobrenja(primljenNalog.getModelOdobrenja());
-				mt103.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
-				mt103.setIznos(primljenNalog.getIznos());
-				mt103.setSifraValute(primljenNalog.getOznakaValute());
-				
-				
+
+				MT103 mt103 = getMT103IzNaloga(bankaDuznika, bankaPrimaoca, primljenNalog);
+
 				MT103Service.save(mt103);
 				racunDuznika.setRezervisano(racunDuznika.getRezervisano().add(primljenNalog.getIznos()));
 				racunService.save(racunDuznika);
-				
-				MT900  mt900 = bankaClient.sendMT103(mt103);
-				
+
+				MT900 mt900 = bankaClient.sendMT103(mt103);
+				primljenNalog.setObradjen(true);
+				primljenNalog = nalogService.save(primljenNalog);
 				MathContext mc = new MathContext(2);
-				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje().subtract(racunDuznika.getRezervisano().subtract(mt900.getIznos()),mc) );
-				
+				racunDuznika.setTrenutnoStanje(racunDuznika.getTrenutnoStanje()
+						.subtract(racunDuznika.getRezervisano().subtract(mt900.getIznos()), mc));
+
 				racunDuznika.setRezervisano(racunDuznika.getRezervisano().subtract(mt900.getIznos()));
 				racunService.save(racunDuznika);
-			}else{
+			} else {
 				System.out.println("Nije hitno");
-				racunDuznika.setRezervisano(primljenNalog.getIznos().negate());
+				racunDuznika.setRezervisano(racunDuznika.getRezervisano().add(primljenNalog.getIznos()));
 				racunService.save(racunDuznika);
-				
-				
-				List<MT102> sviMT102 = MT102Service.findAll();
-				
-				for(int i = 0; i< sviMT102.size(); i++){
-					if(sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankeDuznika().equals(bankaDuznika.getSwiftKod()) && sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankePoverioca().equals(bankaPrimaoca.getSwiftKod()) && sviMT102.get(i).getStatus() == false){
-						System.out.println("Postoji");
-						MT102 pronadjenMT102 = sviMT102.get(i);
-						
-						PojedinacnoPlacanjeMT102 placanje = new PojedinacnoPlacanjeMT102();
-						placanje.setIdNalogaZaPlacanje((UUID.randomUUID().toString()));
-						placanje.setDuznik(primljenNalog.getDuznik());
-						placanje.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
-						placanje.setPrimalac(primljenNalog.getPrimalac());
-						placanje.setDatumNaloga(primljenNalog.getDatumNaloga());
-						placanje.setRacunDuznika(primljenNalog.getRacunDuznika());
-						placanje.setModelZaduzenja(primljenNalog.getModelZaduzenja());
-						placanje.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
-						placanje.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
-						
-						placanje.setModelOdobrenja(primljenNalog.getModelOdobrenja());
-						placanje.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
-						placanje.setIznos(primljenNalog.getIznos());
-					    placanje.setSifraValute(primljenNalog.getOznakaValute());
-						
-						pronadjenMT102.getPojedinacnoPlacanjeMT102().add(placanje);
-						pronadjenMT102.setStatus(false);
-						MT102Service.save(pronadjenMT102);
-						
-						
-						
-						//odgovor treba da promjeni status u true kad se posalje
-					}else{ //nema mt102
-						MT102 mt102 = new MT102();
-					
-						PojedinacnoPlacanjeMT102 placanje = new PojedinacnoPlacanjeMT102();
-						placanje.setIdNalogaZaPlacanje((UUID.randomUUID().toString()));
-						placanje.setDuznik(primljenNalog.getDuznik());
-						placanje.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
-						placanje.setPrimalac(primljenNalog.getPrimalac());
-						placanje.setDatumNaloga(primljenNalog.getDatumNaloga());
-						placanje.setRacunDuznika(primljenNalog.getRacunDuznika());
-						placanje.setModelZaduzenja(primljenNalog.getModelZaduzenja());
-						placanje.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
-						placanje.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
-						
-						placanje.setModelOdobrenja(primljenNalog.getModelOdobrenja());
-						placanje.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
-						placanje.setIznos(primljenNalog.getIznos());
-					    placanje.setSifraValute(primljenNalog.getOznakaValute());
-					    
-					    
 
-						ZaglavljeMT102 zaglavlje = new ZaglavljeMT102();
-						zaglavlje.setIdPoruke((UUID.randomUUID().toString()));
-						zaglavlje.setSwiftKodBankeDuznika(bankaDuznika.getSwiftKod());
-						zaglavlje.setObracunskiRacunBankeDuznika(bankaDuznika.getObracunskiRacun());
-					    zaglavlje.setSwiftKodBankePoverioca(bankaPrimaoca.getSwiftKod());
-						zaglavlje.setObracunskiRacunBankePoverioca(bankaPrimaoca.getObracunskiRacun());
-						
-						zaglavlje.setUkupanIznos(primljenNalog.getIznos());
-						zaglavlje.setSifraValute(primljenNalog.getOznakaValute());
-						zaglavlje.setDatumValute(primljenNalog.getDatumValute());
-						
-						//zaglavlje.setDatum(primljenNalog.getDatumNaloga());
-						//fali zaglavlje.setDatum();
+				List<MT102> sviMT102 = MT102Service.findAll();
+
+				for (int i = 0; i < sviMT102.size(); i++) {
+					if (sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankeDuznika().equals(bankaDuznika.getSwiftKod())
+							&& sviMT102.get(i).getZaglavljeMT102().getSwiftKodBankePoverioca()
+									.equals(bankaPrimaoca.getSwiftKod())
+							&& sviMT102.get(i).getStatus() == false) {
+						// POSTOJI MT102 koji nije obradjen za vezan je za
+						// odredjene 2 banke
+						MT102 pronadjenMT102 = sviMT102.get(i);
+						pronadjenMT102.setStatus(false);
+						PojedinacnoPlacanjeMT102 placanje = getPojedinacnoPlacanjeIzNaloga(primljenNalog);
+						pronadjenMT102.getPojedinacnoPlacanjeMT102().add(placanje);
+						MT102Service.save(pronadjenMT102);
+						break;
+						// odgovor treba da promjeni status u true kad se
+						// posalje
+					} else { // nema mt102
+						MT102 mt102 = new MT102();
 						mt102.setStatus(false);
-					    mt102.setZaglavljeMT102(zaglavlje);
-					    mt102.getPojedinacnoPlacanjeMT102().add(placanje);
-					    MT102Service.save(mt102);
-					    
-					    break;
+						ZaglavljeMT102 zaglavlje = getZaglavljeMT102IzNaloga(bankaDuznika, bankaPrimaoca,
+								primljenNalog);
+						mt102.setZaglavljeMT102(zaglavlje);
+						PojedinacnoPlacanjeMT102 placanje = getPojedinacnoPlacanjeIzNaloga(primljenNalog);
+						mt102.getPojedinacnoPlacanjeMT102().add(placanje);
+
+						// zaglavlje.setDatum(primljenNalog.getDatumNaloga());
+						// fali zaglavlje.setDatum();
+						MT102Service.save(mt102);
+						break;
 					}
 				}
-				
 				System.out.println("HM");
 			}
-			
-			
 		}
-		
-		
-		//bankaClient.sendNalog();		
+		// bankaClient.sendNalog();
 		return response;
 	}
-	
+
+	private MT103 getMT103IzNaloga(Banka bankaDuznika, Banka bankaPrimaoca, Nalog primljenNalog) {
+		MT103 mt103 = new MT103();
+
+		mt103.setIdPoruke((UUID.randomUUID().toString()));
+		mt103.setSwiftKodBankeDuznika(bankaDuznika.getSwiftKod());
+		mt103.setObracunskiRacunBankeDuznika(bankaDuznika.getObracunskiRacun().getBrojRacuna());
+		mt103.setSwiftKodBankePoverioca(bankaPrimaoca.getSwiftKod());
+		mt103.setObracunskiRacunBankePoverioca(bankaPrimaoca.getObracunskiRacun().getBrojRacuna());
+		mt103.setDuznik(primljenNalog.getDuznik());
+		mt103.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
+		mt103.setPrimalac(primljenNalog.getPrimalac());
+		mt103.setDatumNaloga(primljenNalog.getDatumNaloga());
+		mt103.setDatumValute(primljenNalog.getDatumValute());
+		mt103.setRacunDuznika(primljenNalog.getRacunDuznika());
+		mt103.setModelZaduzenja(primljenNalog.getModelZaduzenja());
+		mt103.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
+		mt103.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
+		mt103.setModelOdobrenja(primljenNalog.getModelOdobrenja());
+		mt103.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
+		mt103.setIznos(primljenNalog.getIznos());
+		mt103.setSifraValute(primljenNalog.getOznakaValute());
+		return mt103;
+	}
+
+	private PojedinacnoPlacanjeMT102 getPojedinacnoPlacanjeIzNaloga(Nalog primljenNalog) {
+		PojedinacnoPlacanjeMT102 placanje = new PojedinacnoPlacanjeMT102();
+		placanje.setIdNalogaZaPlacanje(primljenNalog.getIdPoruke());
+		placanje.setDuznik(primljenNalog.getDuznik());
+		placanje.setSvrhaPlacanja(primljenNalog.getSvrhaPlacanja());
+		placanje.setPrimalac(primljenNalog.getPrimalac());
+		placanje.setDatumNaloga(primljenNalog.getDatumNaloga());
+		placanje.setRacunDuznika(primljenNalog.getRacunDuznika());
+		placanje.setModelZaduzenja(primljenNalog.getModelZaduzenja());
+		placanje.setPozivNaBrojZaduzenja(primljenNalog.getPozivNaBrojZaduzenja());
+		placanje.setRacunPoverioca(primljenNalog.getRacunPrimaoca());
+
+		placanje.setModelOdobrenja(primljenNalog.getModelOdobrenja());
+		placanje.setPozivNaBrojOdobrenja(primljenNalog.getPozivNaBrojOdobrenja());
+		placanje.setIznos(primljenNalog.getIznos());
+		placanje.setSifraValute(primljenNalog.getOznakaValute());
+
+		return placanje;
+	}
+
+	private ZaglavljeMT102 getZaglavljeMT102IzNaloga(Banka bankaDuznika, Banka bankaPrimaoca, Nalog primljenNalog) {
+		ZaglavljeMT102 zaglavlje = new ZaglavljeMT102();
+		zaglavlje.setIdPoruke((UUID.randomUUID().toString()));
+		zaglavlje.setSwiftKodBankeDuznika(bankaDuznika.getSwiftKod());
+		zaglavlje.setObracunskiRacunBankeDuznika(bankaDuznika.getObracunskiRacun().getBrojRacuna());
+		zaglavlje.setSwiftKodBankePoverioca(bankaPrimaoca.getSwiftKod());
+		zaglavlje.setObracunskiRacunBankePoverioca(bankaPrimaoca.getObracunskiRacun().getBrojRacuna());
+
+		zaglavlje.setUkupanIznos(primljenNalog.getIznos());
+		zaglavlje.setSifraValute(primljenNalog.getOznakaValute());
+		zaglavlje.setDatumValute(primljenNalog.getDatumValute());
+
+		return zaglavlje;
+	}
+
 	@PayloadRoot(namespace = NAMESPACE_URI2, localPart = "getMT910Request")
 	@ResponsePayload
 	public GetMT910Response getMT910Request(@RequestPayload GetMT910Request request) {
 		GetMT910Response response = new GetMT910Response();
 		MT910 mt910 = request.getMT910();
-		//MT103 mt103 = request.getMT103();
-	
+		// MT103 mt103 = request.getMT103();
+
 		System.out.println("MT910 idPorukeNaloga od MT103" + mt910.getIdPorukeNaloga());
 		MT910Service.save(mt910);
-		
+
 		MT910 mtResponse = new MT910();
-		response.setMT910(mtResponse);	
+		response.setMT910(mtResponse);
 		return response;
 	}
-	
+
 	@PayloadRoot(namespace = NAMESPACE_URI4, localPart = "getMT103Request")
 	@ResponsePayload
 	public GetMT910Response getMT103Request(@RequestPayload GetMT103Request request) {
 		GetMT910Response response = new GetMT910Response();
-		
-		try{
+
+		try {
 			MT910 mt910 = MT910Service.findByidPorukeNaloga(request.getMT103().getIdPoruke());
 
 			System.out.println("Nasao mt910" + mt910.getIdPoruke());
 			MT103 mt103 = request.getMT103();
-		
-			String brojRacunaPoverioca  = mt103.getRacunPoverioca();
+
+			String brojRacunaPoverioca = mt103.getRacunPoverioca();
 			Racun racunPoverioca = racunService.findByBrojRacuna(brojRacunaPoverioca);
-			
+
 			BigDecimal iznos = mt910.getIznos();
 			racunPoverioca.setTrenutnoStanje(racunPoverioca.getTrenutnoStanje().add(iznos));
 			racunService.save(racunPoverioca);
-			
-			
-			Nalog nalog = new Nalog();
-			nalog.setIdPoruke((UUID.randomUUID().toString()));
-		    nalog.setDuznik(mt103.getDuznik());
-		    nalog.setSvrhaPlacanja(mt103.getSvrhaPlacanja());
-		    nalog.setPrimalac(mt103.getPrimalac());
-		    nalog.setDatumNaloga(mt103.getDatumNaloga());
-		    nalog.setDatumValute(mt103.getDatumValute());
-		    nalog.setRacunDuznika(mt103.getRacunDuznika());
-		    nalog.setModelZaduzenja(mt103.getModelZaduzenja());
-		    nalog.setPozivNaBrojZaduzenja(mt103.getPozivNaBrojZaduzenja());
-		    nalog.setRacunPrimaoca(mt103.getRacunPoverioca());
-		    nalog.setModelOdobrenja(mt103.getModelOdobrenja());
-		    nalog.setPozivNaBrojOdobrenja(mt103.getPozivNaBrojOdobrenja());
-		    nalog.setIznos(mt103.getIznos());
-		    nalog.setOznakaValute(mt103.getSifraValute());
-		    nalog.setHitno(true);
-		    
-		    nalogService.save(nalog);
-		}catch (Exception e) {
+
+			Nalog nalog = getNalogIzMT103(mt103);
+			nalog.setObradjen(true);
+			nalogService.save(nalog);
+
+		} catch (Exception e) {
 			System.out.println("Nema MT910");
 		}
-		
-		
-		
+
 		MT910 mtResponse = new MT910();
-		response.setMT910(mtResponse);	
+		response.setMT910(mtResponse);
 		return response;
 	}
 	
+	@PayloadRoot(namespace = NAMESPACE_URI5, localPart = "getMT102Request")
+	@ResponsePayload
+	public GetMT910Response getMT102Request(@RequestPayload GetMT102Request request) {
+		GetMT910Response response = new GetMT910Response();
+
+		try {
+			MT910 mt910 = MT910Service.findByidPorukeNaloga(request.getMT102().getZaglavljeMT102().getIdPoruke());
+			MT102 mt102 = request.getMT102();
+			for (PojedinacnoPlacanjeMT102 pojedinacniNalog : mt102.getPojedinacnoPlacanjeMT102()) {
+				Nalog nalog = getNalogIzPojedinanogPlacanja(pojedinacniNalog);
+				nalog.setObradjen(true);
+				nalogService.save(nalog);
+			}
+		} catch (Exception e) {
+			System.out.println("Nema MT910");
+		}
+
+		MT910 mtResponse = new MT910();
+		response.setMT910(mtResponse);
+		return response;
+	}
+
+	private Nalog getNalogIzPojedinanogPlacanja(PojedinacnoPlacanjeMT102 pojedinacno) {
+		Nalog nalog = new Nalog();
+		nalog.setDatumNaloga(pojedinacno.getDatumNaloga());
+		//nalog.setDatumValute(mt103.getDa`);
+		nalog.setDuznik(pojedinacno.getDuznik());
+		nalog.setHitno(false);
+		nalog.setIznos(pojedinacno.getIznos());
+		nalog.setModelOdobrenja(pojedinacno.getModelOdobrenja());
+		nalog.setModelZaduzenja(pojedinacno.getModelZaduzenja());
+		nalog.setOznakaValute(pojedinacno.getSifraValute());
+		nalog.setPozivNaBrojOdobrenja(pojedinacno.getPozivNaBrojOdobrenja());
+		nalog.setPozivNaBrojZaduzenja(pojedinacno.getPozivNaBrojZaduzenja());
+		nalog.setPrimalac(pojedinacno.getPrimalac());
+		nalog.setRacunDuznika(pojedinacno.getRacunDuznika());
+		nalog.setRacunPrimaoca(pojedinacno.getRacunPoverioca());
+		nalog.setSvrhaPlacanja(pojedinacno.getSvrhaPlacanja());
+		return nalog;
+	}
+	
+	private Nalog getNalogIzMT103(MT103 mt103) {
+		Nalog nalog = new Nalog();
+		nalog.setIdPoruke((UUID.randomUUID().toString()));
+		nalog.setDuznik(mt103.getDuznik());
+		nalog.setSvrhaPlacanja(mt103.getSvrhaPlacanja());
+		nalog.setPrimalac(mt103.getPrimalac());
+		nalog.setDatumNaloga(mt103.getDatumNaloga());
+		nalog.setDatumValute(mt103.getDatumValute());
+		nalog.setRacunDuznika(mt103.getRacunDuznika());
+		nalog.setModelZaduzenja(mt103.getModelZaduzenja());
+		nalog.setPozivNaBrojZaduzenja(mt103.getPozivNaBrojZaduzenja());
+		nalog.setRacunPrimaoca(mt103.getRacunPoverioca());
+		nalog.setModelOdobrenja(mt103.getModelOdobrenja());
+		nalog.setPozivNaBrojOdobrenja(mt103.getPozivNaBrojOdobrenja());
+		nalog.setIznos(mt103.getIznos());
+		nalog.setOznakaValute(mt103.getSifraValute());
+		nalog.setHitno(true);
+		return nalog;
+	}
 
 	int velicinaStranice = 4;
-	
+
 	@PayloadRoot(namespace = NAMESPACE_URI3, localPart = "getZahtevZaDobijanjeIzvodaRequest")
 	@ResponsePayload
-	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
+	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(
+			@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
 		GetPresekResponse response = new GetPresekResponse();
 		Presek presek = new Presek();
 
@@ -312,50 +347,65 @@ public class BankEndpoint {
 		String brRacuna = request.getZahtevZaDobijanjeIzvoda().getBrojRacuna();
 		int stranica = request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka().intValue();
 		Banka banka = getCurrentBank(brRacuna);
-		List<Nalog> nalozi = getNalogeZaBankuDanIRacun(banka,datum,brRacuna);
-		List<Nalog> naloziRezultati = new ArrayList<Nalog>();
+		List<Nalog> nalozi = getNalogeZaBankuDanIRacun(banka, datum, brRacuna);
+		List<Nalog> stranicaNaloga = null;
 		
-	
-		List<Nalog> stranicaNaloga = nalozi.subList(stranica-1, stranica+velicinaStranice-1);
-		for (Nalog nalog : stranicaNaloga) {
-			presek.getStavkaPreseka().add(setStavkaNalogaIzNaloga(nalog));
+		//ako nema za tu stranicu
+		if(nalozi.size() < stranica * velicinaStranice) {
+			stranicaNaloga = nalozi;
+		}
+		else {
+			stranicaNaloga = nalozi.subList(stranica - 1, stranica + velicinaStranice - 1);
 		}
 		
+		for (Nalog nalog : stranicaNaloga) {
+			StavkaPreseka stavka = setStavkaNalogaIzNaloga(nalog);
+			presek.getStavkaPreseka().add(stavka);
+		}
+		response.setPresek(presek);
+
 		return response;
 	}
-	
+
 	private StavkaPreseka setStavkaNalogaIzNaloga(Nalog nalog) {
 		StavkaPreseka stavka = new StavkaPreseka();
-		
-		
+		stavka.setPozivNaBrojOdobrenja(nalog.getPozivNaBrojOdobrenja());
+		stavka.setPozivNaBrojZaduzenja(nalog.getPozivNaBrojZaduzenja());
+		stavka.setPrimalac(nalog.getPrimalac());
+		stavka.setRacunDuznika(nalog.getRacunDuznika());
+		stavka.setRacunPrimaoca(nalog.getRacunPrimaoca());
+		//stavka.setSmer(nalog.getSmer());
+		stavka.setSvrhaPlacanja(nalog.getSvrhaPlacanja());
+		stavka.setModelOdobrenja(nalog.getModelOdobrenja());
+		stavka.setModelZaduzenja(nalog.getModelZaduzenja());
+		stavka.setPozivNaBrojOdobrenja(nalog.getPozivNaBrojOdobrenja());
+		stavka.setPozivNaBrojZaduzenja(nalog.getPozivNaBrojZaduzenja());
+		stavka.setIznos(nalog.getIznos());
+		stavka.setDuznik(nalog.getDuznik());
+		stavka.setDatumValute(nalog.getDatumValute());
+		stavka.setDatumNaloga(nalog.getDatumNaloga());
 		return stavka;
 	}
-	
+
 	private Banka getCurrentBank(String brRacuna) {
 		List<Banka> banke = bankaService.findAll();
 		for (Banka banka : banke) {
-			for(Racun racun : banka.getRacuni()) {
-				if(racun.getBrojRacuna().equals(brRacuna))
-					return banka;
-			}
+			if(brRacuna.contains(banka.getKodBanke()))
+				return banka;
 		}
 		return null;
 	}
-	
-	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka,XMLGregorianCalendar datum,String brRacuna) {
+
+	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka, XMLGregorianCalendar datum, String brRacuna) {
 		List<Nalog> nalozi = new ArrayList<Nalog>();
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-//			if(nalogUBazi.isObradjen())
-				if(nalogUBazi.getRacunDuznika().equals(brRacuna) ||nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
+			if (nalogUBazi.isObradjen())
+				if (nalogUBazi.getRacunDuznika().equals(brRacuna) || nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
 					nalozi.add(nalogUBazi);
 				}
-			/* if(nalogUBazi.getRacunDuznika().substring(0,3).equals(banka.getKodBanke())) {
-				
-			}*/
 		}
-		
-		
+
 		return nalozi;
 	}
 

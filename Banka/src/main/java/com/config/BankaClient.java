@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import com.mt102.GetMT102Request;
-import com.mt102.GetMT102Response;
 import com.mt102.MT102;
 import com.mt103.GetMT103Request;
 import com.mt103.MT103;

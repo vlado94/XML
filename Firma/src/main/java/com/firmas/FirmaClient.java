@@ -54,8 +54,7 @@ public class FirmaClient {
 		System.out.println("aaa");
 	}
 	
-	public void sendNalogTemp(Nalog nalog2) { //ISPRAVNA 
-		
+	public void sendNalogTemp(Nalog nalog2) { //ISPRAVNA 		
 		
 		GetNalogRequest nalogRequest =  new GetNalogRequest();
 		//Nalog nalog = nalogService.findOne(1l);

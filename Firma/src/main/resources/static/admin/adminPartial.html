@@ -21,4 +21,25 @@
 
 <button  ng-click = "findPreseke()">Presek</button>
 
+<table class="table table-bordered" border="1">
+	<tbody>
+		<tr>
+			<th>Duznik</th>
+			<th>Racun duznika</th>
+			<th>Primalac</th>
+			<th>Racun primaoca</th>
+			<th>Iznos</th>
+			<th>Valuta</th>
+		</tr>
+		<tr ng-repeat="nalog in nalozi">
+			<td>{{nalog.duznika}}</td>
+			<td>{{nalog.racun_duznika}}</td>
+			<td>{{nalog.primalac}}</td>
+			<td>{{nalog.racun_primaoca}}</td>
+			<td>{{nalog.iznos}}</td>
+			<td>{{nalog.oznaka_valute}}</td>
+		</tr>
+	</tbody>
+</table>
+	
 <div ui-view></div>

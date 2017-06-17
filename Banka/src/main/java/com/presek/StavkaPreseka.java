@@ -10,12 +10,17 @@ package com.presek;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.nalog.Adapter1;
 
 
 /**
@@ -74,11 +79,13 @@ public class StavkaPreseka {
     @XmlElement(required = true)
     protected String primalac;
     @XmlElement(required = true)
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumNaloga;
+    protected Date datumNaloga;
     @XmlElement(required = true)
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumValute;
+    protected Date datumValute;
     @XmlElement(required = true)
     protected String racunDuznika;
     @XmlElement(required = true)
@@ -176,7 +183,7 @@ public class StavkaPreseka {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumNaloga() {
+    public Date getDatumNaloga() {
         return datumNaloga;
     }
 
@@ -188,7 +195,7 @@ public class StavkaPreseka {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumNaloga(XMLGregorianCalendar value) {
+    public void setDatumNaloga(Date value) {
         this.datumNaloga = value;
     }
 
@@ -200,7 +207,7 @@ public class StavkaPreseka {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumValute() {
+    public Date getDatumValute() {
         return datumValute;
     }
 
@@ -212,7 +219,7 @@ public class StavkaPreseka {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumValute(XMLGregorianCalendar value) {
+    public void setDatumValute(Date value) {
         this.datumValute = value;
     }
 

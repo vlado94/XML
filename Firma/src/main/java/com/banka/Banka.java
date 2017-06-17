@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -41,9 +42,10 @@ public class Banka {
 
 	@Column
 	private String uri;
-	
-	@Column//(length = 18)
-	private String obracunskiRacun;
+
+	@ManyToOne
+	@JoinColumn(name = "OBRACUNSKI_ID")
+	private Racun obracunskiRacun;
 	
 	@OneToMany
 	@JoinTable(name = "BANKA_RACUNI", joinColumns = @JoinColumn(name = "BANKA_ID"), inverseJoinColumns = @JoinColumn(name = "RACUN_ID"))

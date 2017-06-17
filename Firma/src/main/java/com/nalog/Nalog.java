@@ -121,7 +121,11 @@ public class Nalog {
     protected BigDecimal iznos;
     @XmlElement(required = true)
     protected String oznakaValute;
+    @XmlElement
     protected boolean hitno;
+
+	@XmlTransient
+    protected boolean obradjen;
 
     /**
      * Gets the value of the idPoruke property.

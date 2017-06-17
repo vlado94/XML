@@ -2,8 +2,6 @@ package com.mt910;
 
 import java.util.List;
 
-import com.mt102.MT102;
-
 public interface MT910Service {
 
 

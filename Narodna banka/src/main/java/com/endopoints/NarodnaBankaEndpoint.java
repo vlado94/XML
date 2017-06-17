@@ -63,13 +63,9 @@ public class NarodnaBankaEndpoint {
 		mt910.setIznos(request.getMT102().getZaglavljeMT102().getUkupanIznos());
 		mt910.setSifraValute(request.getMT102().getZaglavljeMT102().getSifraValute());
 	
-		//narodnaBankaClient.send910(mt910, request.getMT102());
-		
-		
-		
+		narodnaBankaClient.send910(mt910,null, request.getMT102());
 		return response;
 	}
-	
 	
 	@PayloadRoot(namespace = NAMESPACE_URI2, localPart = "getMT103Request")
 	@ResponsePayload
@@ -98,7 +94,7 @@ public class NarodnaBankaEndpoint {
 		mt910.setIznos(request.getMT103().getIznos());
 		mt910.setSifraValute(request.getMT103().getSifraValute());
 	
-		narodnaBankaClient.send910(mt910, request.getMT103());
+		narodnaBankaClient.send910(mt910, request.getMT103(),null);
 		
 		return response;
 	}

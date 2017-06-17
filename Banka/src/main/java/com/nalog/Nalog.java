@@ -111,24 +111,36 @@ public class Nalog {
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected Date datumValute;
+    
     @XmlElement(required = true)
     protected String racunDuznika;
+    
     @XmlElement(required = true)
     protected BigInteger modelZaduzenja;
+    
     @XmlElement(required = true)
     protected String pozivNaBrojZaduzenja;
+    
     @XmlElement(required = true)
     protected String racunPrimaoca;
+    
     @XmlElement(required = true)
     protected BigInteger modelOdobrenja;
+    
     @XmlElement(required = true)
     protected String pozivNaBrojOdobrenja;
+    
     @XmlElement(required = true)
     protected BigDecimal iznos;
+    
     @XmlElement(required = true)
     protected String oznakaValute;
-
+    
+    @XmlElement
     protected boolean hitno;
+    
+	@XmlTransient
+    protected boolean obradjen;
 
     /**
      * Gets the value of the idPoruke property.
@@ -480,6 +492,14 @@ public class Nalog {
      */
     public void setHitno(boolean value) {
         this.hitno = value;
+    }
+    
+    public boolean isObradjen() {
+        return obradjen;
+    }
+    
+    public void setObradjen(boolean value) {
+        this.obradjen = value;
     }
 
 }
