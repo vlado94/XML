@@ -2,6 +2,7 @@ package com.endopoints;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -343,7 +344,7 @@ public class BankEndpoint {
 		GetPresekResponse response = new GetPresekResponse();
 		Presek presek = new Presek();
 
-		XMLGregorianCalendar datum = request.getZahtevZaDobijanjeIzvoda().getDatum();
+		Date datum = request.getZahtevZaDobijanjeIzvoda().getDatum();
 		String brRacuna = request.getZahtevZaDobijanjeIzvoda().getBrojRacuna();
 		int stranica = request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka().intValue();
 		Banka banka = getCurrentBank(brRacuna);
@@ -351,15 +352,17 @@ public class BankEndpoint {
 		List<Nalog> stranicaNaloga = null;
 		
 		//ako nema za tu stranicu
-		if(nalozi.size() < stranica * velicinaStranice) {
-			stranicaNaloga = nalozi;
-		}
-		else {
-			stranicaNaloga = nalozi.subList(stranica - 1, stranica + velicinaStranice - 1);
-		}
+		int start = velicinaStranice*(stranica-1);
 		
-		for (Nalog nalog : stranicaNaloga) {
-			StavkaPreseka stavka = setStavkaNalogaIzNaloga(nalog);
+		if(nalozi.size() < start)
+			stranicaNaloga = new ArrayList<>();
+		else if(nalozi.size() < start+4)
+			stranicaNaloga = nalozi.subList(start, nalozi.size());
+		else 
+			stranicaNaloga = nalozi.subList(start, start+velicinaStranice);
+		
+		for(int i =0;i<stranicaNaloga.size();i++) {
+			StavkaPreseka stavka = setStavkaNalogaIzNaloga(stranicaNaloga.get(i));
 			presek.getStavkaPreseka().add(stavka);
 		}
 		response.setPresek(presek);
@@ -396,11 +399,11 @@ public class BankEndpoint {
 		return null;
 	}
 
-	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka, XMLGregorianCalendar datum, String brRacuna) {
+	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka, Date datum, String brRacuna) {
 		List<Nalog> nalozi = new ArrayList<Nalog>();
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if (nalogUBazi.isObradjen())
+			if (nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
 				if (nalogUBazi.getRacunDuznika().equals(brRacuna) || nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
 					nalozi.add(nalogUBazi);
 				}

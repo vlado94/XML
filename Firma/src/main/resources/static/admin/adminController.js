@@ -19,12 +19,12 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		checkRights();
 		
 		$scope.findPreseke = function() {
+			trenutniPresek = 1;
 			zahtev = {};
 			zahtev.datum = $("#startDatum").val();
 			zahtev.redniBrojPreseka =  trenutniPresek;
 			adminService.findPreseke(zahtev).then(
 				function (response) {
-					trenutniPresek += 1;
 					$scope.nalozi = response.data.stavkaPreseka;
 				}, 
 				function (response){
@@ -33,6 +33,25 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			);
 		}
 		
+		$scope.findPresekeNext = function() {
+			trenutniPresek += 1;
+			zahtev = {};
+			zahtev.datum = $("#startDatum").val();
+			zahtev.redniBrojPreseka =  trenutniPresek;
+			adminService.findPreseke(zahtev).then(
+				function (response) {
+					if(response.data.stavkaPreseka.length == 0){
+						trenutniPresek -= 1;
+						$scope.nalozi = {};
+						return;
+					}					
+					$scope.nalozi = response.data.stavkaPreseka;
+				}, 
+				function (response){
+					alert("Greska");
+				}
+			);
+		}
 		$scope.saveZaglavljeFakture= function () {
 			adminService.saveZaglavljeFakture($scope.zaglavljeFakture).then(
 				function(response){
