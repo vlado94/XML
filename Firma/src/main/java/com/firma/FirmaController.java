@@ -24,8 +24,7 @@ import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 @RestController
 @RequestMapping("/firma")
 public class FirmaController {
-
-	int pageSize = 4;
+	
 	@Autowired
 	private FirmaService firmaService;
 
