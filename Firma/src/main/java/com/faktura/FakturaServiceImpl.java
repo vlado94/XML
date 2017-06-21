@@ -67,5 +67,11 @@ public class FakturaServiceImpl implements FakturaService {
 		fakturaRepository.delete(id);
 	}
 
+	@Override
+	public List<Faktura> findByZaglavljeFakture_PibDobavljaca(String pibDobavljaca) {
+		// TODO Auto-generated method stub
+		return fakturaRepository.findByZaglavljeFakture_PibDobavljaca(pibDobavljaca);
+	}
+
 
 }

@@ -76,10 +76,9 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 						$scope.sacuvanoZaglavlje=null;
 						$scope.stavkaFakture=null;
 						$state.go("admin.home", {});
-						alert(response.data)
 						adminService.sendFaktura(response.data).then(
 								function(response){
-									alert("Poslata je faktura! "+response.data)
+									alert("Poslata je faktura! ")
 								}, function (response){
 									alert("Greska");
 								}
@@ -96,6 +95,26 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			adminService.findAllUlazneFakture().then(
 				function(response){
 					$scope.allUlazneFakture = response.data;
+				}, function (response){
+					alert("Greska!");
+				}
+			);	
+		}
+		
+		$scope.findAllIzlazneFakture = function () {   
+			adminService.findAllIzlazneFakture().then(
+				function(response){
+					$scope.allIzlazneFakture = response.data;
+				}, function (response){
+					alert("Greska!");
+				}
+			);	
+		}
+		
+		$scope.findAllNaloge = function () {   
+			adminService.findAllNaloge().then(
+				function(response){
+					$scope.allNalozi = response.data;
 				}, function (response){
 					alert("Greska!");
 				}
@@ -145,13 +164,30 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 				window.location.href = "/faktura/fakturaHTML";
             },
 			function(response){
-				alert("Greska kod createPDF");
+				alert("Greska kod createHTML");
+			})
+		}	
+	    $scope.createPDFNalog = function (nalog) {
+	    	adminService.createPDFNalog(nalog).then(function(response){
+				window.location.href = "/nalog/nalogPDF";
+            },
+			function(response){
+				alert("Greska kod createPDFNalog");
 			})
 		}	
 	    
+	    $scope.createHTMLNalog = function (nalog) {
+	    	adminService.createHTMLNalog(nalog).then(function(response){
+				alert("Uspjelo jeee")
+				window.location.href = "/nalog/nalogHTML";
+            },
+			function(response){
+				alert("Greska kod createHTMLNalog");
+			})
+		}
 	    $scope.sendNalog = function (faktura) {
 			adminService.sendNalog(faktura).then(function(response){
-				alert("Kreiran nalog za slanje banci!");
+				alert("Nalog za placanje je poslan banci!");
             },
 			function(response){
 				alert("Greska kod sendNalog");

@@ -88,7 +88,6 @@ public class FakturaController {
 			
 		}else{
 			BigInteger redniBroj = BigInteger.valueOf(postojecaFaktura.getStavkaFakture().size()+1);
-			System.out.println("redniBroj = "+redniBroj);
 			stavkaFakture.setRedniBroj(redniBroj);
 			postojecaFaktura.getStavkaFakture().add(stavkaFakture);
 			savedFaktura= fakturaService.save(postojecaFaktura);
@@ -103,7 +102,17 @@ public class FakturaController {
 	public List<Faktura> findAllUlazneFakture() {
 		Firma firma = ((Firmas) httpSession.getAttribute("user")).getFirma();		
 		List<Faktura> ulazneFakture = fakturaService.findByZaglavljeFakture_PibKupca(firma.getPIB());
-		
+		if(ulazneFakture  == null){
+			return new ArrayList<Faktura>();
+		}
+		return ulazneFakture;
+	}
+	
+	@GetMapping(path = "/findAllIzlazneFakture")
+	@ResponseStatus(HttpStatus.CREATED)
+	public List<Faktura> findAllIzlazneFakture() {
+		Firma firma = ((Firmas) httpSession.getAttribute("user")).getFirma();		
+		List<Faktura> ulazneFakture = fakturaService.findByZaglavljeFakture_PibDobavljaca(firma.getPIB());
 		if(ulazneFakture  == null){
 			return new ArrayList<Faktura>();
 		}
@@ -117,7 +126,6 @@ public class FakturaController {
 		System.out.println("sendFaktura dobavljac"+faktura.getZaglavljeFakture().getNazivDobavljaca());
 		System.out.println(faktura.getId());
 		Firma kupac = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
-		fakturaService.delete(faktura.getId());
 		Faktura result = sendFaktura(faktura,kupac);
 		return result;
 	}

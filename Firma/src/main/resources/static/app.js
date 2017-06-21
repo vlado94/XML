@@ -53,4 +53,12 @@ angular.module('routerApp', ['ui.router',
         	url : '/sveUlazneFakture',
           	templateUrl : 'admin/faktura/sveUlazneFakture.html'
         })
+        .state('admin.sveIzlazneFakture', {
+        	url : '/sveIzlazneFakture',
+          	templateUrl : 'admin/faktura/sveIzlazneFakture.html'
+        })
+        .state('admin.sviNalozi', {
+        	url : '/sveNalozi',
+          	templateUrl : 'admin/nalog/sviNalozi.html'
+        })
 });

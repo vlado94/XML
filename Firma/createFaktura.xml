@@ -8,40 +8,28 @@
         <nazivKupca>FIRMA_B</nazivKupca>
         <adresaKupca>Dositejeva 12</adresaKupca>
         <PIBKupca>22222222222</PIBKupca>
-        <brojRacuna>123456</brojRacuna>
-        <datumRacuna>2017-06-20</datumRacuna>
-        <vrednostRobe>132</vrednostRobe>
-        <vrednostUsluga>132</vrednostUsluga>
+        <brojRacuna>12321231</brojRacuna>
+        <datumRacuna>2017-06-22</datumRacuna>
+        <vrednostRobe>123</vrednostRobe>
+        <vrednostUsluga>213</vrednostUsluga>
         <ukupnoRobaIUsluge>123</ukupnoRobaIUsluge>
-        <ukupanRabat>213</ukupanRabat>
+        <ukupanRabat>123</ukupanRabat>
         <ukupanPorez>132</ukupanPorez>
-        <oznakaValute>sdsd</oznakaValute>
+        <oznakaValute>sda</oznakaValute>
         <iznosZaUplatu>123</iznosZaUplatu>
         <uplataNaRacun>AAA456789123456789</uplataNaRacun>
-        <datumValute>2017-06-20</datumValute>
+        <datumValute>2017-06-22</datumValute>
     </zaglavljeFakture>
     <stavkaFakture>
         <redniBroj>1</redniBroj>
-        <nazivRobeIliUsluge>dsa</nazivRobeIliUsluge>
-        <kolicina>3132</kolicina>
-        <jedinicaMere>132</jedinicaMere>
-        <jedinicnaCena>123</jedinicnaCena>
-        <vrednost>132</vrednost>
-        <procenatRabata>231</procenatRabata>
-        <iznosRabata>132</iznosRabata>
-        <umanjenoZaRabat>132</umanjenoZaRabat>
-        <ukupanPorez>132</ukupanPorez>
-    </stavkaFakture>
-    <stavkaFakture>
-        <redniBroj>2</redniBroj>
-        <nazivRobeIliUsluge>asds</nazivRobeIliUsluge>
-        <kolicina>3321</kolicina>
+        <nazivRobeIliUsluge>weq</nazivRobeIliUsluge>
+        <kolicina>123</kolicina>
         <jedinicaMere>312</jedinicaMere>
-        <jedinicnaCena>312</jedinicnaCena>
-        <vrednost>132</vrednost>
-        <procenatRabata>213</procenatRabata>
-        <iznosRabata>231</iznosRabata>
-        <umanjenoZaRabat>123</umanjenoZaRabat>
-        <ukupanPorez>312</ukupanPorez>
+        <jedinicnaCena>321</jedinicnaCena>
+        <vrednost>231</vrednost>
+        <procenatRabata>312</procenatRabata>
+        <iznosRabata>32</iznosRabata>
+        <umanjenoZaRabat>213</umanjenoZaRabat>
+        <ukupanPorez>321</ukupanPorez>
     </stavkaFakture>
 </faktura>

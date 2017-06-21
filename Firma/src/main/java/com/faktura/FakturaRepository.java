@@ -9,4 +9,7 @@ public interface FakturaRepository extends PagingAndSortingRepository<Faktura, L
 	Faktura findByZaglavljeFakture_Id(Long id); 
 	
 	List<Faktura> findByZaglavljeFakture_PibKupca(String pibKupca);
+	
+	List<Faktura> findByZaglavljeFakture_PibDobavljaca(String pibDobavljaca);
+
 }
