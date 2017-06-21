@@ -112,13 +112,12 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			);	
 		}
 		
-		$scope.setSelected = function(code,naziv,adresa,pib,racun) {
+		$scope.setSelected = function(code,naziv,adresa,pib) {
 	        $scope.selected = code;
 	        markRow(code);
 	        $scope.zaglavljeFakture.nazivKupca = naziv;
 	        $scope.zaglavljeFakture.adresaKupca = adresa;
 	        $scope.zaglavljeFakture.pibKupca = pib;
-	        $scope.zaglavljeFakture.uplataNaRacun = racun;
 
 
 	    };	
@@ -157,6 +156,14 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			function(response){
 				alert("Greska kod sendNalog");
 			})
+		}
+	    
+	   $scope.findDobavljac = function () {
+	    	$scope.zaglavljeFakture.nazivDobavljaca=$scope.admin.firma.naziv;
+	    	$scope.zaglavljeFakture.adresaDobavljaca=$scope.admin.firma.adresa;
+	    	$scope.zaglavljeFakture.pibDobavljaca=$scope.admin.firma.PIB;
+	    	$scope.zaglavljeFakture.uplataNaRacun=$scope.admin.firma.racun.brojRacuna;
+
 		}
 	}
 	

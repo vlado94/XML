@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="faktura.xsl"?>
+<faktura>
+    <zaglavljeFakture>
+        <nazivDobavljaca>FIRMA_A</nazivDobavljaca>
+        <adresaDobavljaca>Sime Milosevica 8</adresaDobavljaca>
+        <PIBDobavljaca>11111111111</PIBDobavljaca>
+        <nazivKupca>FIRMA_B</nazivKupca>
+        <adresaKupca>Dositejeva 12</adresaKupca>
+        <PIBKupca>22222222222</PIBKupca>
+        <brojRacuna>123456</brojRacuna>
+        <datumRacuna>2017-06-20</datumRacuna>
+        <vrednostRobe>132</vrednostRobe>
+        <vrednostUsluga>132</vrednostUsluga>
+        <ukupnoRobaIUsluge>123</ukupnoRobaIUsluge>
+        <ukupanRabat>213</ukupanRabat>
+        <ukupanPorez>132</ukupanPorez>
+        <oznakaValute>sdsd</oznakaValute>
+        <iznosZaUplatu>123</iznosZaUplatu>
+        <uplataNaRacun>AAA456789123456789</uplataNaRacun>
+        <datumValute>2017-06-20</datumValute>
+    </zaglavljeFakture>
+    <stavkaFakture>
+        <redniBroj>1</redniBroj>
+        <nazivRobeIliUsluge>dsa</nazivRobeIliUsluge>
+        <kolicina>3132</kolicina>
+        <jedinicaMere>132</jedinicaMere>
+        <jedinicnaCena>123</jedinicnaCena>
+        <vrednost>132</vrednost>
+        <procenatRabata>231</procenatRabata>
+        <iznosRabata>132</iznosRabata>
+        <umanjenoZaRabat>132</umanjenoZaRabat>
+        <ukupanPorez>132</ukupanPorez>
+    </stavkaFakture>
+    <stavkaFakture>
+        <redniBroj>2</redniBroj>
+        <nazivRobeIliUsluge>asds</nazivRobeIliUsluge>
+        <kolicina>3321</kolicina>
+        <jedinicaMere>312</jedinicaMere>
+        <jedinicnaCena>312</jedinicnaCena>
+        <vrednost>132</vrednost>
+        <procenatRabata>213</procenatRabata>
+        <iznosRabata>231</iznosRabata>
+        <umanjenoZaRabat>123</umanjenoZaRabat>
+        <ukupanPorez>312</ukupanPorez>
+    </stavkaFakture>
+</faktura>

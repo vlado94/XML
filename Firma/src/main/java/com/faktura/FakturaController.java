@@ -140,7 +140,7 @@ public class FakturaController {
 		File file = createFakturaXML(faktura);	
 		final String INPUT_FILE = file.getPath();
 		System.out.println(INPUT_FILE);
-		final String XSL_FILE = "faktura.xsl";
+		final String XSL_FILE = "gen/itext/faktura.xsl";
 		final String HTML_FILE = "gen/itext/faktura.html";
 		final String OUTPUT_FILE = "gen/itext/faktura.pdf";
     	// Creates parent directory if necessary
@@ -210,7 +210,7 @@ public class FakturaController {
 		File file = createFakturaXML(faktura);
 		final String INPUT_FILE = file.getPath();
 		System.out.println(INPUT_FILE);
-		final String XSL_FILE = "faktura.xsl";
+		final String XSL_FILE = "gen/itext/faktura.xsl";
 		final String HTML_FILE = "gen/itext/faktura.html";
 		final String OUTPUT_FILE = "gen/itext/faktura.pdf";
     	// Creates parent directory if necessary

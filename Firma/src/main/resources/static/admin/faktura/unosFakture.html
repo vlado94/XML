@@ -1,14 +1,15 @@
 <div class ="whole-bill-form"/>
+
 <form name = "createNewIndividual">
 
 	<label>Naziv dobavljaca</label>
-	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.nazivDobavljaca" ></input>
+	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.nazivDobavljaca" ng-init="$parent.zaglavljeFakture.nazivDobavljaca=admin.firma.naziv" ></input>
 	
 	<label>Adresa dobavljaca</label>
-	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.adresaDobavljaca" ></input>
+	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.adresaDobavljaca" ng-init="$parent.zaglavljeFakture.adresaDobavljaca=admin.firma.adresa"></input>
 	
 	<label>PIB dobavljaca</label>
-	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.pibDobavljaca" ></input>
+	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.pibDobavljaca" ng-init="$parent.zaglavljeFakture.pibDobavljaca=admin.firma.pib"></input>
 	
 	<label>Naziv kupca</label>
 	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.nazivKupca" ></input>
@@ -21,7 +22,7 @@
 	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.pibKupca" ></input>
 	
 	<label>Broj racuna</label>
-	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.brojRacuna" ></input>
+	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.brojRacuna"></input>
 	
 	<label>Datum racuna</label>
 	<input type = "date" class = "form-control" ng-model = "$parent.zaglavljeFakture.datumRacuna" ></input>
@@ -48,7 +49,7 @@
 	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.iznosZaUplatu" ></input>
 	
 	<label>Uplata na racun</label>
-	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.uplataNaRacun" ></input>
+	<input type = "text" class = "form-control" ng-model = "$parent.zaglavljeFakture.uplataNaRacun"  ng-init="$parent.zaglavljeFakture.uplataNaRacun=admin.firma.racun.brojRacuna"></input>
 	
 	<label>Datum valute</label>
 	<input type = "date" class = "form-control" ng-model = "$parent.zaglavljeFakture.datumValute" ></input>
@@ -74,11 +75,10 @@
 				<th>PIB</th>
 				<th>Broj racuna</th>
 			</tr>
-			<tr ng-repeat="ps in allPoslovniSaradnici" id="{{ps.id}}" ng-click="setSelected(ps.id,ps.naziv,ps.adresa,ps.pib,ps.brojRacuna);">
+			<tr ng-repeat="ps in allPoslovniSaradnici" id="{{ps.id}}" ng-click="setSelected(ps.id,ps.naziv,ps.adresa,ps.pib);">
 				<td>{{ps.naziv}}</td>
 				<td>{{ps.adresa}}</td>
 				<td>{{ps.pib}}</td>
-				<td>{{ps.brojRacuna}}</td>
 				</tr>
 		</tbody>
 		</table>
