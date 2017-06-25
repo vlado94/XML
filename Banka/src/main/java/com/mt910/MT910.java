@@ -40,7 +40,7 @@ import com.nalog.Adapter1;
  *       &lt;sequence>
  *         &lt;element name="idPoruke" type="{http://mt910.com}Str50"/>
  *         &lt;element name="swiftKodBankePoverioca" type="{http://mt910.com}Str8"/>
- *         &lt;element name="obracunskiRacunBankePoverioca" type="{http://mt910.com}Str20"/>
+ *         &lt;element name="obracunskiRacunBankePoverioca" type="{http://mt910.com}Str18"/>
  *         &lt;element name="idPorukeNaloga" type="{http://mt910.com}Str50"/>
  *         &lt;element name="datumValute" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="iznos" type="{http://mt910.com}Decimal15-2"/>

@@ -70,6 +70,10 @@ public class NarodnaBankaEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI2, localPart = "getMT103Request")
 	@ResponsePayload
 	public GetMT900Response getMT103(@RequestPayload GetMT103Request request) {
+		if(!ValidacijaSema.validirajSemu(request, "mt103")) {
+			System.out.println("Nevalidan dokument");
+			return null;
+		}
 		GetMT900Response response = new GetMT900Response();
 		
 		MT103Service.save(request.getMT103());
@@ -94,8 +98,15 @@ public class NarodnaBankaEndpoint {
 		mt910.setIznos(request.getMT103().getIznos());
 		mt910.setSifraValute(request.getMT103().getSifraValute());
 	
-		narodnaBankaClient.send910(mt910, request.getMT103(),null);
+		if(!narodnaBankaClient.send910(mt910, request.getMT103(),null)) {
+			return null;
+		}
 		
+		
+		if(!ValidacijaSema.validirajSemu(response, "mt900")) {
+			System.out.println("Nevalidan dokument");
+			return null;
+		}
 		return response;
 	}
 }

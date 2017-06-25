@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.firma.Firma;
+import com.firma.FirmaClient;
 import com.firma.FirmaService;
-import com.firmas.FirmaClient;
 import com.firmas.Firmas;
 import com.itextpdf.text.DocumentException;
 import com.pdfTransformer.PDFTransformer;

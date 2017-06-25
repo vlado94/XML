@@ -42,8 +42,8 @@
 
 		<xs:sequence>
 			<xs:element name="idPoruke" type="nzp:Str50" />
-			<xs:element name="swiftKodBankeDuznika" type="nzp:Str8" />
-			<xs:element name="obracunskiRacunBankeDuznika" type="nzp:Str20" />
+			<xs:element name="swiftKodBankePoverioca" type="nzp:Str8" />
+			<xs:element name="obracunskiRacunBankePoverioca" type="nzp:Str18" />
 			<xs:element name="idPorukeNaloga" type="nzp:Str50" />
 			<xs:element name="datumValute" type="xs:date" />
 			<xs:element name="iznos" type="nzp:Decimal15-2" />
@@ -66,13 +66,6 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1" />
 			<xs:maxLength value="50" />
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="Str20">
-		<xs:restriction base="xs:string">
-			<xs:minLength value="20" />
-			<xs:maxLength value="20" />
 		</xs:restriction>
 	</xs:simpleType>
 

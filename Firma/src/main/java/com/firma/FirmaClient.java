@@ -1,4 +1,4 @@
-package com.firmas;
+package com.firma;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import com.banka.Banka;
 import com.banka.BankaService;
 import com.faktura.Faktura;
-import com.firma.Firma;
-import com.firma.FirmaService;
+import com.firmas.Firmas;
+import com.itextpdf.text.log.SysoCounter;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
@@ -49,9 +49,13 @@ public class FirmaClient {
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");
 		String uri = firmas.getFirma().getUri();
 		webServiceTemplate.setDefaultUri(uri);
-		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 		
-		System.out.println("aaa");
+		if(!ValidacijaSema.validirajSemu(nalogRequest, "nalog")) {
+			System.out.println("Nevalidan dokument");
+		}
+		else {
+			GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
+		}
 	}
 	
 	public void sendNalogTemp(Nalog nalog2) { //ISPRAVNA 		
@@ -88,8 +92,12 @@ public class FirmaClient {
 		String uri = banka.getUri()+ "/ws";
 		
 		webServiceTemplate.setDefaultUri(uri);
- 		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
-	
+		if(!ValidacijaSema.validirajSemu(nalogRequest, "nalog")) {
+			System.out.println("Nevalidan dokument");
+		}
+		else {
+			GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
+		}
 	}
 	
 	public GetPresekResponse findPreseke(ZahtevZaDobijanjeIzvoda zahtev) {

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.firmas.FirmaClient;
 import com.firmas.FirmasService;
 import com.presek.GetPresekResponse;
 import com.presek.Presek;
@@ -56,7 +55,12 @@ public class FirmaController {
 	@ResponseStatus(HttpStatus.OK)
 	public Presek findPreseke(@RequestBody ZahtevZaDobijanjeIzvoda zahtev) {
 		GetPresekResponse response = firmaClient.findPreseke(zahtev);
-		return response.getPresek();
+		if(response != null) {
+			return response.getPresek();
+		}
+		else {
+			return null;
+		}
 	}
 	
 	

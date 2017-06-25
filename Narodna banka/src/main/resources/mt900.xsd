@@ -24,7 +24,7 @@ elementFormDefault="qualified" targetNamespace="http://mt900.com"
             <xs:sequence>
                 <xs:element name="idPoruke" type="nzp:Str50"/>
                 <xs:element name="swiftKodBankeDuznika" type="nzp:Str8"/>
-                <xs:element name="obracunskiRacunBankeDuznika" type="nzp:Str20"/>
+                <xs:element name="obracunskiRacunBankeDuznika" type="nzp:Str18"/>
                 <xs:element name="idPorukeNaloga" type="nzp:Str50"/>
                 <xs:element name="datumValute" type="xs:date"/>
                 <xs:element name="iznos" type="nzp:Decimal15-2"/>
@@ -50,10 +50,10 @@ elementFormDefault="qualified" targetNamespace="http://mt900.com"
         </xs:restriction>
     </xs:simpleType>
     
-    <xs:simpleType name="Str20">
+    <xs:simpleType name="Str18">
         <xs:restriction base="xs:string">
-            <xs:minLength value="20"/>
-            <xs:maxLength value="20"/>
+            <xs:minLength value="18"/>
+            <xs:maxLength value="18"/>
         </xs:restriction>
     </xs:simpleType>
     

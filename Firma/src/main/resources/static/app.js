@@ -61,4 +61,8 @@ angular.module('routerApp', ['ui.router',
         	url : '/sveNalozi',
           	templateUrl : 'admin/nalog/sviNalozi.html'
         })
+        .state('admin.izvodi', {
+        	url : '/izvodi',
+          	templateUrl : 'admin/nalozi.html'
+        })
 });

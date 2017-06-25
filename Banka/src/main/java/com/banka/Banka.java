@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,7 +47,7 @@ public class Banka {
 	@JoinColumn(name = "OBRACUNSKI_ID")
 	private Racun obracunskiRacun;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "BANKA_RACUNI", joinColumns = @JoinColumn(name = "BANKA_ID"), inverseJoinColumns = @JoinColumn(name = "RACUN_ID"))
 	private List<Racun> racuni;
 

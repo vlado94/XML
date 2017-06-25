@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<getNalogRequest xmlns="http://nalog.com">
+    <nalog>
+        <idPoruke>idh111</idPoruke>
+        <duznik>firma 2</duznik>
+        <svrhaPlacanja>uplata</svrhaPlacanja>
+        <primalac>firma 1</primalac>
+        <datumNaloga>2017-06-02</datumNaloga>
+        <datumValute>2017-06-02</datumValute>
+        <racunDuznika>BBB222222222222222</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+        <racunPrimaoca>AAA456789123456789</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>85622222222222222222</pozivNaBrojOdobrenja>
+        <iznos>500.25</iznos>
+        <oznakaValute>rsd</oznakaValute>
+        <hitno>true</hitno>
+    </nalog>
+</getNalogRequest>

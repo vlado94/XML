@@ -39,10 +39,10 @@ import com.nalog.Adapter1;
  *         &lt;element name="datumNaloga" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="datumValute" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="racunDuznika" type="{http://presek.com}Str18"/>
- *         &lt;element name="modelZaduzenja" type="{http://presek.com}Number2"/>
+ *         &lt;element name="modelZaduzenja" type="{http://presek.com}Number2len"/>
  *         &lt;element name="pozivNaBrojZaduzenja" type="{http://presek.com}Str20"/>
  *         &lt;element name="racunPrimaoca" type="{http://presek.com}Str18"/>
- *         &lt;element name="modelOdobrenja" type="{http://presek.com}Number2"/>
+ *         &lt;element name="modelOdobrenja" type="{http://presek.com}Number2len"/>
  *         &lt;element name="pozivNaBrojOdobrenja" type="{http://presek.com}Str20"/>
  *         &lt;element name="iznos" type="{http://presek.com}Decimal15-2"/>
  *         &lt;element name="smer" type="{http://presek.com}Str1"/>

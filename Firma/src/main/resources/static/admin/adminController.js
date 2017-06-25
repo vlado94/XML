@@ -25,7 +25,14 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			zahtev.redniBrojPreseka =  trenutniPresek;
 			adminService.findPreseke(zahtev).then(
 				function (response) {
-					$scope.nalozi = response.data.stavkaPreseka;
+					if(response.data != null)
+					{					
+						$scope.nalozi = response.data.stavkaPreseka;
+					}
+					else {
+						alert("Greska pri validaciji seme!")
+					}
+					
 				}, 
 				function (response){
 					alert("Greska");

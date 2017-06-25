@@ -1,13 +1,12 @@
 package com.endopoints;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,9 +38,12 @@ import com.nalog.NalogService;
 import com.presek.GetPresekResponse;
 import com.presek.Presek;
 import com.presek.StavkaPreseka;
+import com.presek.ZaglavljePreseka;
 import com.racun.Racun;
 import com.racun.RacunService;
+import com.temp.NaloziZaglavlje;
 import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
+
 
 @Endpoint
 @Component
@@ -77,6 +79,10 @@ public class BankEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getNalogRequest")
 	@ResponsePayload
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
+		if(!ValidacijaSema.validirajSemu(request, "nalog")) {
+			System.out.println("Nevalidan dokument");
+			return null;
+		}
 		GetNalogResponse response = new GetNalogResponse();
 		Nalog primljenNalog = request.getNalog();
 		primljenNalog.setObradjen(false);
@@ -117,6 +123,8 @@ public class BankEndpoint {
 				racunService.save(racunDuznika);
 
 				MT900 mt900 = bankaClient.sendMT103(mt103);
+				if(mt900 == null)
+					return null;
 				primljenNalog.setObradjen(true);
 				primljenNalog = nalogService.save(primljenNalog);
 				MathContext mc = new MathContext(2);
@@ -162,7 +170,7 @@ public class BankEndpoint {
 						break;
 					}
 				}
-				System.out.println("HM");
+
 			}
 		}
 		// bankaClient.sendNalog();
@@ -232,6 +240,10 @@ public class BankEndpoint {
 	@ResponsePayload
 	public GetMT910Response getMT910Request(@RequestPayload GetMT910Request request) {
 		GetMT910Response response = new GetMT910Response();
+		if(request == null || !ValidacijaSema.validirajSemu(request, "mt910")) {
+			System.out.println("Nevalidan dokument ili nije poslat odgovor");
+			return null;
+		}
 		MT910 mt910 = request.getMT910();
 		// MT103 mt103 = request.getMT103();
 
@@ -247,7 +259,10 @@ public class BankEndpoint {
 	@ResponsePayload
 	public GetMT910Response getMT103Request(@RequestPayload GetMT103Request request) {
 		GetMT910Response response = new GetMT910Response();
-
+		if(request == null || !ValidacijaSema.validirajSemu(request, "mt103")) {
+			System.out.println("Nevalidan dokument ili nije poslat odgovor");
+			return null;
+		}
 		try {
 			MT910 mt910 = MT910Service.findByidPorukeNaloga(request.getMT103().getIdPoruke());
 
@@ -278,6 +293,11 @@ public class BankEndpoint {
 	@ResponsePayload
 	public GetMT910Response getMT102Request(@RequestPayload GetMT102Request request) {
 		GetMT910Response response = new GetMT910Response();
+		
+		if(!ValidacijaSema.validirajSemu(request, "mt102")) {
+			System.out.println("Nevalidan mt102 dokument");
+			return null;
+		}
 
 		try {
 			MT910 mt910 = MT910Service.findByidPorukeNaloga(request.getMT102().getZaglavljeMT102().getIdPoruke());
@@ -342,13 +362,19 @@ public class BankEndpoint {
 	public GetPresekResponse getZahtevZaDobijanjeIzvodaRequest(
 			@RequestPayload GetZahtevZaDobijanjeIzvodaRequest request) {
 		GetPresekResponse response = new GetPresekResponse();
-		Presek presek = new Presek();
-
+		Presek presek = new Presek();		
+		
 		Date datum = request.getZahtevZaDobijanjeIzvoda().getDatum();
 		String brRacuna = request.getZahtevZaDobijanjeIzvoda().getBrojRacuna();
 		int stranica = request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka().intValue();
 		Banka banka = getCurrentBank(brRacuna);
-		List<Nalog> nalozi = getNalogeZaBankuDanIRacun(banka, datum, brRacuna);
+
+		//to do zaglavlje staro stanje
+		NaloziZaglavlje nz = getNalogeZaBankuDanIRacun(banka, datum, brRacuna);
+		ZaglavljePreseka zaglavlje = nz.zaglavlje;
+		zaglavlje.setPrethodnoStanje(getStanjeRacunaZaDatum(datum, brRacuna));
+		zaglavlje.setNovoStanje(zaglavlje.getPrethodnoStanje().add(zaglavlje.getUkupnoUKorist()).subtract(zaglavlje.getUkupnoNaTeret()));
+		List<Nalog> nalozi = nz.lista;
 		List<Nalog> stranicaNaloga = null;
 		
 		//ako nema za tu stranicu
@@ -362,14 +388,23 @@ public class BankEndpoint {
 			stranicaNaloga = nalozi.subList(start, start+velicinaStranice);
 		
 		for(int i =0;i<stranicaNaloga.size();i++) {
+			//promeni !,izbaci iz fora ! i u 471 ista stvar
 			StavkaPreseka stavka = setStavkaNalogaIzNaloga(stranicaNaloga.get(i));
+			if(stranicaNaloga.get(i).getRacunDuznika().equals(brRacuna))
+				stavka.setSmer("I");
+			else
+				stavka.setSmer("U");
+
 			presek.getStavkaPreseka().add(stavka);
 		}
+		zaglavlje.setBrojPreseka(request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka());
+		presek.setZaglavljePreseka(zaglavlje);
 		response.setPresek(presek);
-
+		if(!ValidacijaSema.validirajSemu(response,"presek"))
+			return null;
 		return response;
 	}
-
+	
 	private StavkaPreseka setStavkaNalogaIzNaloga(Nalog nalog) {
 		StavkaPreseka stavka = new StavkaPreseka();
 		stavka.setPozivNaBrojOdobrenja(nalog.getPozivNaBrojOdobrenja());
@@ -377,7 +412,6 @@ public class BankEndpoint {
 		stavka.setPrimalac(nalog.getPrimalac());
 		stavka.setRacunDuznika(nalog.getRacunDuznika());
 		stavka.setRacunPrimaoca(nalog.getRacunPrimaoca());
-		//stavka.setSmer(nalog.getSmer());
 		stavka.setSvrhaPlacanja(nalog.getSvrhaPlacanja());
 		stavka.setModelOdobrenja(nalog.getModelOdobrenja());
 		stavka.setModelZaduzenja(nalog.getModelZaduzenja());
@@ -398,18 +432,53 @@ public class BankEndpoint {
 		}
 		return null;
 	}
-
-	private List<Nalog> getNalogeZaBankuDanIRacun(Banka banka, Date datum, String brRacuna) {
-		List<Nalog> nalozi = new ArrayList<Nalog>();
+	
+	private BigDecimal getStanjeRacunaZaDatum(Date datum, String brRacuna) {
+		List<Banka> banke = bankaService.findAll();
+		Racun racun = null;
+		for (Banka banka : banke) {
+			for(Racun racunDB : banka.getRacuni()) {
+				if(racunDB.getBrojRacuna().equals(brRacuna))
+					racun = racunDB;
+			}
+		}
+		BigDecimal trenutnoNaRacunu = racun.getTrenutnoStanje();
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if (nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
-				if (nalogUBazi.getRacunDuznika().equals(brRacuna) || nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
-					nalozi.add(nalogUBazi);
+			if(datum.before(nalogUBazi.getDatumNaloga()) && !nalogUBazi.isObradjen()) {
+				if (nalogUBazi.getRacunDuznika().equals(brRacuna)) 
+					trenutnoNaRacunu.subtract(nalogUBazi.getIznos());
+				else
+					trenutnoNaRacunu.add(nalogUBazi.getIznos());
+			}
+		}
+		
+		return trenutnoNaRacunu;
+	}
+
+	private NaloziZaglavlje getNalogeZaBankuDanIRacun(Banka banka, Date datum, String brRacuna) {
+		NaloziZaglavlje nz = new NaloziZaglavlje();
+		nz.zaglavlje.setBrojRacuna(brRacuna);
+		nz.zaglavlje.setDatumNaloga(datum);
+		List<Nalog> naloziUBazi = nalogService.findAll();
+		for (Nalog nalogUBazi : naloziUBazi) {
+			if (!nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
+				if (nalogUBazi.getRacunDuznika().equals(brRacuna)|| nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
+					if (nalogUBazi.getRacunDuznika().equals(brRacuna)) {
+						nz.zaglavlje.setBrojPromenaNaTeret(nz.zaglavlje.getBrojPromenaNaTeret().add(new BigInteger(String.valueOf(1))));
+						nz.zaglavlje.setUkupnoNaTeret(nz.zaglavlje.getUkupnoNaTeret().add(nalogUBazi.getIznos()));
+					}
+					else {
+						nz.zaglavlje.setBrojPromenaUKorist(nz.zaglavlje.getBrojPromenaUKorist().add(new BigInteger(String.valueOf(1))));
+						nz.zaglavlje.setUkupnoUKorist(nz.zaglavlje.getUkupnoUKorist().add(nalogUBazi.getIznos()));
+					
+					}					
+					
+					nz.lista.add(nalogUBazi);
 				}
 		}
-
-		return nalozi;
+		nz.zaglavlje.setNovoStanje(nz.zaglavlje.getUkupnoUKorist().subtract(nz.zaglavlje.getUkupnoNaTeret()));
+		return nz;
 	}
 
 }
