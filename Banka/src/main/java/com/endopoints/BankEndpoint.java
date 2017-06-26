@@ -80,7 +80,7 @@ public class BankEndpoint {
 	@ResponsePayload
 	public GetNalogResponse getNalog(@RequestPayload GetNalogRequest request) {
 		if(!ValidacijaSema.validirajSemu(request, "nalog")) {
-			System.out.println("Nevalidan dokument");
+			System.out.println("Nevalidan nalog");
 			return null;
 		}
 		GetNalogResponse response = new GetNalogResponse();

@@ -40,7 +40,7 @@ public class FirmaClient {
 	@Autowired
 	private FirmaService firmaService;
 
-	public void sendNalog(Faktura f) {
+/*	public void sendNalog(Faktura f) {
 		GetNalogRequest nalogRequest =  new GetNalogRequest();
 		Nalog nalog = new Nalog();
 		nalog.setSvrhaPlacanja("aaa");
@@ -56,7 +56,7 @@ public class FirmaClient {
 		else {
 			GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 		}
-	}
+	}*/
 	
 	public void sendNalogTemp(Nalog nalog2) { //ISPRAVNA 		
 		
@@ -76,11 +76,16 @@ public class FirmaClient {
 		}
 		
 		webServiceTemplate.setDefaultUri(uri);
+		
+		if(!ValidacijaSema.validirajSemu(nalogRequest, "nalog")) {
+			System.out.println("Nevalidan nalog");
+		}else{
 		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
+		}
 	}
 
 	
-	public void sendNalogProvjeraMT() {
+	/*public void sendNalogProvjeraMT() {
 
 		GetNalogRequest nalogRequest =  new GetNalogRequest();
 		Nalog nalog = nalogService.findOne(1l);
@@ -93,12 +98,12 @@ public class FirmaClient {
 		
 		webServiceTemplate.setDefaultUri(uri);
 		if(!ValidacijaSema.validirajSemu(nalogRequest, "nalog")) {
-			System.out.println("Nevalidan dokument");
+			System.out.println("Nevalidan nalog");
 		}
 		else {
 			GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 		}
-	}
+	}*/
 	
 	public GetPresekResponse findPreseke(ZahtevZaDobijanjeIzvoda zahtev) {
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");

@@ -123,8 +123,6 @@ public class FakturaController {
 	@PostMapping(path = "/sendFaktura")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Faktura save(@RequestBody Faktura faktura) {
-		System.out.println("sendFaktura dobavljac"+faktura.getZaglavljeFakture().getNazivDobavljaca());
-		System.out.println(faktura.getId());
 		Firma kupac = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
 		Faktura result = sendFaktura(faktura,kupac);
 		return result;
@@ -134,10 +132,9 @@ public class FakturaController {
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
 	    final String uri = kupac.getUri()+"/RESTApi/"+kupac.getNaziv();
-	    System.out.println("///sendFaktura");
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);
-	    System.out.println(result);
+	    
 	    return result;
 	}
 	
@@ -214,10 +211,10 @@ public class FakturaController {
 	@PostMapping(path = "/createPDF")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createPDF(@RequestBody Faktura faktura) throws IOException, DocumentException {
-		System.out.println("createPDF "+faktura.getZaglavljeFakture().getNazivKupca());
+		
 		File file = createFakturaXML(faktura);
 		final String INPUT_FILE = file.getPath();
-		System.out.println(INPUT_FILE);
+		
 		final String XSL_FILE = "gen/itext/faktura.xsl";
 		final String HTML_FILE = "gen/itext/faktura.html";
 		final String OUTPUT_FILE = "gen/itext/faktura.pdf";
@@ -249,11 +246,11 @@ public class FakturaController {
 		IOUtils.copy(inputStream, response.getOutputStream());
 	}
 	
-	@GetMapping("/sendNalogProvjeraMT")
+	/*@GetMapping("/sendNalogProvjeraMT")
 	@ResponseStatus(HttpStatus.OK)
 	public void sendNalogProvjeraMT() throws IOException{
 		firmClient.sendNalogProvjeraMT();
-	}
+	}*/
 	
 }
 

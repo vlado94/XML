@@ -53,4 +53,5 @@ public class Firma {
 	@ManyToMany
 	@JoinTable(name = "POSLOVNI_SARADNICI", joinColumns = @JoinColumn(name = "FIRMA1_ID"), inverseJoinColumns = @JoinColumn(name = "FIRMA2_ID"))
     protected List<Firma> poslovniSaradnici = new ArrayList<Firma>();
+
 }

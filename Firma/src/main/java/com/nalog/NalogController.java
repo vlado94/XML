@@ -63,10 +63,10 @@ public class NalogController {
 		@PostMapping(path = "/sendNalog")
 		@ResponseStatus(HttpStatus.CREATED)
 		public Nalog sendNalog(@RequestBody Faktura faktura){
-			System.out.println("sendNalog "+faktura.getZaglavljeFakture().getNazivKupca());
+			
 			Nalog nalog = new Nalog();
 			String uniqueID = UUID.randomUUID().toString();
-			System.out.println(uniqueID);
+			
 			nalog.setIdPoruke(uniqueID);
 			nalog.setDuznik(faktura.getZaglavljeFakture().getNazivKupca());
 			nalog.setSvrhaPlacanja("prodaja");
@@ -74,7 +74,7 @@ public class NalogController {
 			nalog.setDatumNaloga(faktura.getZaglavljeFakture().getDatumRacuna());
 			nalog.setDatumValute(faktura.getZaglavljeFakture().getDatumValute());
 			Firma duznik = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
-			System.out.println(duznik.getRacun().getBrojRacuna());
+			
 			nalog.setRacunDuznika(duznik.getRacun().getBrojRacuna());
 			nalog.setModelZaduzenja(BigInteger.valueOf(97L));
 			nalog.setPozivNaBrojZaduzenja("11111111111111111111");

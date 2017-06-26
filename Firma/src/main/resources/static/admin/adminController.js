@@ -6,6 +6,11 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		function checkRights() {
 			adminService.checkRights().then(
 				function (response) {
+					if(response.data == null){
+						$location.path('login');
+					}
+					
+					
 					if(response.data != "") {
 						$scope.admin = response.data;
 					}

@@ -41,4 +41,13 @@ public class FakturaRESTApi {
 	    return new ResponseEntity<Faktura>(savedFaktura, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/FIRMA_C", method = RequestMethod.POST)
+	public ResponseEntity<Faktura> acceptFaktura3(@RequestBody Faktura faktura) 
+	{
+		System.out.println("FakturaRESTApi FIRMA_C");
+	    System.out.println(faktura);
+	    Faktura savedFaktura = fakturaService.save(faktura);
+	    return new ResponseEntity<Faktura>(savedFaktura, HttpStatus.OK);
+	}
+	
 }

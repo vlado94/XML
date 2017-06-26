@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <getMT103Request xmlns="http://mt103.com">
     <MT103>
-        <idPoruke>310130f6-9454-4ea8-9966-98e700da34ed</idPoruke>
+        <idPoruke>a4f8924c-ce0b-42f7-97d3-69ccc2784b83</idPoruke>
         <swiftKodBankeDuznika>BBBIII22</swiftKodBankeDuznika>
         <obracunskiRacunBankeDuznika>WWW777777777777777</obracunskiRacunBankeDuznika>
         <swiftKodBankePoverioca>AAAIOI11</swiftKodBankePoverioca>
