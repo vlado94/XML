@@ -131,7 +131,7 @@ public class FakturaController {
 	//REST Client Code
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
-	    final String uri = kupac.getUri()+"/RESTApi/"+kupac.getNaziv();
+	    final String uri = kupac.getUri()+"/RESTApi/acceptFaktura";
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);
 	    

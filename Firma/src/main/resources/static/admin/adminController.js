@@ -67,7 +67,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		$scope.saveZaglavljeFakture= function () {
 			adminService.saveZaglavljeFakture($scope.zaglavljeFakture).then(
 				function(response){
-					alert("Sacuvano")
+					alert("Unos stavki.")
 					$state.go("admin.unosStavkeFakture", {});
 					$scope.sacuvanoZaglavlje=response.data;
 				}, function (response){
@@ -77,7 +77,6 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		}
 		
 		$scope.saveStavkaFakture= function () {
-			alert($scope.sacuvanoZaglavlje.id)
 			adminService.saveStavkaFakture($scope.stavkaFakture,$scope.sacuvanoZaglavlje.id).then(
 				function(response){
 					var r = confirm("Dodaj jos jednu stavku?");
@@ -172,7 +171,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 	    
 	    $scope.createHTML = function (faktura) {
 	    	adminService.createHTML(faktura).then(function(response){
-				alert("Uspjelo jeee")
+				alert("Izgenerisan html fakture.")
 				window.location.href = "/faktura/fakturaHTML";
             },
 			function(response){
@@ -190,7 +189,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 	    
 	    $scope.createHTMLNalog = function (nalog) {
 	    	adminService.createHTMLNalog(nalog).then(function(response){
-				alert("Uspjelo jeee")
+				alert("Izgenerisan html naloga.")
 				window.location.href = "/nalog/nalogHTML";
             },
 			function(response){
@@ -199,7 +198,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 		}
 	    $scope.sendNalog = function (faktura) {
 			adminService.sendNalog(faktura).then(function(response){
-				alert("Nalog za placanje je poslan banci!");
+				alert("Nalog za placanje je poslat banci!");
             },
 			function(response){
 				alert("Greska kod sendNalog");
