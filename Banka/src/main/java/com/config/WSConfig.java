@@ -52,7 +52,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	public CommonsXsdSchemaCollection schemeCollection() {
 		CommonsXsdSchemaCollection collection = new CommonsXsdSchemaCollection(
 				new Resource[] { new ClassPathResource("/nalog.xsd"),new ClassPathResource("/mt102.xsd"),new ClassPathResource("/mt103.xsd"),new ClassPathResource("/mt900.xsd"),new ClassPathResource("/mt910.xsd")
-							    ,new ClassPathResource("/presek.xsd"),new ClassPathResource("/zahtevZaDobijanjeIzvoda.xsd")});
+							    ,new ClassPathResource("/presek.xsd"),new ClassPathResource("/zahtevZaDobijanjeIzvoda.xsd"),new ClassPathResource("/zahtevZaDobijanjeNaloga.xsd")});
 		collection.setInline(true);
 		return collection;
 	}
@@ -60,7 +60,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	Jaxb2Marshaller jaxb2Marshaller() {
 		Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
-		jaxb2Marshaller.setContextPaths("com.nalog","com.mt102","com.mt103", "com.mt900","com.mt910","com.presek","com.zahtevzadobijanjeizvoda");
+		jaxb2Marshaller.setContextPaths("com.nalog","com.mt102","com.mt103", "com.mt900","com.mt910","com.presek","com.zahtevzadobijanjeizvoda","com.zahtevZaDobijanjeNaloga");
 		return jaxb2Marshaller;
 	}
 

@@ -49,7 +49,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	public CommonsXsdSchemaCollection schemeCollection() {
 		CommonsXsdSchemaCollection collection = new CommonsXsdSchemaCollection(
-				new Resource[] {new ClassPathResource("/nalog.xsd"),new ClassPathResource("/presek.xsd"),new ClassPathResource("/zahtevZaDobijanjeIzvoda.xsd") });
+				new Resource[] {new ClassPathResource("/nalog.xsd"),new ClassPathResource("/presek.xsd"),new ClassPathResource("/zahtevZaDobijanjeIzvoda.xsd"),new ClassPathResource("/zahtevZaDobijanjeNaloga.xsd") });
 		collection.setInline(true);
 		return collection;
 	}
@@ -57,7 +57,7 @@ public class WSConfig extends WsConfigurerAdapter {
 	@Bean
 	Jaxb2Marshaller jaxb2Marshaller() {
 		Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
-		jaxb2Marshaller.setContextPaths("com.nalog","com.presek","com.zahtevzadobijanjeizvoda");
+		jaxb2Marshaller.setContextPaths("com.nalog","com.presek","com.zahtevzadobijanjeizvoda","com.zahtevZaDobijanjeNaloga");
 		return jaxb2Marshaller;
 	}
 

@@ -42,6 +42,8 @@ import com.presek.ZaglavljePreseka;
 import com.racun.Racun;
 import com.racun.RacunService;
 import com.temp.NaloziZaglavlje;
+import com.zahtevZaDobijanjeNaloga.GetZahtevZaDobijanjeNalogaRequest;
+import com.zahtevZaDobijanjeNaloga.GetZahtevZaDobijanjeNalogaResponse;
 import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
 
 
@@ -55,6 +57,7 @@ public class BankEndpoint {
 	private static final String NAMESPACE_URI4 = "http://mt103.com";
 	private static final String NAMESPACE_URI5 = "http://mt102.com";
 
+	private static final String NAMESPACE_URI6 = "http://zahtevZaDobijanjeNaloga.com";
 	@Autowired
 	BankaClient bankaClient;
 
@@ -479,6 +482,30 @@ public class BankEndpoint {
 		}
 		nz.zaglavlje.setNovoStanje(nz.zaglavlje.getUkupnoUKorist().subtract(nz.zaglavlje.getUkupnoNaTeret()));
 		return nz;
+	}
+	
+
+	@PayloadRoot(namespace = NAMESPACE_URI6, localPart = "getZahtevZaDobijanjeNalogaRequest")
+	@ResponsePayload
+	public GetZahtevZaDobijanjeNalogaResponse getZahtevZaDobijanjeNalogaRequest(
+			@RequestPayload GetZahtevZaDobijanjeNalogaRequest request) {
+		
+		GetZahtevZaDobijanjeNalogaResponse response = new GetZahtevZaDobijanjeNalogaResponse();
+		List<Nalog> nalozi = new ArrayList<Nalog>();
+		String brojRacuna = request.getZahtevZaDobijanjeNaloga().getBrojRacuna();
+		
+		List<Nalog> sviNalozi = nalogService.findAll();
+		
+		for (Nalog nalog : sviNalozi) {
+			if(nalog.getRacunDuznika().equals(brojRacuna) || nalog.getRacunPrimaoca().equals(brojRacuna)){
+				nalozi.add(nalog);
+			}
+		}
+		
+		response.setNalog(nalozi);
+		
+		return response;
+		
 	}
 
 }

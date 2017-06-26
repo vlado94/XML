@@ -1,9 +1,11 @@
 package com.firma;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -19,6 +21,9 @@ import com.nalog.Nalog;
 import com.nalog.NalogService;
 import com.presek.GetPresekResponse;
 import com.racun.Racun;
+import com.zahtevZaDobijanjeNaloga.GetZahtevZaDobijanjeNalogaRequest;
+import com.zahtevZaDobijanjeNaloga.GetZahtevZaDobijanjeNalogaResponse;
+import com.zahtevZaDobijanjeNaloga.ZahtevZaDobijanjeNaloga;
 import com.zahtevzadobijanjeizvoda.GetZahtevZaDobijanjeIzvodaRequest;
 import com.zahtevzadobijanjeizvoda.ZahtevZaDobijanjeIzvoda;
 
@@ -125,5 +130,36 @@ public class FirmaClient {
 		webServiceTemplate.setDefaultUri(uri);
  		GetPresekResponse response = (GetPresekResponse) webServiceTemplate.marshalSendAndReceive(request);
 		return response;
+	}
+
+
+	public List<Nalog> getlistaNaloga() { 
+		List<Nalog> nalozi = new ArrayList<Nalog>();
+		
+		Firmas firmas = (Firmas) httpSession.getAttribute("user");
+		Firma firma = firmaService.findOne(firmas.getFirma().getId());
+		
+		GetZahtevZaDobijanjeNalogaRequest request = new GetZahtevZaDobijanjeNalogaRequest();
+		ZahtevZaDobijanjeNaloga zahtevZaNaloge = new ZahtevZaDobijanjeNaloga();
+		zahtevZaNaloge.setBrojRacuna(firma.getRacun().getBrojRacuna());
+		
+		request.setZahtevZaDobijanjeNaloga(zahtevZaNaloge);
+		
+		String uri = "";
+		for(int i=0;i<bankService.findAll().size();i++) {
+			for(int j=0;j<bankService.findAll().get(i).getRacuni().size();j++) {
+				if(bankService.findAll().get(i).getRacuni().get(j).getBrojRacuna().equals(firma.getRacun().getBrojRacuna())) {
+					uri = bankService.findAll().get(i).getUri()+ "/ws";					
+				}
+				
+			}
+		}	
+		webServiceTemplate.setDefaultUri(uri);
+ 		GetZahtevZaDobijanjeNalogaResponse response = (GetZahtevZaDobijanjeNalogaResponse) webServiceTemplate.marshalSendAndReceive(request);
+		
+ 		nalozi = response.getNalog();
+		
+		return nalozi;
+		
 	}
 }

@@ -97,7 +97,9 @@ public class NalogController {
 		@GetMapping(path = "/findAllNaloge")
 		@ResponseStatus(HttpStatus.CREATED)
 		public List<Nalog> findAllNaloge() {
-			List<Nalog> nalozi = nalogService.findAll();
+		
+			
+			List<Nalog> nalozi  = firmClient.getlistaNaloga();
 			if(nalozi  == null){
 				return new ArrayList<Nalog>();
 			}
