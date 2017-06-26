@@ -3,6 +3,7 @@ package com.user;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,10 @@ public class UserController {
 	private HttpSession httpSession;
 	private FirmasService firmasService;
 
+
+	@Autowired
+	Environment environment;
+	
 	@Autowired
 	public UserController(final HttpSession httpSession,FirmasService firmasService) {
 		this.httpSession = httpSession;
@@ -34,7 +39,14 @@ public class UserController {
 			user = firmasService.findOneByMailAndPassword(userInput.getMail(), userInput.getPassword());
 		}
 		if (user != null) {
-			httpSession.setAttribute("user", user);
+			String port = environment.getProperty("local.server.port");
+			String[] splitovanoZaPort = user.getFirma().getUri().split(":");
+			
+			if(!port.equals(splitovanoZaPort[2])){
+				return null;
+			}else{
+				httpSession.setAttribute("user", user);
+			}
 		}
 		return user;
 	}
