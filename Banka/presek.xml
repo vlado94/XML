@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<getPresekResponse xmlns="http://presek.com">
+    <presek>
+        <zaglavljePreseka>
+            <brojRacuna>AAA456789123456789</brojRacuna>
+            <datumNaloga>2017-06-02</datumNaloga>
+            <brojPreseka>1</brojPreseka>
+            <prethodnoStanje>0.00</prethodnoStanje>
+            <brojPromenaUKorist>0</brojPromenaUKorist>
+            <ukupnoUKorist>0</ukupnoUKorist>
+            <brojPromenaNaTeret>5</brojPromenaNaTeret>
+            <ukupnoNaTeret>8700.25</ukupnoNaTeret>
+            <novoStanje>-8700.25</novoStanje>
+        </zaglavljePreseka>
+        <stavkaPreseka>
+            <duznik>duznik 1</duznik>
+            <svrhaPlacanja>uplata</svrhaPlacanja>
+            <primalac>primalac1</primalac>
+            <datumNaloga>2017-06-02</datumNaloga>
+            <datumValute>2017-06-02</datumValute>
+            <racunDuznika>AAA456789123456789</racunDuznika>
+            <modelZaduzenja>97</modelZaduzenja>
+            <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+            <racunPrimaoca>BBB222222222222222</racunPrimaoca>
+            <modelOdobrenja>97</modelOdobrenja>
+            <pozivNaBrojOdobrenja>85622222222222222222</pozivNaBrojOdobrenja>
+            <iznos>500.25</iznos>
+            <smer>I</smer>
+        </stavkaPreseka>
+        <stavkaPreseka>
+            <duznik>duznik 2</duznik>
+            <svrhaPlacanja>uplata</svrhaPlacanja>
+            <primalac>primalac2</primalac>
+            <datumNaloga>2017-06-02</datumNaloga>
+            <datumValute>2017-06-02</datumValute>
+            <racunDuznika>AAA456789123456789</racunDuznika>
+            <modelZaduzenja>97</modelZaduzenja>
+            <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+            <racunPrimaoca>BBB777777777777777</racunPrimaoca>
+            <modelOdobrenja>97</modelOdobrenja>
+            <pozivNaBrojOdobrenja>88823332222222233333</pozivNaBrojOdobrenja>
+            <iznos>1000.00</iznos>
+            <smer>I</smer>
+        </stavkaPreseka>
+        <stavkaPreseka>
+            <duznik>duznik 2</duznik>
+            <svrhaPlacanja>uplata</svrhaPlacanja>
+            <primalac>primalac2</primalac>
+            <datumNaloga>2017-06-02</datumNaloga>
+            <datumValute>2017-06-02</datumValute>
+            <racunDuznika>AAA456789123456789</racunDuznika>
+            <modelZaduzenja>97</modelZaduzenja>
+            <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+            <racunPrimaoca>BBB777777777777777</racunPrimaoca>
+            <modelOdobrenja>97</modelOdobrenja>
+            <pozivNaBrojOdobrenja>88823332222222233333</pozivNaBrojOdobrenja>
+            <iznos>2000.00</iznos>
+            <smer>I</smer>
+        </stavkaPreseka>
+        <stavkaPreseka>
+            <duznik>duznik 2</duznik>
+            <svrhaPlacanja>uplata</svrhaPlacanja>
+            <primalac>primalac2</primalac>
+            <datumNaloga>2017-06-02</datumNaloga>
+            <datumValute>2017-06-02</datumValute>
+            <racunDuznika>AAA456789123456789</racunDuznika>
+            <modelZaduzenja>97</modelZaduzenja>
+            <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+            <racunPrimaoca>BBB777777777777777</racunPrimaoca>
+            <modelOdobrenja>97</modelOdobrenja>
+            <pozivNaBrojOdobrenja>88823332222222233333</pozivNaBrojOdobrenja>
+            <iznos>3000.00</iznos>
+            <smer>I</smer>
+        </stavkaPreseka>
+    </presek>
+</getPresekResponse>
