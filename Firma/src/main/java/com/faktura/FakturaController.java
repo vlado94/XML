@@ -123,6 +123,12 @@ public class FakturaController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Faktura save(@RequestBody Faktura faktura) {
 		Firma kupac = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
+		
+		if(!ValidacijaSema.validirajSemu(faktura, "faktura")) {
+			System.out.println("Nevalidna faktura");
+			return null;
+		}
+		
 		Faktura result = sendFaktura(faktura,kupac);
 		return result;
 	}
@@ -130,10 +136,7 @@ public class FakturaController {
 	//REST Client Code
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
-		if(!ValidacijaSema.validirajSemu(faktura, "nalog")) {
-			System.out.println("Nevalidan nalog");
-			return null;
-		}
+		
 	    final String uri = kupac.getUri()+"/RESTApi/acceptFaktura";
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);
