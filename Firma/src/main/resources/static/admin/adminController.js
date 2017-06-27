@@ -33,6 +33,7 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 					if(response.data != null)
 					{					
 						$scope.nalozi = response.data.stavkaPreseka;
+						$scope.ZaglavljePreseka = response.data.zaglavljePreseka;
 					}
 					else {
 						alert("Greska pri validaciji seme!")
@@ -52,12 +53,13 @@ app.controller('adminController', ['$scope','adminService', '$location','$state'
 			zahtev.redniBrojPreseka =  trenutniPresek;
 			adminService.findPreseke(zahtev).then(
 				function (response) {
+					$scope.nalozi = {};
 					if(response.data.stavkaPreseka.length == 0){
 						trenutniPresek -= 1;
-						$scope.nalozi = {};
 						return;
 					}					
 					$scope.nalozi = response.data.stavkaPreseka;
+					$scope.ZaglavljePreseka = response.data.zaglavljePreseka;
 				}, 
 				function (response){
 					alert("Greska");

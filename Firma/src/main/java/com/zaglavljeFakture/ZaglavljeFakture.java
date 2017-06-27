@@ -9,7 +9,6 @@ package com.zaglavljeFakture;
 
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Date;
 
 import javax.persistence.Column;

@@ -403,8 +403,15 @@ public class BankEndpoint {
 		zaglavlje.setBrojPreseka(request.getZahtevZaDobijanjeIzvoda().getRedniBrojPreseka());
 		presek.setZaglavljePreseka(zaglavlje);
 		response.setPresek(presek);
-		if(!ValidacijaSema.validirajSemu(response,"presek"))
+		
+		if(response.getPresek().getStavkaPreseka().size() == 0) {
+			if(!ValidacijaSema.validirajSemu(response.getPresek().getZaglavljePreseka(),"presek"))
+				return null;
+		}
+		else {
+			if(!ValidacijaSema.validirajSemu(response,"presek"))
 			return null;
+		}
 		return response;
 	}
 	
@@ -465,7 +472,8 @@ public class BankEndpoint {
 		nz.zaglavlje.setDatumNaloga(datum);
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if (nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
+//PROMENI
+			if (!nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
 				if (nalogUBazi.getRacunDuznika().equals(brRacuna)|| nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
 					if (nalogUBazi.getRacunDuznika().equals(brRacuna)) {
 						nz.zaglavlje.setBrojPromenaNaTeret(nz.zaglavlje.getBrojPromenaNaTeret().add(new BigInteger(String.valueOf(1))));
@@ -483,7 +491,6 @@ public class BankEndpoint {
 		nz.zaglavlje.setNovoStanje(nz.zaglavlje.getUkupnoUKorist().subtract(nz.zaglavlje.getUkupnoNaTeret()));
 		return nz;
 	}
-	
 
 	@PayloadRoot(namespace = NAMESPACE_URI6, localPart = "getZahtevZaDobijanjeNalogaRequest")
 	@ResponsePayload
@@ -493,18 +500,13 @@ public class BankEndpoint {
 		GetZahtevZaDobijanjeNalogaResponse response = new GetZahtevZaDobijanjeNalogaResponse();
 		List<com.zahtevZaDobijanjeNaloga.Nalogg> nalozi = new ArrayList<com.zahtevZaDobijanjeNaloga.Nalogg>();
 		String brojRacuna = request.getZahtevZaDobijanjeNaloga().getBrojRacuna();
-		
 		List<com.nalog.Nalog> sviNalozii = nalogService.findAll();
 		for (Nalog nalog : sviNalozii) {
 			if(nalog.getRacunDuznika().equals(brojRacuna) || nalog.getRacunPrimaoca().equals(brojRacuna)){
 				nalozi.add(new com.zahtevZaDobijanjeNaloga.Nalogg(nalog));
 			}
-		}
-		
+		}		
 		response.setNalogg(nalozi);
-		
 		return response;
-		
 	}
-
 }

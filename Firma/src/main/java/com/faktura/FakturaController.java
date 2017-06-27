@@ -33,8 +33,10 @@ import org.springframework.web.client.RestTemplate;
 import com.firma.Firma;
 import com.firma.FirmaClient;
 import com.firma.FirmaService;
+import com.firma.ValidacijaSema;
 import com.firmas.Firmas;
 import com.itextpdf.text.DocumentException;
+import com.nalog.GetNalogResponse;
 import com.pdfTransformer.PDFTransformer;
 import com.stavkaFakture.StavkaFakture;
 import com.stavkaFakture.StavkaFaktureService;
@@ -64,9 +66,6 @@ public class FakturaController {
 		this.firmaService = firmaService;
 		this.httpSession  = httpSession;
 	}
-	
-
-	
 	
 	@PostMapping(path = "/{idZaglavlja}")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -131,6 +130,10 @@ public class FakturaController {
 	//REST Client Code
 	private static Faktura sendFaktura(Faktura faktura,Firma kupac)
 	{
+		if(!ValidacijaSema.validirajSemu(faktura, "nalog")) {
+			System.out.println("Nevalidan nalog");
+			return null;
+		}
 	    final String uri = kupac.getUri()+"/RESTApi/acceptFaktura";
 	    RestTemplate restTemplate = new RestTemplate();
 	    Faktura result = restTemplate.postForObject( uri,faktura, Faktura.class);

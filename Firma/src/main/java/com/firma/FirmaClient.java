@@ -5,20 +5,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import com.banka.Banka;
 import com.banka.BankaService;
-import com.faktura.Faktura;
 import com.firmas.Firmas;
-import com.itextpdf.text.log.SysoCounter;
 import com.nalog.GetNalogRequest;
 import com.nalog.GetNalogResponse;
 import com.nalog.Nalog;
-import com.nalog.NalogService;
 import com.presek.GetPresekResponse;
 import com.racun.Racun;
 import com.zahtevZaDobijanjeNaloga.GetZahtevZaDobijanjeNalogaRequest;
@@ -35,9 +31,6 @@ public class FirmaClient {
 
 	@Autowired
 	private HttpSession httpSession;
-
-	@Autowired
-	private NalogService nalogService;
 
 	@Autowired
 	private BankaService bankService;
@@ -85,7 +78,7 @@ public class FirmaClient {
 		if(!ValidacijaSema.validirajSemu(nalogRequest, "nalog")) {
 			System.out.println("Nevalidan nalog");
 		}else{
-		GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
+			GetNalogResponse nalogResponse = (GetNalogResponse) webServiceTemplate.marshalSendAndReceive(nalogRequest);
 		}
 	}
 
@@ -121,7 +114,6 @@ public class FirmaClient {
 				if(bankService.findAll().get(i).getRacuni().get(j).getBrojRacuna().equals(firma.getRacun().getBrojRacuna())) {
 					uri = bankService.findAll().get(i).getUri()+ "/ws";					
 				}
-				
 			}
 		}	
 		

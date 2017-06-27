@@ -1,8 +1,23 @@
 <input type="date" id = "startDatum">
 
-<button  ng-click = "findPreseke()">Presek</button>
-<button  ng-click = "findPresekeNext()">Sledeci</button>
+<button  ng-click = "findPreseke()" class = "glyphicon glyphicon-search"></button>
+<button  ng-click = "findPresekeNext()" class = "glyphicon glyphicon-arrow-right"></button>
 
+<div style = "width:50%">
+	<label>Broj racuna</label>
+	<input type = "text" class = "form-control" ng-model = "$parent.ZaglavljePreseka.brojRacuna" ></input>
+	<label>Prethodno stanje</label>
+	<input type = "text" class = "form-control" ng-model = "$parent.ZaglavljePreseka.prethodnoStanje" ></input>
+	<label>Ukupno u korist</label>
+	<input type = "text" class = "form-control" ng-model = "$parent.ZaglavljePreseka.ukupnoUKorist" ></input>
+	<label>Ukupno na teret</label>
+	<input type = "text" class = "form-control" ng-model = "$parent.ZaglavljePreseka.ukupnoNaTeret" ></input>
+	<label>Novo stanje</label>
+	<input type = "text" class = "form-control" ng-model = "$parent.ZaglavljePreseka.novoStanje" ></input>
+	<br><br><br>
+</div>
+
+</div>
 <table class="table table-bordered" border="1">
 	<tbody>
 		<tr>
