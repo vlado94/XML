@@ -62,11 +62,11 @@
             <xs:element name="datumNaloga" type="xs:date"/>
             <xs:element name="datumValute" type="xs:date"/>
             <xs:element name="racunDuznika" type="nzp:Str18"/>
-            <xs:element name="modelZaduzenja" type="nzp:Number2"/>
+            <xs:element name="modelZaduzenja" type="nzp:Number2len"/>
             <xs:element name="pozivNaBrojZaduzenja" type="nzp:Str20"/>
             
             <xs:element name="racunPrimaoca" type="nzp:Str18"/>
-            <xs:element name="modelOdobrenja" type="nzp:Number2"/>
+            <xs:element name="modelOdobrenja" type="nzp:Number2len"/>
             <xs:element name="pozivNaBrojOdobrenja" type="nzp:Str20"/>
             <xs:element name="iznos" type="nzp:Decimal15-2"/> 
             <xs:element name="smer" type="nzp:Str1"/>
@@ -77,6 +77,13 @@
     
     
     <xs:simpleType name="Number2">
+        <xs:restriction base="xs:integer">
+        	<xs:minInclusive value="0"/>
+            <xs:maxInclusive value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Number2len">
         <xs:restriction base="xs:integer">
             <xs:pattern value="\d{2}"/>
         </xs:restriction>
@@ -116,7 +123,8 @@
     
     <xs:simpleType name="AccountNumber">
         <xs:restriction base="xs:integer">
-            <xs:pattern value="\d{6}"/>
+        	<xs:minInclusive value="0"/>
+            <xs:maxInclusive value="999999"/>
         </xs:restriction>
     </xs:simpleType> 
     
