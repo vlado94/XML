@@ -44,34 +44,5 @@ public class ValidacijaSema {
 			return false;
 		}
 	}
-	
-	
-	public static boolean validirajNalog(Object object,String imeFajla) {
-		File file = new File(imeFajla + ".xml");
-		JAXBContext jaxbContext;
-		try {
-			jaxbContext = JAXBContext.newInstance(object.getClass());
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(object, file);
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema;
-			try {
-				schema = factory.newSchema(new StreamSource("src/main/resources/nalog.xsd"));
-				Validator validator = schema.newValidator();
-				try {
-					validator.validate(new StreamSource(file));
-					return true;
-				} catch (IOException e) {
-					return false;
-				}
 
-			} catch (SAXException e) {
-				e.printStackTrace();
-				return false;
-			}
-		} catch (JAXBException e) {
-			return false;
-		}
-	}
 }
