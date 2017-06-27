@@ -94,7 +94,7 @@
     
     <xs:simpleType name="Str18">
         <xs:restriction base="xs:string">
-            <xs:minLength value="1"/>
+            <xs:minLength value="18"/>
             <xs:maxLength value="18"/>
         </xs:restriction>
     </xs:simpleType>
@@ -114,9 +114,10 @@
     </xs:simpleType>
     
     <xs:simpleType name="AccountNumber">
-            <xs:restriction base="xs:integer">
-                <xs:pattern value="\d{6}"/>
-            </xs:restriction>
+            <xs:restriction base="xs:string">
+            <xs:minLength value="18"/>
+            <xs:maxLength value="18"/>
+        </xs:restriction>
     </xs:simpleType> 
     
     
