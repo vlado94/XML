@@ -34,6 +34,7 @@ import com.faktura.Faktura;
 import com.firma.Firma;
 import com.firma.FirmaClient;
 import com.firma.FirmaService;
+import com.firma.ValidacijaSema;
 import com.itextpdf.text.DocumentException;
 import com.pdfTransformer.PDFTransformer;
 
@@ -63,6 +64,12 @@ public class NalogController {
 		@PostMapping(path = "/sendNalog")
 		@ResponseStatus(HttpStatus.CREATED)
 		public Nalog sendNalog(@RequestBody Faktura faktura){
+			
+			if(!ValidacijaSema.validirajSemu(faktura, "faktura")) {
+				System.out.println("Nevalidna faktura");
+				return null;
+			}
+			
 			
 			Nalog nalog = new Nalog();
 			String uniqueID = UUID.randomUUID().toString();

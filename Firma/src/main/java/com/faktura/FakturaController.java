@@ -124,11 +124,6 @@ public class FakturaController {
 	public Faktura save(@RequestBody Faktura faktura) {
 		Firma kupac = firmaService.findByPIB(faktura.getZaglavljeFakture().getPibKupca());
 		
-		if(!ValidacijaSema.validirajSemu(faktura, "faktura")) {
-			System.out.println("Nevalidna faktura");
-			return null;
-		}
-		
 		Faktura result = sendFaktura(faktura,kupac);
 		return result;
 	}
