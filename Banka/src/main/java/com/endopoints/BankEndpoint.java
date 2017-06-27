@@ -473,7 +473,7 @@ public class BankEndpoint {
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
 //PROMENI
-			if (!nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
+			if (nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
 				if (nalogUBazi.getRacunDuznika().equals(brRacuna)|| nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
 					if (nalogUBazi.getRacunDuznika().equals(brRacuna)) {
 						nz.zaglavlje.setBrojPromenaNaTeret(nz.zaglavlje.getBrojPromenaNaTeret().add(new BigInteger(String.valueOf(1))));

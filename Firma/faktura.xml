@@ -8,27 +8,27 @@
         <adresaKupca>Dositejeva 12</adresaKupca>
         <PIBKupca>22222222222</PIBKupca>
         <brojRacuna>BBB222222222222222</brojRacuna>
-        <datumRacuna>2017-06-26</datumRacuna>
-        <vrednostRobe>132.25</vrednostRobe>
-        <vrednostUsluga>78</vrednostUsluga>
-        <ukupnoRobaIUsluge>201.25</ukupnoRobaIUsluge>
-        <ukupanRabat>20</ukupanRabat>
-        <ukupanPorez>50</ukupanPorez>
-        <oznakaValute>RSD</oznakaValute>
-        <iznosZaUplatu>300.25</iznosZaUplatu>
+        <datumRacuna>2017-06-28</datumRacuna>
+        <vrednostRobe>3</vrednostRobe>
+        <vrednostUsluga>3</vrednostUsluga>
+        <ukupnoRobaIUsluge>3</ukupnoRobaIUsluge>
+        <ukupanRabat>33</ukupanRabat>
+        <ukupanPorez>3</ukupanPorez>
+        <oznakaValute>rsd</oznakaValute>
+        <iznosZaUplatu>3</iznosZaUplatu>
         <uplataNaRacun>AAA456789123456789</uplataNaRacun>
-        <datumValute>2017-06-26</datumValute>
+        <datumValute>2017-06-28</datumValute>
     </zaglavljeFakture>
     <stavkaFakture>
-        <redniBroj>123</redniBroj>
-        <nazivRobeIliUsluge>roba 1</nazivRobeIliUsluge>
-        <kolicina>75.2</kolicina>
-        <jedinicaMere>kg</jedinicaMere>
-        <jedinicnaCena>120</jedinicnaCena>
-        <vrednost>7500</vrednost>
-        <procenatRabata>8</procenatRabata>
-        <iznosRabata>100</iznosRabata>
-        <umanjenoZaRabat>100</umanjenoZaRabat>
-        <ukupanPorez>360</ukupanPorez>
+        <redniBroj>100</redniBroj>
+        <nazivRobeIliUsluge>3</nazivRobeIliUsluge>
+        <kolicina>3</kolicina>
+        <jedinicaMere>3</jedinicaMere>
+        <jedinicnaCena>3</jedinicnaCena>
+        <vrednost>3</vrednost>
+        <procenatRabata>3</procenatRabata>
+        <iznosRabata>3</iznosRabata>
+        <umanjenoZaRabat>3</umanjenoZaRabat>
+        <ukupanPorez>3</ukupanPorez>
     </stavkaFakture>
 </faktura>

@@ -169,7 +169,7 @@
 			</xs:simpleType>
 			<xs:simpleType name="Str18">
 				<xs:restriction base="xs:string">
-					<xs:minLength value="1" />
+					<xs:minLength value="18" />
 					<xs:maxLength value="18" />
 				</xs:restriction>
 			</xs:simpleType>
@@ -187,7 +187,7 @@
 			</xs:simpleType>
 			<xs:simpleType name="Str20">
 				<xs:restriction base="xs:string">
-					<xs:minLength value="1" />
+					<xs:minLength value="20" />
 					<xs:maxLength value="20" />
 				</xs:restriction>
 			</xs:simpleType>
@@ -510,13 +510,13 @@
 			</xs:simpleType>
 			<xs:simpleType name="Str18">
 				<xs:restriction base="xs:string">
-					<xs:minLength value="1" />
+					<xs:minLength value="18" />
 					<xs:maxLength value="18" />
 				</xs:restriction>
 			</xs:simpleType>
 			<xs:simpleType name="Str20">
 				<xs:restriction base="xs:string">
-					<xs:minLength value="1" />
+					<xs:minLength value="20" />
 					<xs:maxLength value="20" />
 				</xs:restriction>
 			</xs:simpleType>

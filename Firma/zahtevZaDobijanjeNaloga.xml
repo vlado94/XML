@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<getZahtevZaDobijanjeNalogaRequest xmlns="http://zahtevZaDobijanjeNaloga.com">
-    <zahtevZaDobijanjeNaloga>
-        <brojRacuna>BBB222222222222222</brojRacuna>
-    </zahtevZaDobijanjeNaloga>
-</getZahtevZaDobijanjeNalogaRequest>
+<getZahtevZaDobijanjeNalogaResponse xmlns="http://zahtevZaDobijanjeNaloga.com">
+    <nalogg>
+        <idPoruke>id111</idPoruke>
+        <duznik>duznik 1</duznik>
+        <svrhaPlacanja>uplata</svrhaPlacanja>
+        <primalac>primalac1</primalac>
+        <datumNaloga>2017-06-02</datumNaloga>
+        <datumValute>2017-06-02</datumValute>
+        <racunDuznika>AAA456789123456789</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>85645678912345678911</pozivNaBrojZaduzenja>
+        <racunPrimaoca>BBB222222222222222</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>85622222222222222222</pozivNaBrojOdobrenja>
+        <iznos>500.25</iznos>
+        <oznakaValute>rsd</oznakaValute>
+        <hitno>false</hitno>
+    </nalogg>
+    <nalogg>
+        <idPoruke>96bf5729-ebc7-49dd-b548-aa3d2310e779</idPoruke>
+        <duznik>FIRMA_B</duznik>
+        <svrhaPlacanja>prodaja</svrhaPlacanja>
+        <primalac>FIRMA_A</primalac>
+        <datumNaloga>2017-06-28</datumNaloga>
+        <datumValute>2017-06-28</datumValute>
+        <racunDuznika>BBB222222222222222</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>11111111111111111111</pozivNaBrojZaduzenja>
+        <racunPrimaoca>AAA456789123456789</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>22222222222222222222</pozivNaBrojOdobrenja>
+        <iznos>3.00</iznos>
+        <oznakaValute>rsd</oznakaValute>
+        <hitno>false</hitno>
+    </nalogg>
+</getZahtevZaDobijanjeNalogaResponse>

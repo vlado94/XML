@@ -33,10 +33,8 @@ import org.springframework.web.client.RestTemplate;
 import com.firma.Firma;
 import com.firma.FirmaClient;
 import com.firma.FirmaService;
-import com.firma.ValidacijaSema;
 import com.firmas.Firmas;
 import com.itextpdf.text.DocumentException;
-import com.nalog.GetNalogResponse;
 import com.pdfTransformer.PDFTransformer;
 import com.stavkaFakture.StavkaFakture;
 import com.stavkaFakture.StavkaFaktureService;
@@ -78,7 +76,7 @@ public class FakturaController {
 		if(postojecaFaktura==null){
 			Faktura faktura= new Faktura();
 			faktura.setZaglavljeFakture(zaglavljeFakture);
-			stavkaFakture.setRedniBroj(BigInteger.valueOf(1L));
+			stavkaFakture.setRedniBroj(BigInteger.valueOf(100L));
 			List<StavkaFakture> stavke = new ArrayList<StavkaFakture>();
 			stavke.add(stavkaFakture);
 			faktura.setStavkaFakture(stavke);

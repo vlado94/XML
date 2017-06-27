@@ -210,13 +210,13 @@
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
 						name="racunDuznika" type="nzp:Str18" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
-						name="modelZaduzenja" type="nzp:Number2" />
+						name="modelZaduzenja" type="nzp:Number2len" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
 						name="pozivNaBrojZaduzenja" type="nzp:Str20" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
 						name="racunPrimaoca" type="nzp:Str18" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
-						name="modelOdobrenja" type="nzp:Number2" />
+						name="modelOdobrenja" type="nzp:Number2len" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
 						name="pozivNaBrojOdobrenja" type="nzp:Str20" />
 					<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -227,6 +227,16 @@
 			</xs:complexType>
 			<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema"
 				name="Number2">
+				<xs:restriction xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					base="xs:integer">
+					<xs:minInclusive xmlns:xs="http://www.w3.org/2001/XMLSchema"
+						value="0" />
+					<xs:maxInclusive xmlns:xs="http://www.w3.org/2001/XMLSchema"
+						value="99" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				name="Number2len">
 				<xs:restriction xmlns:xs="http://www.w3.org/2001/XMLSchema"
 					base="xs:integer">
 					<xs:pattern xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -277,8 +287,10 @@
 				name="AccountNumber">
 				<xs:restriction xmlns:xs="http://www.w3.org/2001/XMLSchema"
 					base="xs:integer">
-					<xs:pattern xmlns:xs="http://www.w3.org/2001/XMLSchema"
-						value="\d{6}" />
+					<xs:minInclusive xmlns:xs="http://www.w3.org/2001/XMLSchema"
+						value="0" />
+					<xs:maxInclusive xmlns:xs="http://www.w3.org/2001/XMLSchema"
+						value="999999" />
 				</xs:restriction>
 			</xs:simpleType>
 			<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -619,7 +631,7 @@
 		<wsdl:port xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 			binding="tns:FirmaPortSoap11" name="FirmaPortSoap11">
 			<soap:address xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-				location="http://localhost:5002/ws" />
+				location="http://localhost:5001/ws" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
