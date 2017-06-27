@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.nalog.Nalog;
+import com.zahtevZaDobijanjeNaloga.Nalogg;
 
 
 /**
@@ -40,13 +40,13 @@ import com.nalog.Nalog;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "nalog"
+    "nalogg"
 })
 @XmlRootElement(name = "getZahtevZaDobijanjeNalogaResponse")
 public class GetZahtevZaDobijanjeNalogaResponse {
 
 	@XmlElement(required = true)
-    protected List<Nalog> nalog;
+    protected List<Nalogg> nalogg;
     /**
      * Gets the value of the zahtevZaDobijanjeNaloga property.
      * 
@@ -55,8 +55,8 @@ public class GetZahtevZaDobijanjeNalogaResponse {
      *     {@link ZahtevZaDobijanjeNaloga }
      *     
      */
-    public List<Nalog> getNalog() {
-        return nalog;
+    public List<Nalogg> getNalogg() {
+        return nalogg;
     }
 
     /**
@@ -67,8 +67,8 @@ public class GetZahtevZaDobijanjeNalogaResponse {
      *     {@link ZahtevZaDobijanjeIzvoda }
      *     
      */
-    public void setNalog(List<Nalog> value) {
-        this.nalog = value;
+    public void setNalogg(List<Nalogg> value) {
+        this.nalogg = value;
     }
 
 }

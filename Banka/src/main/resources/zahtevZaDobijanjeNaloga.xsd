@@ -14,16 +14,16 @@
     <xs:element name="getZahtevZaDobijanjeNalogaResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="nzp:nalog" maxOccurs="unbounded"/>
+                <xs:element ref="nzp:nalogg" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     
     
-    <xs:element name="nalog" type="nzp:Nalog">
+    <xs:element name="nalogg" type="nzp:Nalogg">
     </xs:element>
     
-    <xs:complexType name="Nalog">
+    <xs:complexType name="Nalogg">
         <xs:sequence>
             <xs:element name="idPoruke" type="nzp:Str50"/>
             <xs:element name="duznik" type="nzp:Str255"/>

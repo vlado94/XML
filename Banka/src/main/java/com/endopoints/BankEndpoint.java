@@ -140,7 +140,7 @@ public class BankEndpoint {
 				System.out.println("Nije hitno");
 				racunDuznika.setRezervisano(racunDuznika.getRezervisano().add(primljenNalog.getIznos()));
 				racunService.save(racunDuznika);
-
+				primljenNalog = nalogService.save(primljenNalog);//dodata zadnja
 				List<MT102> sviMT102 = MT102Service.findAll();
 
 				for (int i = 0; i < sviMT102.size(); i++) {
@@ -448,7 +448,7 @@ public class BankEndpoint {
 		BigDecimal trenutnoNaRacunu = racun.getTrenutnoStanje();
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if(datum.before(nalogUBazi.getDatumNaloga()) && !nalogUBazi.isObradjen()) {
+			if(datum.before(nalogUBazi.getDatumNaloga()) && nalogUBazi.isObradjen()) {
 				if (nalogUBazi.getRacunDuznika().equals(brRacuna)) 
 					trenutnoNaRacunu.subtract(nalogUBazi.getIznos());
 				else
@@ -465,7 +465,7 @@ public class BankEndpoint {
 		nz.zaglavlje.setDatumNaloga(datum);
 		List<Nalog> naloziUBazi = nalogService.findAll();
 		for (Nalog nalogUBazi : naloziUBazi) {
-			if (!nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
+			if (nalogUBazi.isObradjen() && nalogUBazi.getDatumNaloga().compareTo(datum) == 0)
 				if (nalogUBazi.getRacunDuznika().equals(brRacuna)|| nalogUBazi.getRacunPrimaoca().equals(brRacuna)) {
 					if (nalogUBazi.getRacunDuznika().equals(brRacuna)) {
 						nz.zaglavlje.setBrojPromenaNaTeret(nz.zaglavlje.getBrojPromenaNaTeret().add(new BigInteger(String.valueOf(1))));
@@ -491,18 +491,17 @@ public class BankEndpoint {
 			@RequestPayload GetZahtevZaDobijanjeNalogaRequest request) {
 		
 		GetZahtevZaDobijanjeNalogaResponse response = new GetZahtevZaDobijanjeNalogaResponse();
-		List<Nalog> nalozi = new ArrayList<Nalog>();
+		List<com.zahtevZaDobijanjeNaloga.Nalogg> nalozi = new ArrayList<com.zahtevZaDobijanjeNaloga.Nalogg>();
 		String brojRacuna = request.getZahtevZaDobijanjeNaloga().getBrojRacuna();
 		
-		List<Nalog> sviNalozi = nalogService.findAll();
-		
-		for (Nalog nalog : sviNalozi) {
+		List<com.nalog.Nalog> sviNalozii = nalogService.findAll();
+		for (Nalog nalog : sviNalozii) {
 			if(nalog.getRacunDuznika().equals(brojRacuna) || nalog.getRacunPrimaoca().equals(brojRacuna)){
-				nalozi.add(nalog);
+				nalozi.add(new com.zahtevZaDobijanjeNaloga.Nalogg(nalog));
 			}
 		}
 		
-		response.setNalog(nalozi);
+		response.setNalogg(nalozi);
 		
 		return response;
 		

@@ -133,8 +133,8 @@ public class FirmaClient {
 	}
 
 
-	public List<Nalog> getlistaNaloga() { 
-		List<Nalog> nalozi = new ArrayList<Nalog>();
+	public List<com.zahtevZaDobijanjeNaloga.Nalogg> getlistaNaloga() { 
+		List<com.zahtevZaDobijanjeNaloga.Nalogg> nalozi = new ArrayList<com.zahtevZaDobijanjeNaloga.Nalogg>();
 		
 		Firmas firmas = (Firmas) httpSession.getAttribute("user");
 		Firma firma = firmaService.findOne(firmas.getFirma().getId());
@@ -155,10 +155,28 @@ public class FirmaClient {
 			}
 		}	
 		webServiceTemplate.setDefaultUri(uri);
- 		GetZahtevZaDobijanjeNalogaResponse response = (GetZahtevZaDobijanjeNalogaResponse) webServiceTemplate.marshalSendAndReceive(request);
 		
- 		nalozi = response.getNalog();
-		
+		if(!ValidacijaSema.validirajSemu(request, "zahtevZaDobijanjeNaloga")) {
+			System.out.println("Nevalidan nalog");
+		}else{
+ 		
+			GetZahtevZaDobijanjeNalogaResponse response = (GetZahtevZaDobijanjeNalogaResponse) webServiceTemplate.marshalSendAndReceive(request);
+			
+			
+			if(!ValidacijaSema.validirajSemu(response, "zahtevZaDobijanjeNaloga")) {
+				System.out.println("Nevalidan nalog");
+			}else{
+				nalozi = response.getNalogg();
+				
+				/*for(int i = 0; i< nalozi.size(); i++){
+					if(!ValidacijaSema.validirajNalog(nalozi.get(i), "nalog"+i)) {
+							System.out.println("Nevalidan nalog "  + i);
+					}
+				}*/
+			}
+		}
+ 		
+
 		return nalozi;
 		
 	}

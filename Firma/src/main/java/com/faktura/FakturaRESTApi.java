@@ -22,8 +22,17 @@ public class FakturaRESTApi {
 	public FakturaRESTApi(final FakturaService fakturaService){
 		this.fakturaService = fakturaService;
 	}
+	
+	@RequestMapping(value = "/acceptFaktura", method = RequestMethod.POST)
+	public ResponseEntity<Faktura> acceptFaktura(@RequestBody Faktura faktura) 
+	{
+		System.out.println("FakturaRESTApi "+faktura.getZaglavljeFakture().getNazivKupca());
+	    //System.out.println(faktura);
+	    Faktura savedFaktura = fakturaService.save(faktura);
+	    return new ResponseEntity<Faktura>(savedFaktura, HttpStatus.OK);
+	}
 
-	@RequestMapping(value = "/FIRMA_A", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/FIRMA_A", method = RequestMethod.POST)
 	public ResponseEntity<Faktura> acceptFaktura1(@RequestBody Faktura faktura) 
 	{
 		System.out.println("FakturaRESTApi FIRMA_A");
@@ -48,6 +57,6 @@ public class FakturaRESTApi {
 	    System.out.println(faktura);
 	    Faktura savedFaktura = fakturaService.save(faktura);
 	    return new ResponseEntity<Faktura>(savedFaktura, HttpStatus.OK);
-	}
+	}*/
 	
 }

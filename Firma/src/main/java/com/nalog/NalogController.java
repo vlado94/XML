@@ -96,12 +96,12 @@ public class NalogController {
 		
 		@GetMapping(path = "/findAllNaloge")
 		@ResponseStatus(HttpStatus.CREATED)
-		public List<Nalog> findAllNaloge() {
+		public List<com.zahtevZaDobijanjeNaloga.Nalogg> findAllNaloge() {
 		
 			
-			List<Nalog> nalozi  = firmClient.getlistaNaloga();
+			List<com.zahtevZaDobijanjeNaloga.Nalogg> nalozi  = firmClient.getlistaNaloga();
 			if(nalozi  == null){
-				return new ArrayList<Nalog>();
+				return new ArrayList<com.zahtevZaDobijanjeNaloga.Nalogg>();
 			}
 			return nalozi;
 		}

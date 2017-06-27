@@ -6,7 +6,7 @@
 //
 
 
-package com.nalog;
+package com.zahtevZaDobijanjeNaloga;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.nalog.Adapter1;
 
 
 /**
@@ -63,7 +65,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "nalog", propOrder = {
+@XmlType(name = "nalogg", propOrder = {
     "idPoruke",
     "duznik",
     "svrhaPlacanja",
@@ -82,7 +84,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 
 
-public class Nalog {
+public class Nalogg {
 
 	@XmlTransient
 	@Id
@@ -142,8 +144,24 @@ public class Nalog {
 	@XmlTransient
     protected boolean obradjen;
 
-
-	public Nalog() {}
+	public Nalogg() {}
+	public Nalogg(com.nalog.Nalog nalog) {
+		this.hitno = nalog.isHitno();
+		this.oznakaValute = nalog.getOznakaValute();
+		this.iznos = nalog.getIznos();
+		this.pozivNaBrojOdobrenja = nalog.getPozivNaBrojOdobrenja();
+		this.modelOdobrenja = nalog.getModelOdobrenja();
+		this.racunPrimaoca = nalog.getRacunPrimaoca();
+		this.pozivNaBrojZaduzenja = nalog.getPozivNaBrojZaduzenja();
+		this.modelZaduzenja = nalog.getModelZaduzenja();
+		this.racunDuznika = nalog.getRacunDuznika();
+		this.datumValute = nalog.getDatumValute();
+		this.datumNaloga = nalog.getDatumNaloga();
+		this.primalac = nalog.getPrimalac();
+		this.svrhaPlacanja = nalog.getSvrhaPlacanja();
+		this.duznik = nalog.getDuznik();
+		this.idPoruke = nalog.getIdPoruke();
+	}
     /**
      * Gets the value of the idPoruke property.
      * 
